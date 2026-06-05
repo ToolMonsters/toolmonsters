@@ -63,6 +63,7 @@
     font-family: "Bricolage Grotesque", sans-serif;
     font-weight: 700; font-size: clamp(28px, 5vw, 56px);
     line-height: 1.08; letter-spacing: -0.02em; color: #16314d;
+    text-wrap: balance;            /* even, predictable line breaks */
   }
   .title p { margin-top: 18px; font-size: clamp(15px, 2.2vw, 21px); color: #2c4a66; line-height: 1.5; }
 
@@ -199,7 +200,19 @@
   .corner-cta:hover { transform: translateY(-2px); background: #3576e6; box-shadow: 0 16px 30px -12px rgba(47,111,224,.65); }
   .corner-cta svg { transition: transform .2s ease; }
   .corner-cta:hover svg { transform: translateX(3px); }
-  @media (max-width: 640px) { .corner-cta { bottom: 18px; right: 18px; padding: 11px 18px; font-size: 14px; } }
+
+  /* mobile-only round "back to top" button (replaces the corner CTA on phones) */
+  .to-top {
+    display: none;
+    position: absolute; bottom: 18px; right: 18px; z-index: 6;
+    width: 48px; height: 48px; border-radius: 50%; border: none; cursor: pointer;
+    align-items: center; justify-content: center; color: #fff; background: #2f6fe0;
+    box-shadow: 0 12px 24px -12px rgba(47,111,224,.55);
+    opacity: var(--graph-o, 0);
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .15s ease;
+  }
+  .to-top:active { transform: translateY(1px) scale(.96); }
 
   /* ===================== Footer = a band of end.avif, text right on it ===================== */
   .site-footer {
@@ -417,16 +430,25 @@
     .anno { display: none; }
 
     .graph { padding: 0 12px; }
-    .title { top: 26%; width: 92vw; padding: 0 14px; }
-    .title p { margin-top: 14px; }
+    .title { top: 25%; width: 100vw; padding: 0 18px; }
+    /* smaller so the headline fits on 2 lines, not 3 */
+    .title h1 { font-size: clamp(16px, 4.5vw, 25px); line-height: 1.15; }
+    .title p { margin-top: 13px; }
     .btns { margin-top: 26px; gap: 10px; }
     .btn { padding: 13px 22px; }
+
+    /* zoom the mountains in a bit so they frame the centered content nicely */
+    .hills { width: 165%; bottom: -3vh; }
 
     .worked { top: 60%; width: 94vw; gap: 12px; }
     .track { gap: 38px; }
 
     /* a touch more breathing room when the graph is auto-scaled down */
     .drow { gap: 16px; }
+
+    /* swap the wide CTA for a round back-to-top arrow */
+    .corner-cta { display: none; }
+    .to-top { display: inline-flex; }
   }
 
   @media (hover: none) {
@@ -558,6 +580,7 @@
       </div>
 
       <a class="corner-cta" href="https://calendly.com/hello-toolmonsters/30min" target="_blank" rel="noopener">Work with us <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 6l6 6-6 6"/></svg></a>
+      <button class="to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 
     </div>
   </div>
