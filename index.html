@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tool Monsters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Caveat:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: url("back.png") center top / cover fixed no-repeat, #bfe0f5;
+  }
+
+  /* The intro is taller than the viewport; the stage pins while we scroll through it. */
+  .intro { position: relative; height: 175vh; }
+
+  .stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Sky (back.png) */
+  .sky {
+    position: absolute; inset: 0;
+    background: url("back.png") center / cover no-repeat;
+    transform: scale(var(--sky-scale, 1));
+    transform-origin: center 35%;
+    will-change: transform;
+    z-index: 0;
+  }
+
+  /* Mountains (front.png), anchored to the bottom so we see its full bottom edge */
+  .hills {
+    position: absolute;
+    left: 50%; bottom: -8vh;     /* dropped a bit -> more open valley space for the content */
+    width: 104%;                 /* always a touch wider than the screen -> touches the side borders */
+    transform: translateX(-50%) scale(var(--hills-scale, 1));
+    transform-origin: center bottom;
+    opacity: var(--hills-o, 1);
+    will-change: transform, opacity;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .title {
+    position: absolute; top: 30%; left: 50%;
+    transform: translate(-50%, calc(-50% + var(--title-y, 0)));
+    opacity: var(--title-o, 1);
+    will-change: transform, opacity;
+    z-index: 3; text-align: center; width: min(90vw, 820px); padding: 0 20px;
+  }
+  .title h1 {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 700; font-size: clamp(28px, 5vw, 56px);
+    line-height: 1.08; letter-spacing: -0.02em; color: #16314d;
+  }
+  .title p { margin-top: 18px; font-size: clamp(15px, 2.2vw, 21px); color: #2c4a66; line-height: 1.5; }
+
+  .btns { margin-top: 36px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: clamp(15px, 1.7vw, 17px);
+    letter-spacing: -0.01em;
+    padding: 15px 30px; border-radius: 9px; border: none; cursor: pointer;
+    text-decoration: none; white-space: nowrap;
+    transition: transform .22s cubic-bezier(.2,.8,.2,1), background .2s ease, border-color .2s ease, box-shadow .25s ease;
+  }
+  .btn { will-change: transform; }
+  .btn:hover { transform: translateY(-2px) scale(1.02); }
+  .btn:active { transform: translateY(0) scale(1); transition-duration: .08s; }
+
+  /* Primary — flat blue; subtle lift + soft glow on hover */
+  .btn-primary { color: #fff; background: #2f6fe0; box-shadow: 0 0 0 0 rgba(47,103,216,0); }
+  .btn-primary:hover { background: #3576e6; box-shadow: 0 10px 20px -10px rgba(47,103,216,.55); }
+
+  /* Secondary — flat white; subtle lift + soft shadow on hover */
+  .btn-ghost { color: #16314d; background: #ffffff; border: 1px solid rgba(22,49,77,.12); box-shadow: 0 0 0 0 rgba(22,49,77,0); }
+  .btn-ghost:hover { background: #ffffff; border-color: rgba(22,49,77,.18); box-shadow: 0 10px 20px -12px rgba(22,49,77,.3); }
+
+  /* "Worked with" + scrolling logos, sitting in the valley from the start */
+  .worked {
+    position: absolute; left: 50%; top: 64%; z-index: 1;
+    transform: translateX(-50%);
+    width: min(760px, 92vw);
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    opacity: var(--worked-o, 1);
+    pointer-events: none;
+  }
+  .worked-label {
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
+    font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
+    color: #16314d; opacity: .6;
+  }
+  .marquee {
+    position: relative; width: 100%; overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  }
+  .track {
+    display: flex; align-items: center; gap: 56px; width: max-content;
+    animation: scrollx 26s linear infinite;
+  }
+  @keyframes scrollx { to { transform: translateX(-50%); } }
+
+  /* per-logo heights, tuned so they read as the same optical size */
+  .logo { width: auto; display: block; flex: 0 0 auto; opacity: .85; }
+  .logo--fullenrich { height: 32px; }
+  .logo--gamma      { height: 28px; }
+  .logo--granola    { height: 32px; }
+  .logo--clickup    { height: 33px; }
+  .logo--tavus      { height: 21px; }
+  .logo--zapier     { height: 30px; }
+  .logo--wix        { height: 23px; }
+  .logo--base44     { height: 30px; }
+
+  /* ===================== Narrative flow ===================== */
+  .flow {
+    position: relative; z-index: 5;
+    background: transparent;          /* sits straight on the sky (back.png) */
+    padding: 36px 24px 170px;
+  }
+  .flow-eyebrow {
+    text-align: center; font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
+    font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: #2f6fe0; opacity: .8;
+    margin-bottom: 40px;
+  }
+  /* graph layer inside the pinned stage, behind the mountains, centered & scaled to fit one screen */
+  .graph {
+    position: absolute; inset: 0; z-index: 1;
+    display: flex; align-items: center; justify-content: center; padding: 0 22px;
+    transform: translateY(0);             /* centered */
+    opacity: var(--graph-o, 0);
+    will-change: opacity;
+    pointer-events: none;
+  }
+  .flow-inner {
+    width: max-content; max-width: none; display: flex; flex-direction: column; align-items: center;
+    transform: scale(var(--graph-scale, 1)); transform-origin: center center;
+  }
+  .flow-row { position: relative; display: flex; flex-direction: column; align-items: center; }
+
+
+  /* Reveal base */
+  [data-reveal] { opacity: 1; transform: none; }
+
+  .dbox {
+    position: relative; z-index: 1;
+    background: #fff; border: 1px solid rgba(22,49,77,.1); border-radius: 14px;
+    padding: 16px 30px; text-align: center; white-space: nowrap;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 18px;
+    letter-spacing: -.02em; color: #16314d;
+    box-shadow: 0 22px 44px -30px rgba(22,49,77,.5);
+  }
+  .dbox--product {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: linear-gradient(135deg, #2f3358 0%, #1c1e36 100%);
+    border: none; color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.16),
+                inset 0 0 0 1px rgba(255,255,255,.05),
+                0 26px 48px -22px rgba(20,22,45,.8),
+                0 5px 14px -5px rgba(20,22,45,.55);
+  }
+  .dbox--product svg { flex: 0 0 auto; color: #a9b4ff; }
+
+  .cta-after {
+    margin-top: 36px; gap: 9px; font-size: 16px; color: #fff;
+    background: linear-gradient(135deg, #2f3358, #1c1e36);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 18px 34px -14px rgba(20,22,45,.65);
+  }
+  .cta-after:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 24px 40px -16px rgba(20,22,45,.72); }
+  .cta-after svg { flex: 0 0 auto; transition: transform .2s ease; }
+  .cta-after:hover svg { transform: translateX(3px); }
+
+  /* white box with a colored icon */
+  .dbox--icon { display: inline-flex; align-items: center; gap: 9px; }
+  .dbox--icon svg { flex: 0 0 auto; color: #2f6fe0; }
+
+  /* corner CTA on the animation */
+  .corner-cta {
+    position: absolute; bottom: 30px; right: 30px; z-index: 6;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 15px;
+    padding: 13px 22px; border-radius: 9px; text-decoration: none; color: #fff;
+    background: #2f6fe0;
+    box-shadow: 0 12px 24px -12px rgba(47,111,224,.55);
+    opacity: var(--graph-o, 0);
+    transition: transform .15s ease, box-shadow .25s ease;
+  }
+  .corner-cta:hover { transform: translateY(-2px); background: #3576e6; box-shadow: 0 16px 30px -12px rgba(47,111,224,.65); }
+  .corner-cta svg { transition: transform .2s ease; }
+  .corner-cta:hover svg { transform: translateX(3px); }
+  @media (max-width: 640px) { .corner-cta { bottom: 18px; right: 18px; padding: 11px 18px; font-size: 14px; } }
+
+  /* ===================== Footer = a band of end.avif, text right on it ===================== */
+  .site-footer {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 6;
+    height: 64px; display: flex; align-items: flex-end;
+    background: url("end.avif") center bottom / cover no-repeat;
+    opacity: var(--graph-o, 0);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%);
+            mask-image: linear-gradient(180deg, transparent 0%, #000 18%);
+  }
+  .site-footer::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(16,32,24,0) 48%, rgba(14,28,20,.55) 100%);
+  }
+  .footer-inner {
+    position: relative; z-index: 1; width: 100%;
+    padding: 11px 28px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    font-size: 14px; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.45);
+  }
+  .foot-dot { width: 9px; height: 9px; border-radius: 50%; margin-right: 9px;
+    background: linear-gradient(135deg, #b9aaff, #79a8ff); box-shadow: 0 0 0 3px rgba(255,255,255,.2); }
+  .foot-left { display: inline-flex; align-items: center; }
+  .foot-left b { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; margin-right: 7px; }
+  .foot-left a { color: #fff; text-decoration: none; margin-left: 7px; }
+  .foot-left a:hover { opacity: .8; }
+  .foot-mid { color: rgba(255,255,255,.9); }
+  .foot-cta {
+    display: inline-flex; align-items: center; gap: 7px; text-shadow: none;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 14px;
+    padding: 10px 18px; border-radius: 11px; text-decoration: none; color: #16314d;
+    background: #fff;
+    box-shadow: 0 10px 22px -10px rgba(0,0,0,.4);
+    transition: transform .15s ease, box-shadow .2s ease;
+  }
+  .foot-cta:hover { transform: translateY(-1px); box-shadow: 0 14px 26px -10px rgba(0,0,0,.5); }
+  .foot-cta svg { transition: transform .2s ease; }
+  .foot-cta:hover svg { transform: translateX(2px); }
+  @media (max-width: 640px) { .footer-inner { justify-content: center; text-align: center; } .foot-mid { display: none; } }
+
+  /* hand-drawn annotation pointing to a box */
+  .dstep { position: relative; }
+  .anno {
+    position: absolute; left: 100%; top: 50%; transform: translateY(-50%);
+    margin-left: 4px; display: flex; align-items: center; gap: 2px; width: max-content;
+    pointer-events: none;
+  }
+  .anno-arrow { width: 92px; height: 42px; flex: 0 0 auto; overflow: visible; }
+  .anno-arrow path {
+    fill: none; stroke: #16314d; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .anno-text {
+    font-family: "Caveat", cursive; font-weight: 700; font-size: 25px; line-height: 1.12;
+    color: #16314d; max-width: 172px;
+  }
+  /* annotation on the left side, arrow pointing right */
+  .anno--left { left: auto; right: 100%; margin-left: 0; margin-right: 4px; }
+  .anno--left .anno-text { text-align: right; }
+
+  /* ===================== Bottom area (uses end.avif as background) ===================== */
+  .bottom {
+    position: relative; z-index: 5;
+    background: url("end.avif") center top / cover no-repeat,
+                linear-gradient(180deg, #bfe0f5 0%, #a6d2ef 100%);
+  }
+
+  /* ===================== Reviews ===================== */
+  .reviews {
+    position: relative; z-index: 1;
+    padding: 120px 24px 90px;
+    background: transparent;
+  }
+  .sec-eyebrow {
+    text-align: center; font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
+    font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: #2f6fe0; margin-bottom: 14px;
+  }
+  .sec-title {
+    text-align: center; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
+    font-size: clamp(28px, 4vw, 40px); letter-spacing: -.02em; color: #16314d; margin: 0 auto 52px; max-width: 18ch;
+  }
+  .review-grid { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 820px) { .review-grid { grid-template-columns: 1fr; max-width: 500px; } }
+  .review-card {
+    display: flex; flex-direction: column;
+    background: #fff; border: 1px solid rgba(22,49,77,.06); border-radius: 24px; padding: 32px 30px;
+    box-shadow: 0 44px 80px -44px rgba(22,49,77,.55);
+  }
+  .review-card .stars { color: #ffb020; font-size: 16px; letter-spacing: 4px; margin-bottom: 18px; }
+  .review-card .quote { font-size: 18px; line-height: 1.6; color: #33425a; flex: 1; margin: 0; }
+  .review-card .who {
+    margin-top: 26px; padding-top: 22px; border-top: 1px solid rgba(22,49,77,.09);
+    display: flex; align-items: center; gap: 13px;
+  }
+  .review-card .who .avatar {
+    width: 46px; height: 46px; border-radius: 50%; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 15px;
+  }
+  .review-card .who .meta { display: flex; flex-direction: column; }
+  .review-card .who b { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 15.5px; color: #16314d; }
+  .review-card .who span { font-size: 13px; color: #6a7689; margin-top: 1px; }
+
+  /* ===================== Footer / final CTA ===================== */
+  .footer-cta { position: relative; z-index: 1; background: transparent; padding: 150px 24px 0; }
+  .cta-card {
+    max-width: 820px; margin: 0 auto; text-align: center; color: #fff;
+    background: linear-gradient(135deg, #3a7bed 0%, #2f6fe0 45%, #245bce 100%);
+    border-radius: 28px; padding: 56px 40px;
+    box-shadow: 0 44px 84px -42px rgba(47,111,224,.75);
+  }
+  .cta-card h2 { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 42px); letter-spacing: -.02em; }
+  .cta-card p { margin: 16px auto 0; font-size: 18px; line-height: 1.5; color: rgba(255,255,255,.92); max-width: 520px; }
+  .cta-card .btns { justify-content: center; margin-top: 32px; }
+  .footer-cta .btn-primary { background: #fff; color: #16314d; box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+  .footer-cta .btn-primary:hover { background: #eef3f9; box-shadow: 0 14px 26px -10px rgba(0,0,0,.35); }
+  .footer-cta .btn-ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.55); box-shadow: none; }
+  .footer-cta .btn-ghost:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.8); box-shadow: none; }
+  .foot-bar {
+    max-width: 1040px; margin: 56px auto 0; padding: 22px 0; border-top: 1px solid rgba(22,49,77,.18);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    color: #16314d; font-weight: 600; font-size: 14px;
+  }
+  .foot-bar a { color: #16314d; font-weight: 600; text-decoration: none; }
+  .foot-bar a:hover { opacity: .7; }
+
+  /* box with a title + description */
+  .dbox--desc { white-space: normal; max-width: 320px; padding: 16px 26px; }
+  .dbox--desc strong { display: block; font-size: 18px; }
+  .dbox--desc span { display: block; margin-top: 5px; font-weight: 500; font-size: 13.5px; line-height: 1.45; color: #5a6a80; }
+
+  /* final box where both paths rejoin */
+  .dbox--final { background: #2f6fe0; border: none; color: #fff; box-shadow: 0 24px 44px -22px rgba(47,111,224,.6); }
+  .dbox--final span { color: rgba(255,255,255,.9); }
+
+  .dline { width: 24px; height: 100px; }
+  .dfork, .dmerge { width: 300px; height: 132px; }
+  .dline svg, .dfork svg, .dmerge svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+  /* roadmap lines draw in */
+  .lpath { fill: none; stroke-linecap: round; }
+  .lpath--base { stroke: #2f6fe0; stroke-width: 2; }
+
+  /* one glowing dot flows the lines continuously: dline -> fork -> merge -> loop */
+  .lpath--dot {
+    stroke: #fff; stroke-width: 9; stroke-dasharray: 0.01 100; stroke-linecap: round;
+    filter: drop-shadow(0 0 1px rgba(255,255,255,.9))
+            drop-shadow(0 0 3px rgba(47,111,224,1))
+            drop-shadow(0 0 8px rgba(47,111,224,.5));
+  }
+  .dot--1 { animation: seg1 3s linear infinite; }
+  .dot--2 { animation: seg2 3s linear infinite; }
+  .dot--3 { animation: seg3 3s linear infinite; }
+  @keyframes seg1 {
+    0%   { stroke-dashoffset: 100; opacity: 0; }
+    5%   { stroke-dashoffset: 86;  opacity: 1; }
+    29%  { stroke-dashoffset: 10;  opacity: 1; }
+    33%  { stroke-dashoffset: 0.4; opacity: 0; }
+    100% { stroke-dashoffset: 0.4; opacity: 0; }
+  }
+  @keyframes seg2 {
+    0%   { stroke-dashoffset: 100; opacity: 0; }
+    33%  { stroke-dashoffset: 100; opacity: 0; }
+    38%  { stroke-dashoffset: 86;  opacity: 1; }
+    62%  { stroke-dashoffset: 10;  opacity: 1; }
+    66%  { stroke-dashoffset: 0.4; opacity: 0; }
+    100% { stroke-dashoffset: 0.4; opacity: 0; }
+  }
+  @keyframes seg3 {
+    0%   { stroke-dashoffset: 100; opacity: 0; }
+    66%  { stroke-dashoffset: 100; opacity: 0; }
+    71%  { stroke-dashoffset: 86;  opacity: 1; }
+    96%  { stroke-dashoffset: 8;   opacity: 1; }
+    100% { stroke-dashoffset: 0.4; opacity: 0; }
+  }
+
+  .drow { display: flex; gap: 24px; align-items: stretch; }
+  .dbox--logos { white-space: normal; padding: 15px 18px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .dbox--logos strong { display: block; font-size: 17px; }
+  .tiles { display: flex; gap: 7px; }
+  .sq {
+    width: 38px; height: 38px; border-radius: 10px; overflow: hidden; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 18px -12px rgba(22,49,77,.5); border: 1px solid rgba(22,49,77,.06);
+  }
+  .sq img { width: 100%; height: 100%; object-fit: cover; }
+  .sq--gpt, .sq--claude {
+    width: auto; min-width: 38px; padding: 0 11px;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 11px;
+    color: #fff; text-align: center; line-height: 1;
+  }
+  .sq--gpt { background: #10a37f; }
+  .sq--claude { background: #d97757; }
+
+  /* final stats */
+  .block--final { border-color: rgba(47,111,224,.25); box-shadow: 0 32px 64px -34px rgba(47,111,224,.55); }
+  .stats { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 13px; }
+  .stat { background: #f5f9fe; border-radius: 14px; padding: 11px 18px; min-width: 110px; }
+  .stat b { display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -.02em; color: #2f6fe0; line-height: 1; }
+  .stat span { display: block; margin-top: 4px; font-size: 12px; color: #55657c; line-height: 1.3; }
+
+  .hint {
+    position: absolute; left: 50%; bottom: 30px; transform: translateX(-50%);
+    z-index: 3; color: #2c4a66; font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+    opacity: var(--title-o, 1); animation: bob 1.8s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+</style>
+</head>
+<body>
+
+  <div class="intro">
+    <div class="stage">
+      <div class="sky"></div>
+
+      <!-- "Worked with" + logo marquee, revealed in the valley -->
+      <div class="worked">
+        <p class="worked-label">Worked with</p>
+        <div class="marquee">
+          <div class="track">
+            <img class="logo logo--fullenrich" src="logos/fullenrich.svg" alt="FullEnrich" />
+            <img class="logo logo--gamma" src="logos/gamma.svg" alt="Gamma" />
+            <img class="logo logo--granola" src="logos/granola.png" alt="Granola" />
+            <img class="logo logo--clickup" src="logos/clickup.svg" alt="ClickUp" />
+            <img class="logo logo--tavus" src="logos/tavus.svg" alt="Tavus" />
+            <img class="logo logo--zapier" src="logos/zapier.svg" alt="Zapier" />
+            <img class="logo logo--wix" src="logos/wix.png" alt="Wix" />
+            <img class="logo logo--base44" src="logos/base44.png" alt="Base44" />
+            <!-- duplicate for a seamless loop -->
+            <img class="logo logo--fullenrich" src="logos/fullenrich.svg" alt="FullEnrich" />
+            <img class="logo logo--gamma" src="logos/gamma.svg" alt="Gamma" />
+            <img class="logo logo--granola" src="logos/granola.png" alt="Granola" />
+            <img class="logo logo--clickup" src="logos/clickup.svg" alt="ClickUp" />
+            <img class="logo logo--tavus" src="logos/tavus.svg" alt="Tavus" />
+            <img class="logo logo--zapier" src="logos/zapier.svg" alt="Zapier" />
+            <img class="logo logo--wix" src="logos/wix.png" alt="Wix" />
+            <img class="logo logo--base44" src="logos/base44.png" alt="Base44" />
+          </div>
+        </div>
+      </div>
+
+      <!-- mountains -->
+      <img class="hills" src="front.png" alt="" />
+
+      <div class="title">
+        <h1>We turn your product into a library of templates &amp; Skills</h1>
+        <p>So your sign-ups become users who actually use your product.</p>
+        <div class="btns">
+          <a class="btn btn-primary" href="https://calendly.com/toolmonsters" target="_blank" rel="noopener">Work with us</a>
+          <a class="btn btn-ghost" href="https://fullenrich.com/templates" target="_blank" rel="noopener">See real library</a>
+        </div>
+      </div>
+
+      <!-- the graph: sits behind the mountains, revealed in place as they fade -->
+      <div class="graph">
+        <div class="flow-inner">
+
+          <div class="flow-row">
+            <div class="dbox dbox--product" data-reveal>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12l8.73-5.04"/><path d="M12 22V12"/></svg>
+              <span>Your product</span>
+            </div>
+            <div class="dline" data-reveal>
+              <svg viewBox="0 0 24 100" preserveAspectRatio="none">
+                <path class="lpath lpath--base" pathLength="100" d="M12 0 V100" vector-effect="non-scaling-stroke" />
+                <path class="lpath lpath--dot dot--1" pathLength="100" d="M12 0 V100" vector-effect="non-scaling-stroke" />
+              </svg>
+            </div>
+            <div class="dstep" data-reveal>
+              <div class="dbox dbox--icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+                <span>Template Library</span>
+              </div>
+              <div class="anno">
+                <svg class="anno-arrow" viewBox="0 0 96 44">
+                  <path d="M84 8 C56 2, 30 28, 12 28 M12 28 L25 21 M12 28 L25 35" />
+                </svg>
+                <p class="anno-text">We turn your best use cases into ready-to-run building blocks.</p>
+              </div>
+            </div>
+            <div class="dfork" data-reveal>
+              <svg viewBox="0 0 300 132">
+                <path class="lpath lpath--base" pathLength="100" d="M150 0 C150 92, 72 70, 72 132" />
+                <path class="lpath lpath--base" pathLength="100" d="M150 0 C150 92, 228 70, 228 132" />
+                <path class="lpath lpath--dot dot--2" pathLength="100" d="M150 0 C150 92, 72 70, 72 132" />
+                <path class="lpath lpath--dot dot--2" pathLength="100" d="M150 0 C150 92, 228 70, 228 132" />
+              </svg>
+            </div>
+            <div class="drow" data-reveal>
+              <div class="dbox dbox--logos dstep">
+                <strong>Automation</strong>
+                <div class="tiles">
+                  <span class="sq"><img src="logos/sq-zapier.png" alt="Zapier" /></span>
+                  <span class="sq"><img src="logos/sq-n8n.png" alt="n8n" /></span>
+                  <span class="sq"><img src="logos/sq-make.jpg" alt="Make" /></span>
+                </div>
+                <div class="anno anno--left">
+                  <p class="anno-text">Your product runs inside the tools their team already uses.</p>
+                  <svg class="anno-arrow" viewBox="0 0 96 44">
+                    <path d="M12 8 C40 2, 66 28, 84 28 M84 28 L71 21 M84 28 L71 35" />
+                  </svg>
+                </div>
+              </div>
+              <div class="dbox dbox--logos">
+                <strong>Skills</strong>
+                <div class="tiles">
+                  <span class="sq"><img src="logos/sq-gpt.jpg" alt="ChatGPT" /></span>
+                  <span class="sq"><img src="logos/sq-claude.jpg" alt="Claude" /></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dmerge" data-reveal>
+              <svg viewBox="0 0 300 132">
+                <path class="lpath lpath--base" pathLength="100" d="M72 0 C72 70, 150 50, 150 132" />
+                <path class="lpath lpath--base" pathLength="100" d="M228 0 C228 70, 150 50, 150 132" />
+                <path class="lpath lpath--dot dot--3" pathLength="100" d="M72 0 C72 70, 150 50, 150 132" />
+                <path class="lpath lpath--dot dot--3" pathLength="100" d="M228 0 C228 70, 150 50, 150 132" />
+              </svg>
+            </div>
+            <div class="dbox dbox--final" data-reveal>Users activated</div>
+          </div>
+
+        </div>
+      </div>
+
+      <a class="corner-cta" href="https://calendly.com/toolmonsters" target="_blank" rel="noopener">Work with us <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 6l6 6-6 6"/></svg></a>
+
+    </div>
+  </div>
+
+  <script>
+    const intro = document.querySelector('.intro');
+    const stage = document.querySelector('.stage');
+    const graph = document.querySelector('.graph');
+    const inner = document.querySelector('.flow-inner');
+
+    function clamp(v, a, b) { return Math.min(Math.max(v, a), b); }
+
+    function runCounter(el) {
+      const targetN = parseFloat(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const dur = 1300, t0 = performance.now();
+      function frame(now) {
+        const k = Math.min((now - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - k, 3);           // easeOutCubic
+        const val = targetN % 1 === 0 ? Math.round(targetN * eased) : (targetN * eased).toFixed(1);
+        el.textContent = val + suffix;
+        if (k < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // Scene = hero zoom (heroScroll) + a hold so the whole graph stays on screen.
+    let heroScroll = 0, holdScroll = 0;
+    function measure() {
+      const vh = window.innerHeight;
+      heroScroll = Math.round(vh * 0.9);
+      holdScroll = Math.round(vh * 1.3);
+      intro.style.height = (heroScroll + holdScroll + vh) + 'px';
+      // scale the whole graph so it always fits one screen (no internal scroll)
+      inner.style.setProperty('--graph-scale', '1');
+      const w = inner.scrollWidth, h = inner.scrollHeight;
+      const scale = Math.min((window.innerWidth * 0.94) / w, (vh * 0.92) / h, 1);
+      inner.style.setProperty('--graph-scale', clamp(scale, 0.35, 1).toFixed(3));
+    }
+
+    // reveal the whole graph in a quick stagger, once
+    let revealed = false;
+    function revealGraph() {
+      if (revealed) return; revealed = true;
+      graph.querySelectorAll('[data-reveal]').forEach((el, i) => {
+        setTimeout(() => {
+          el.classList.add('in');
+          el.querySelectorAll('[data-count]').forEach(runCounter);
+        }, i * 300);
+      });
+    }
+
+    let target = 0, curr = 0, rafId = null;
+    function readTarget() {
+      target = clamp(-intro.getBoundingClientRect().top, 0, heroScroll + holdScroll);
+    }
+
+    function apply(s) {
+      const heroP = clamp(s / heroScroll, 0, 1);              // 0 -> 1 over the zoom
+      stage.style.setProperty('--title-y', (-heroP * 26) + 'vh');
+      stage.style.setProperty('--title-o', clamp(1 - heroP * 2.2, 0, 1).toFixed(3));
+      stage.style.setProperty('--hills-scale', (1.0 + heroP * 1.5).toFixed(4));
+      stage.style.setProperty('--sky-scale', (1.0 + heroP * 0.35).toFixed(4));
+      stage.style.setProperty('--hills-o', (1 - clamp((heroP - 0.6) / 0.28, 0, 1)).toFixed(4));
+      stage.style.setProperty('--worked-o', clamp(1 - heroP * 2.2, 0, 1).toFixed(4));
+
+      // graph appears (whole thing) right as the mountains vanish
+      stage.style.setProperty('--graph-o', clamp((heroP - 0.55) / 0.35, 0, 1).toFixed(4));
+      if (heroP > 0.55) revealGraph();
+    }
+
+    function loop() {
+      curr += (target - curr) * 0.1;            // smoothing (lower = smoother)
+      if (Math.abs(target - curr) < 0.5) curr = target;
+      apply(curr);
+      rafId = (curr !== target) ? requestAnimationFrame(loop) : null;
+    }
+
+    function kick() { readTarget(); if (rafId === null) rafId = requestAnimationFrame(loop); }
+
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', () => { measure(); kick(); });
+    window.addEventListener('load', () => { measure(); readTarget(); curr = target; apply(curr); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); kick(); });
+
+    // initial settle
+    measure(); readTarget(); curr = target; apply(curr);
+  </script>
+
+</body>
+</html>
