@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Tool Monsters</title>
+<meta name="theme-color" content="#bfe0f5" />
+<meta name="description" content="We turn your product into a library of templates & Skills, so your sign-ups become users who actually use your product." />
+<link rel="icon" type="image/png" href="fav.png" />
+<link rel="apple-touch-icon" href="fav.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Caveat:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
@@ -21,6 +25,7 @@
     position: sticky;
     top: 0;
     height: 100vh;
+    height: 100svh;
     overflow: hidden;
   }
 
@@ -401,6 +406,38 @@
     opacity: var(--title-o, 1); animation: bob 1.8s ease-in-out infinite;
   }
   @keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+  /* ===================== Mobile ===================== */
+  @media (max-width: 640px) {
+    /* background-attachment: fixed is janky / scales badly on iOS Safari */
+    body { background-attachment: scroll; }
+
+    /* the hand-drawn annotations stick out past the boxes and get clipped on
+       narrow screens, so the roadmap reads cleaner without them */
+    .anno { display: none; }
+
+    .graph { padding: 0 12px; }
+    .title { top: 26%; width: 92vw; padding: 0 14px; }
+    .title p { margin-top: 14px; }
+    .btns { margin-top: 26px; gap: 10px; }
+    .btn { padding: 13px 22px; }
+
+    .worked { top: 60%; width: 94vw; gap: 12px; }
+    .track { gap: 38px; }
+
+    /* a touch more breathing room when the graph is auto-scaled down */
+    .drow { gap: 16px; }
+  }
+
+  @media (hover: none) {
+    /* no sticky :hover state on touch devices */
+    .btn:hover, .corner-cta:hover { transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track { animation: none; }
+    .dot--1, .dot--2, .dot--3 { animation: none; opacity: 0; }
+  }
 </style>
 </head>
 <body>
