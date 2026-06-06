@@ -51,6 +51,8 @@
     pointer-events: none;
     z-index: 2;
   }
+  /* the mobile-specific art is hidden on desktop; the swap happens in the mobile @media */
+  .hills--mob { display: none; }
 
   .title {
     position: absolute; top: 30%; left: 50%;
@@ -430,15 +432,16 @@
     .anno { display: none; }
 
     .graph { padding: 0 12px; }
-    .title { top: 25%; width: 100vw; padding: 0 18px; }
-    /* smaller so the headline fits on 2 lines, not 3 */
-    .title h1 { font-size: clamp(16px, 4.5vw, 25px); line-height: 1.15; }
+    .title { top: 24%; width: 100vw; padding: 0 16px; }
+    /* as large as it can be while still wrapping to 2 lines, not 3 */
+    .title h1 { font-size: clamp(18px, 5.4vw, 26px); line-height: 1.14; }
     .title p { margin-top: 13px; }
     .btns { margin-top: 26px; gap: 10px; }
     .btn { padding: 13px 22px; }
 
-    /* zoom the mountains in a bit so they frame the centered content nicely */
-    .hills { width: 165%; bottom: -3vh; }
+    /* swap in the dedicated mobile artwork */
+    .hills--desk { display: none; }
+    .hills--mob { display: block; width: 100%; bottom: 0; }
 
     .worked { top: 60%; width: 94vw; gap: 12px; }
     .track { gap: 38px; }
@@ -494,8 +497,9 @@
         </div>
       </div>
 
-      <!-- mountains -->
-      <img class="hills" src="front.png" alt="" />
+      <!-- mountains (desktop art + a dedicated mobile crop) -->
+      <img class="hills hills--desk" src="front.png" alt="" />
+      <img class="hills hills--mob" src="Mobile.png" alt="" />
 
       <div class="title">
         <h1>We turn your product into a library of templates &amp; Skills</h1>
