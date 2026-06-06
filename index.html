@@ -110,13 +110,16 @@
             mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
   }
   .track {
-    display: flex; align-items: center; gap: 56px; width: max-content;
+    display: flex; align-items: center; width: max-content;
     animation: scrollx 26s linear infinite;
   }
+  /* shift by exactly one copy. Each logo carries its own trailing margin (instead
+     of flex `gap`) so the spacing after the last logo matches the rest -> the loop
+     is perfectly seamless with no empty stretch. */
   @keyframes scrollx { to { transform: translateX(-50%); } }
 
   /* per-logo heights, tuned so they read as the same optical size */
-  .logo { width: auto; display: block; flex: 0 0 auto; opacity: .85; }
+  .logo { width: auto; display: block; flex: 0 0 auto; opacity: .85; margin-right: 56px; }
   .logo--fullenrich { height: 32px; }
   .logo--gamma      { height: 28px; }
   .logo--granola    { height: 32px; }
@@ -432,19 +435,22 @@
     .anno { display: none; }
 
     .graph { padding: 0 12px; }
-    .title { top: 24%; width: 100vw; padding: 0 16px; }
+    .title { top: 19%; width: 100vw; padding: 0 16px; }
     /* as large as it can be while still wrapping to 2 lines, not 3 */
     .title h1 { font-size: clamp(18px, 5.4vw, 26px); line-height: 1.14; }
     .title p { margin-top: 13px; }
-    .btns { margin-top: 26px; gap: 10px; }
+    .btns { margin-top: 24px; gap: 10px; }
     .btn { padding: 13px 22px; }
 
     /* swap in the dedicated mobile artwork */
     .hills--desk { display: none; }
     .hills--mob { display: block; width: 100%; bottom: 0; }
 
-    .worked { top: 60%; width: 94vw; gap: 12px; }
-    .track { gap: 38px; }
+    /* "worked with" sits higher, logos a bit smaller, tighter spacing, faster scroll */
+    .worked { top: 49%; width: 94vw; gap: 10px; }
+    .worked .marquee { transform: scale(.84); }
+    .worked .logo { margin-right: 38px; }
+    .track { animation-duration: 16s; }
 
     /* a touch more breathing room when the graph is auto-scaled down */
     .drow { gap: 16px; }
