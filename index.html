@@ -430,14 +430,16 @@
     /* background-attachment: fixed is janky / scales badly on iOS Safari */
     body { background-attachment: scroll; }
 
-    /* the hand-drawn annotations stick out past the boxes and get clipped on
-       narrow screens, so the roadmap reads cleaner without them */
-    .anno { display: none; }
+    /* keep the hand-drawn notes on mobile, just smaller/tighter; the graph
+       auto-scale below accounts for their width so nothing gets clipped */
+    .anno { gap: 0; }
+    .anno-text { font-size: 16px; max-width: 100px; line-height: 1.08; }
+    .anno-arrow { width: 56px; height: 28px; }
 
     .graph { padding: 0 12px; }
-    .title { top: 19%; width: 100vw; padding: 0 16px; }
+    .title { top: 19%; width: 100vw; padding: 0 12px; }
     /* as large as it can be while still wrapping to 2 lines, not 3 */
-    .title h1 { font-size: clamp(18px, 5.4vw, 26px); line-height: 1.14; }
+    .title h1 { font-size: clamp(19px, 5.8vw, 28px); line-height: 1.13; }
     .title p { margin-top: 13px; }
     .btns { margin-top: 24px; gap: 10px; }
     .btn { padding: 13px 22px; }
@@ -626,9 +628,23 @@
       intro.style.height = (heroScroll + holdScroll + vh) + 'px';
       // scale the whole graph so it always fits one screen (no internal scroll)
       inner.style.setProperty('--graph-scale', '1');
-      const w = inner.scrollWidth, h = inner.scrollHeight;
-      const scale = Math.min((window.innerWidth * 0.94) / w, (vh * 0.92) / h, 1);
-      inner.style.setProperty('--graph-scale', clamp(scale, 0.35, 1).toFixed(3));
+      const isM = window.innerWidth <= 640;
+      let w = inner.scrollWidth, h = inner.scrollHeight;
+      // on mobile the side annotations stick out past the boxes; measure the real
+      // visual extent (boxes + notes) so the auto-scale fits everything on screen
+      if (isM) {
+        let minL = Infinity, maxR = -Infinity, minT = Infinity, maxB = -Infinity;
+        inner.querySelectorAll('*').forEach(el => {
+          const r = el.getBoundingClientRect();
+          if (!r.width && !r.height) return;
+          minL = Math.min(minL, r.left); maxR = Math.max(maxR, r.right);
+          minT = Math.min(minT, r.top);  maxB = Math.max(maxB, r.bottom);
+        });
+        if (maxR > minL) { w = maxR - minL; h = maxB - minT; }
+      }
+      const fw = isM ? 0.97 : 0.94, fh = isM ? 0.80 : 0.92;
+      const scale = Math.min((window.innerWidth * fw) / w, (vh * fh) / h, 1);
+      inner.style.setProperty('--graph-scale', clamp(scale, 0.3, 1).toFixed(3));
     }
 
     // reveal the whole graph in a quick stagger, once
