@@ -151,7 +151,7 @@
   }
   .flow-inner {
     width: max-content; max-width: none; display: flex; flex-direction: column; align-items: center;
-    transform: scale(var(--graph-scale, 1)); transform-origin: center center;
+    transform: translateX(var(--graph-dx, 0px)) scale(var(--graph-scale, 1)); transform-origin: center center;
   }
   .flow-row { position: relative; display: flex; flex-direction: column; align-items: center; }
 
@@ -432,9 +432,10 @@
 
     /* keep the hand-drawn notes on mobile, just smaller/tighter; the graph
        auto-scale below accounts for their width so nothing gets clipped */
-    .anno { gap: 0; }
-    .anno-text { font-size: 16px; max-width: 100px; line-height: 1.08; }
-    .anno-arrow { width: 56px; height: 28px; }
+    .anno { gap: 1px; }
+    .anno-text { font-size: 17px; max-width: 118px; line-height: 1.1; }
+    .anno-arrow { width: 60px; height: 30px; }
+    .anno-arrow path { stroke-width: 3; }
 
     .graph { padding: 0 12px; }
     .title { top: 19%; width: 100vw; padding: 0 12px; }
@@ -629,9 +630,10 @@
       // scale the whole graph so it always fits one screen (no internal scroll)
       inner.style.setProperty('--graph-scale', '1');
       const isM = window.innerWidth <= 640;
-      let w = inner.scrollWidth, h = inner.scrollHeight;
-      // on mobile the side annotations stick out past the boxes; measure the real
-      // visual extent (boxes + notes) so the auto-scale fits everything on screen
+      let w = inner.scrollWidth, h = inner.scrollHeight, dx = 0;
+      // on mobile the side annotations stick out past the boxes (asymmetrically:
+      // the left note hangs off the off-center 'Automation' box). Measure the real
+      // visual extent so the auto-scale fits everything, and recenter that extent.
       if (isM) {
         let minL = Infinity, maxR = -Infinity, minT = Infinity, maxB = -Infinity;
         inner.querySelectorAll('*').forEach(el => {
@@ -640,11 +642,16 @@
           minL = Math.min(minL, r.left); maxR = Math.max(maxR, r.right);
           minT = Math.min(minT, r.top);  maxB = Math.max(maxB, r.bottom);
         });
-        if (maxR > minL) { w = maxR - minL; h = maxB - minT; }
+        if (maxR > minL) {
+          w = maxR - minL; h = maxB - minT;
+          const ir = inner.getBoundingClientRect();
+          dx = ((ir.left + ir.right) / 2) - ((minL + maxR) / 2);   // core-center minus extent-center
+        }
       }
-      const fw = isM ? 0.97 : 0.94, fh = isM ? 0.80 : 0.92;
-      const scale = Math.min((window.innerWidth * fw) / w, (vh * fh) / h, 1);
-      inner.style.setProperty('--graph-scale', clamp(scale, 0.3, 1).toFixed(3));
+      const fw = isM ? 0.96 : 0.94, fh = isM ? 0.80 : 0.92;
+      const scale = clamp(Math.min((window.innerWidth * fw) / w, (vh * fh) / h, 1), 0.3, 1);
+      inner.style.setProperty('--graph-scale', scale.toFixed(3));
+      inner.style.setProperty('--graph-dx', isM ? (dx * scale).toFixed(1) + 'px' : '0px');
     }
 
     // reveal the whole graph in a quick stagger, once
