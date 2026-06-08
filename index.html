@@ -116,7 +116,7 @@
   /* shift by exactly one copy. Each logo carries its own trailing margin (instead
      of flex `gap`) so the spacing after the last logo matches the rest -> the loop
      is perfectly seamless with no empty stretch. */
-  @keyframes scrollx { to { transform: translateX(-50%); } }
+  @keyframes scrollx { to { transform: translateX(-33.3333%); } }   /* shift by exactly one of the 3 copies */
 
   /* per-logo heights, tuned so they read as the same optical size */
   .logo { width: auto; display: block; flex: 0 0 auto; opacity: .85; margin-right: 56px; }
@@ -502,6 +502,15 @@
             <img class="logo logo--zapier" src="logos/zapier.svg" alt="Zapier" />
             <img class="logo logo--wix" src="logos/wix.png" alt="Wix" />
             <img class="logo logo--base44" src="logos/base44.png" alt="Base44" />
+            <!-- third copy so one set is always wider than the viewport (no gap) -->
+            <img class="logo logo--fullenrich" src="logos/fullenrich.svg" alt="FullEnrich" />
+            <img class="logo logo--gamma" src="logos/gamma.svg" alt="Gamma" />
+            <img class="logo logo--granola" src="logos/granola.png" alt="Granola" />
+            <img class="logo logo--clickup" src="logos/clickup.svg" alt="ClickUp" />
+            <img class="logo logo--tavus" src="logos/tavus.svg" alt="Tavus" />
+            <img class="logo logo--zapier" src="logos/zapier.svg" alt="Zapier" />
+            <img class="logo logo--wix" src="logos/wix.png" alt="Wix" />
+            <img class="logo logo--base44" src="logos/base44.png" alt="Base44" />
           </div>
         </div>
       </div>
@@ -630,11 +639,11 @@
       // scale the whole graph so it always fits one screen (no internal scroll)
       inner.style.setProperty('--graph-scale', '1');
       const isM = window.innerWidth <= 640;
-      let w = inner.scrollWidth, h = inner.scrollHeight, dx = 0;
-      // on mobile the side annotations stick out past the boxes (asymmetrically:
-      // the left note hangs off the off-center 'Automation' box). Measure the real
-      // visual extent so the auto-scale fits everything, and recenter that extent.
+      let scale;
       if (isM) {
+        // Keep the boxes centered (flex), and scale so the farthest-reaching
+        // element from the core center (the off-center left note) still fits
+        // inside the half-screen margin. Centered core + notes that never clip.
         let minL = Infinity, maxR = -Infinity, minT = Infinity, maxB = -Infinity;
         inner.querySelectorAll('*').forEach(el => {
           const r = el.getBoundingClientRect();
@@ -642,16 +651,19 @@
           minL = Math.min(minL, r.left); maxR = Math.max(maxR, r.right);
           minT = Math.min(minT, r.top);  maxB = Math.max(maxB, r.bottom);
         });
-        if (maxR > minL) {
-          w = maxR - minL; h = maxB - minT;
-          const ir = inner.getBoundingClientRect();
-          dx = ((ir.left + ir.right) / 2) - ((minL + maxR) / 2);   // core-center minus extent-center
-        }
+        const ir = inner.getBoundingClientRect();
+        const cx = (ir.left + ir.right) / 2;
+        const maxReach = Math.max(cx - minL, maxR - cx);          // widest half-extent
+        const halfW = window.innerWidth / 2 - 10;                 // 10px breathing room
+        const scaleW = halfW / maxReach;
+        const scaleH = (vh * 0.80) / (maxB - minT);
+        scale = Math.min(scaleW, scaleH, 1);
+      } else {
+        const w = inner.scrollWidth, h = inner.scrollHeight;
+        scale = Math.min((window.innerWidth * 0.94) / w, (vh * 0.92) / h, 1);
       }
-      const fw = isM ? 0.96 : 0.94, fh = isM ? 0.80 : 0.92;
-      const scale = clamp(Math.min((window.innerWidth * fw) / w, (vh * fh) / h, 1), 0.3, 1);
-      inner.style.setProperty('--graph-scale', scale.toFixed(3));
-      inner.style.setProperty('--graph-dx', isM ? (dx * scale).toFixed(1) + 'px' : '0px');
+      inner.style.setProperty('--graph-scale', clamp(scale, 0.3, 1).toFixed(3));
+      inner.style.setProperty('--graph-dx', '0px');
     }
 
     // reveal the whole graph in a quick stagger, once
