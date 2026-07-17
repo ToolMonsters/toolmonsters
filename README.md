@@ -2,7 +2,7 @@
 
 One-page site for Tool Monsters. A single self-contained `index.html` with a scroll-driven hero animation that zooms between two mountains to reveal the product roadmap.
 
-We turn your product into a library of templates & Skills, so your sign-ups become users who actually use your product.
+We build your GTM inside Claude & ChatGPT, so your team finds more leads and closes more sales with AI.
 
 ## Run
 
