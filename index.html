@@ -245,19 +245,35 @@
               font-size: 16.5px; letter-spacing: -.01em; color: #16314d; }
   .person .role { display: block; font-size: 13px; color: #6a7689; margin-top: 2px; }
 
-  /* ---- moment 4: conversation -> pipeline ---- */
-  .funnel { position: absolute; left: 50%; top: 120px; transform: translateX(-50%);
-            display: flex; flex-direction: column; align-items: center; }
-  .dots3 { display: flex; gap: 16px; }
-  .dot-av {
-    width: 36px; height: 36px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 12px;
-    box-shadow: 0 12px 22px -14px rgba(22,49,77,.55);
+  /* ---- moment 3: three little conversations, then pipeline ---- */
+  .funnel { position: absolute; inset: 0; }
+  .chats {
+    position: absolute; left: 50%; top: 118px; transform: translateX(-50%);
+    display: flex; gap: 40px;
   }
-  .dmerge { width: 300px; height: 96px; }
-  .dline { width: 24px; height: 74px; }
-  .dline svg, .dmerge svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .chat {
+    width: 250px; background: #fff; border: 1px solid rgba(22,49,77,.1); border-radius: 18px;
+    padding: 15px 16px 14px;
+    box-shadow: 0 28px 54px -32px rgba(22,49,77,.55);
+  }
+  .chat-head {
+    display: flex; align-items: center; gap: 9px;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 13.5px; color: #16314d;
+    padding-bottom: 10px; border-bottom: 1px solid rgba(22,49,77,.08); margin-bottom: 12px;
+  }
+  .cav {
+    width: 26px; height: 26px; border-radius: 8px; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 10.5px; font-weight: 700;
+  }
+  .bub {
+    width: fit-content; max-width: 86%; padding: 8px 12px;
+    font-size: 12.5px; line-height: 1.4; border-radius: 13px;
+  }
+  .bub--out { margin-left: auto; background: #2f6fe0; color: #fff; border-bottom-right-radius: 4px; }
+  .bub--in  { margin-right: auto; margin-top: 8px; background: #f1f5fa; color: #33425a; border-bottom-left-radius: 4px; }
+  .cmerge { position: absolute; left: 0; top: 292px; width: 100%; height: 140px; overflow: visible; }
+  .pipe-pos { position: absolute; left: 50%; top: 452px; transform: translateX(-50%); }
   .lpath { fill: none; stroke-linecap: round; }
   .lpath--base { stroke: #2f6fe0; stroke-width: 2; }
   .lpath--draw { stroke-dasharray: 100; stroke-dashoffset: 100; }
@@ -577,8 +593,15 @@
     .person b { font-size: 15px; }
 
     .layer--funnel { display: flex; align-items: center; justify-content: center; }
-    .funnel { position: static; transform: none; padding-top: 6vh; }
-    .dmerge { width: 240px; height: 80px; }
+    .funnel { position: static; display: flex; flex-direction: column; align-items: center;
+              padding-top: 11vh; }
+    .chats { position: static; transform: none; flex-direction: column; gap: 10px; }
+    .chat { width: min(88vw, 300px); padding: 11px 13px 11px; border-radius: 15px; }
+    .chat-head { font-size: 12.5px; padding-bottom: 8px; margin-bottom: 9px; }
+    .cav { width: 22px; height: 22px; border-radius: 7px; font-size: 9.5px; }
+    .bub { font-size: 11.5px; padding: 7px 11px; }
+    .cmerge { display: none; }
+    .pipe-pos { position: static; transform: none; margin-top: 20px; }
     .dbox--pipeline { font-size: 20px; padding: 17px 36px; }
 
     /* swap the wide CTA for a round back-to-top arrow */
@@ -717,28 +740,34 @@
             </div>
           </div>
 
-          <!-- moment 4: conversation -> pipeline -->
+          <!-- moment 3: three little conversations converge into pipeline -->
           <div class="layer layer--funnel sd" id="layer-funnel">
             <div class="funnel">
-              <div class="dots3">
-                <span class="dot-av sd" data-f="av0" style="background:linear-gradient(135deg,#79a8ff,#b9aaff)">SC</span>
-                <span class="dot-av sd" data-f="av1" style="background:linear-gradient(135deg,#4fc3a1,#2f9e8f)">JM</span>
-                <span class="dot-av sd" data-f="av2" style="background:linear-gradient(135deg,#ff9d76,#f2709c)">AM</span>
+              <div class="chats">
+                <div class="chat sd" data-ch="0">
+                  <div class="chat-head"><span class="cav" style="background:linear-gradient(135deg,#79a8ff,#b9aaff)">SC</span>Sarah Chen</div>
+                  <div class="bub bub--out sd">Saw Acme is scaling AI.</div>
+                  <div class="bub bub--in sd">Good timing. Let&rsquo;s talk.</div>
+                </div>
+                <div class="chat sd" data-ch="1">
+                  <div class="chat-head"><span class="cav" style="background:linear-gradient(135deg,#4fc3a1,#2f9e8f)">JM</span>James Miller</div>
+                  <div class="bub bub--out sd">Time to reconnect?</div>
+                  <div class="bub bub--in sd">Yes. Book me in.</div>
+                </div>
+                <div class="chat sd" data-ch="2">
+                  <div class="chat-head"><span class="cav" style="background:linear-gradient(135deg,#ff9d76,#f2709c)">AM</span>Alex Morgan</div>
+                  <div class="bub bub--out sd">Saw you&rsquo;re hiring ops.</div>
+                  <div class="bub bub--in sd">Let&rsquo;s do a call.</div>
+                </div>
               </div>
-              <div class="dmerge">
-                <svg viewBox="0 0 300 96">
-                  <path class="lpath lpath--base lpath--draw fm" pathLength="100" d="M98 0 C98 56, 150 40, 150 96" />
-                  <path class="lpath lpath--base lpath--draw fm" pathLength="100" d="M150 0 C150 48, 150 48, 150 96" />
-                  <path class="lpath lpath--base lpath--draw fm" pathLength="100" d="M202 0 C202 56, 150 40, 150 96" />
-                </svg>
+              <svg class="cmerge" viewBox="0 0 980 140" preserveAspectRatio="none" aria-hidden="true">
+                <path class="lpath lpath--base lpath--draw fm" pathLength="100" d="M200 0 C200 84, 490 60, 490 140" />
+                <path class="lpath lpath--base lpath--draw fm" pathLength="100" d="M490 0 V140" />
+                <path class="lpath lpath--base lpath--draw fm" pathLength="100" d="M780 0 C780 84, 490 60, 490 140" />
+              </svg>
+              <div class="pipe-pos">
+                <div class="dbox dbox--final dbox--pipeline sd" id="pipe-box">Pipeline</div>
               </div>
-              <div class="dbox sd" id="conv-box">Sales conversation</div>
-              <div class="dline">
-                <svg viewBox="0 0 24 74" preserveAspectRatio="none">
-                  <path class="lpath lpath--base lpath--draw" id="fline" pathLength="100" d="M12 0 V74" vector-effect="non-scaling-stroke" />
-                </svg>
-              </div>
-              <div class="dbox dbox--final dbox--pipeline sd" id="pipe-box">Pipeline</div>
             </div>
           </div>
 
@@ -959,10 +988,9 @@
     const mapTrack = document.getElementById('map-track');
     const personCards = [...document.querySelectorAll('[data-p]')];
     const layerFunnel = document.getElementById('layer-funnel');
-    const funnelAvs = [...document.querySelectorAll('[data-f]')];
+    const chatCards = [...document.querySelectorAll('[data-ch]')];
+    const chatBubs = chatCards.map(c => [...c.querySelectorAll('.bub')]);
     const funnelMerges = [...document.querySelectorAll('.fm')];
-    const convBox = document.getElementById('conv-box');
-    const fline = document.getElementById('fline');
     const pipeBox = document.getElementById('pipe-box');
 
     function fade(el, o, y) {
@@ -1035,15 +1063,16 @@
       fade(layerMap, 1 - sub(p3, 0, 0.22));
       layerMap.style.visibility = p3 >= 0.22 ? 'hidden' : 'visible';
 
-      fade(layerFunnel, sub(p3, 0.14, 0.32));
-      layerFunnel.style.visibility = p3 < 0.14 ? 'hidden' : 'visible';
-      funnelAvs.forEach((el, i) => fade(el, sub(p3, 0.14 + i * 0.05, 0.28 + i * 0.05), 10));
+      fade(layerFunnel, sub(p3, 0.12, 0.28));
+      layerFunnel.style.visibility = p3 < 0.12 ? 'hidden' : 'visible';
+      /* the chat windows open one by one, then the messages land like real replies */
+      chatCards.forEach((el, i) => fade(el, sub(p3, 0.12 + i * 0.06, 0.26 + i * 0.06), 16));
+      chatBubs.forEach((arr, i) => arr.forEach((b, j) =>
+        fade(b, sub(p3, 0.3 + i * 0.05 + j * 0.14, 0.4 + i * 0.05 + j * 0.14), 8)));
       funnelMerges.forEach(m => {
-        m.style.strokeDashoffset = (100 * (1 - sub(p3, 0.26, 0.48))).toFixed(1);
+        m.style.strokeDashoffset = (100 * (1 - sub(p3, 0.58, 0.74))).toFixed(1);
       });
-      fade(convBox, sub(p3, 0.44, 0.58), 12);
-      fline.style.strokeDashoffset = (100 * (1 - sub(p3, 0.58, 0.72))).toFixed(1);
-      const pipe = sub(p3, 0.72, 0.88);
+      const pipe = sub(p3, 0.76, 0.9);
       pipeBox.style.opacity = pipe.toFixed(3);
       pipeBox.style.transform = 'scale(' + (0.9 + pipe * 0.1).toFixed(3) + ')';
       pipeBox.classList.toggle('lit', pipe >= 0.99);
