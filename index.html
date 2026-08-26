@@ -192,8 +192,10 @@
   .sico--fit img { object-fit: contain; }
   .sico svg { display: block; }
   .sico--line { color: #2f6fe0; background: #f0f6ff; border-color: rgba(47,111,224,.16); }
-  /* everything in the map slides a touch left as the buyers appear */
-  .map-track { position: absolute; inset: 0; will-change: transform; }
+  /* one wide diagram; the camera pans left as the story moves right:
+     sources -> buyers -> conversations -> pipeline */
+  .map-track { position: absolute; left: 0; top: 0; width: 2140px; height: 100%;
+               will-change: transform; }
   .schip {
     position: absolute; width: 200px; height: 50px;
     display: flex; align-items: center; gap: 11px; padding: 0 17px;
@@ -228,7 +230,7 @@
 
   /* ---- the buyers: minimal person cards, a face and a name ---- */
   .person {
-    position: absolute; left: 650px; width: 260px;
+    position: absolute; left: 620px; width: 260px;
     display: flex; align-items: center; gap: 15px; padding: 17px 20px;
     background: #fff; border: 1px solid rgba(22,49,77,.1); border-radius: 18px;
     box-shadow: 0 28px 54px -32px rgba(22,49,77,.55);
@@ -245,17 +247,16 @@
               font-size: 16.5px; letter-spacing: -.01em; color: #16314d; }
   .person .role { display: block; font-size: 13px; color: #6a7689; margin-top: 2px; }
 
-  /* ---- moment 3: three little conversations, then pipeline ---- */
-  .funnel { position: absolute; inset: 0; }
-  .chats {
-    position: absolute; left: 50%; top: 118px; transform: translateX(-50%);
-    display: flex; gap: 40px;
-  }
+  /* ---- further right: three little conversations, then pipeline ---- */
   .chat {
-    width: 250px; background: #fff; border: 1px solid rgba(22,49,77,.1); border-radius: 18px;
+    position: absolute; left: 1180px; width: 250px;
+    background: #fff; border: 1px solid rgba(22,49,77,.1); border-radius: 18px;
     padding: 15px 16px 14px;
     box-shadow: 0 28px 54px -32px rgba(22,49,77,.55);
   }
+  .chat--1 { top: 78px; }
+  .chat--2 { top: 242px; }
+  .chat--3 { top: 406px; }
   .chat-head {
     display: flex; align-items: center; gap: 9px;
     font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 13.5px; color: #16314d;
@@ -272,11 +273,7 @@
   }
   .bub--out { margin-left: auto; background: #2f6fe0; color: #fff; border-bottom-right-radius: 4px; }
   .bub--in  { margin-right: auto; margin-top: 8px; background: #f1f5fa; color: #33425a; border-bottom-left-radius: 4px; }
-  .cmerge { position: absolute; left: 0; top: 292px; width: 100%; height: 140px; overflow: visible; }
-  .pipe-pos { position: absolute; left: 50%; top: 452px; transform: translateX(-50%); }
-  .lpath { fill: none; stroke-linecap: round; }
-  .lpath--base { stroke: #2f6fe0; stroke-width: 2; }
-  .lpath--draw { stroke-dasharray: 100; stroke-dashoffset: 100; }
+  .pipe-pos { position: absolute; left: 1730px; top: 282px; }
   .dbox--pipeline { font-size: 24px; padding: 20px 44px; border-radius: 16px;
     position: relative; overflow: hidden; }
   /* soft breathing glow + one shine sweep once the pipeline lands */
@@ -578,10 +575,11 @@
     .brand img { width: 32px; height: 32px; border-radius: 10px; }
     .brand span { display: none; }
 
-    /* the map flows vertically: chips on top, buyers below, no wires */
+    /* the flow goes vertical on phones: chips + buyers first, then the
+       conversations + pipeline take over the same screen */
     .layer--map { display: flex; align-items: center; justify-content: center; }
-    .map-track { position: static; display: flex; flex-direction: column; align-items: center;
-                 padding-top: 13vh; }
+    .map-track { position: static; width: auto; height: auto; }
+    .src-stage { display: flex; flex-direction: column; align-items: center; padding-top: 13vh; }
     .chips6 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(90vw, 360px); }
     .schip { position: static; width: auto; height: 42px; padding: 0 13px; gap: 8px;
              font-size: 12.5px; border-radius: 12px; }
@@ -592,16 +590,14 @@
     .person .avatar { width: 38px; height: 38px; border-radius: 11px; }
     .person b { font-size: 15px; }
 
-    .layer--funnel { display: flex; align-items: center; justify-content: center; }
-    .funnel { position: static; display: flex; flex-direction: column; align-items: center;
-              padding-top: 11vh; }
-    .chats { position: static; transform: none; flex-direction: column; gap: 10px; }
-    .chat { width: min(88vw, 300px); padding: 11px 13px 11px; border-radius: 15px; }
+    .conv-stage { position: absolute; inset: 0; display: flex; flex-direction: column;
+                  align-items: center; justify-content: center; padding-top: 9vh; }
+    .chats { display: flex; flex-direction: column; gap: 10px; }
+    .chat { position: static; width: min(88vw, 300px); padding: 11px 13px 11px; border-radius: 15px; }
     .chat-head { font-size: 12.5px; padding-bottom: 8px; margin-bottom: 9px; }
     .cav { width: 22px; height: 22px; border-radius: 7px; font-size: 9.5px; }
     .bub { font-size: 11.5px; padding: 7px 11px; }
-    .cmerge { display: none; }
-    .pipe-pos { position: static; transform: none; margin-top: 20px; }
+    .pipe-pos { position: static; margin-top: 20px; }
     .dbox--pipeline { font-size: 20px; padding: 17px 36px; }
 
     /* swap the wide CTA for a round back-to-top arrow */
@@ -612,10 +608,10 @@
     .examples { padding-top: 64px; }
   }
 
-  /* desktop keeps the absolute layout */
+  /* desktop keeps the absolute one-wide-diagram layout */
   @media (min-width: 641px) {
-    .chips6, .people3 { display: contents; }
-    .layer--map, .layer--funnel { display: block; }
+    .src-stage, .chips6, .people3, .conv-stage, .chats { display: contents; }
+    .layer--map { display: block; }
   }
 
   @media (hover: none) {
@@ -697,6 +693,7 @@
       <p class="phrase phrase--sub" id="ph1sub">You already have the opportunities.</p>
       <p class="phrase" id="ph2">We find the buyers.</p>
       <p class="phrase" id="ph3">Then we start conversations.</p>
+      <p class="phrase" id="ph4">Pipeline.</p>
 
       <!-- the story: one evolving diagram behind the mountains -->
       <div class="story">
@@ -705,15 +702,22 @@
           <!-- moments 1 + 2: six sources, then the buyers they hide -->
           <div class="layer layer--map" id="layer-map">
             <div class="map-track" id="map-track">
-              <svg class="wires" viewBox="0 0 980 620" preserveAspectRatio="none" aria-hidden="true">
-                <path class="wire" id="w1" pathLength="100" d="M350 125 C470 125, 530 182, 650 182" />
-                <path class="wire" id="w2" pathLength="100" d="M350 195 C470 195, 530 182, 650 182" />
-                <path class="wire" id="w3" pathLength="100" d="M350 265 C470 265, 530 310, 650 310" />
-                <path class="wire" id="w4" pathLength="100" d="M350 335 C470 335, 530 310, 650 310" />
-                <path class="wire" id="w5" pathLength="100" d="M350 405 C470 405, 530 438, 650 438" />
-                <path class="wire" id="w6" pathLength="100" d="M350 475 C470 475, 530 438, 650 438" />
+              <svg class="wires" viewBox="0 0 2140 620" preserveAspectRatio="none" aria-hidden="true">
+                <path class="wire wa" pathLength="100" d="M350 125 C470 125, 500 182, 620 182" />
+                <path class="wire wa" pathLength="100" d="M350 195 C470 195, 500 182, 620 182" />
+                <path class="wire wa" pathLength="100" d="M350 265 C470 265, 500 310, 620 310" />
+                <path class="wire wa" pathLength="100" d="M350 335 C470 335, 500 310, 620 310" />
+                <path class="wire wa" pathLength="100" d="M350 405 C470 405, 500 438, 620 438" />
+                <path class="wire wa" pathLength="100" d="M350 475 C470 475, 500 438, 620 438" />
+                <path class="wire wb" pathLength="100" d="M880 182 C1000 182, 1060 144, 1180 144" />
+                <path class="wire wb" pathLength="100" d="M880 310 C1000 310, 1060 308, 1180 308" />
+                <path class="wire wb" pathLength="100" d="M880 438 C1000 438, 1060 472, 1180 472" />
+                <path class="wire wc" pathLength="100" d="M1430 144 C1550 144, 1610 296, 1730 296" />
+                <path class="wire wc" pathLength="100" d="M1430 308 C1550 308, 1610 310, 1730 310" />
+                <path class="wire wc" pathLength="100" d="M1430 472 C1550 472, 1610 324, 1730 324" />
               </svg>
 
+              <div class="src-stage" id="src-stage">
               <div class="chips6">
                 <div class="schip schip--1 sd" data-c="0"><span class="sico"><img src="logos/sq-linkedin.png" alt="" /></span>LinkedIn</div>
                 <div class="schip schip--2 sd" data-c="1"><span class="sico"><svg viewBox="0 0 24 24" width="14" height="14"><path fill="#FF6719" d="M2.5 3.5h19v2.7h-19zM2.5 8.3h19V11h-19zM2.5 13.1h19v7.9l-9.5-4.4-9.5 4.4z"/></svg></span>Newsletter</div>
@@ -737,36 +741,29 @@
                   <div><b>Alex Morgan</b><span class="role">VP Operations &middot; Vertex</span></div>
                 </div>
               </div>
-            </div>
-          </div>
+              </div>
 
-          <!-- moment 3: three little conversations converge into pipeline -->
-          <div class="layer layer--funnel sd" id="layer-funnel">
-            <div class="funnel">
+              <div class="conv-stage" id="conv-stage">
               <div class="chats">
-                <div class="chat sd" data-ch="0">
+                <div class="chat chat--1 sd" data-ch="0">
                   <div class="chat-head"><span class="cav" style="background:linear-gradient(135deg,#79a8ff,#b9aaff)">SC</span>Sarah Chen</div>
                   <div class="bub bub--out sd">Saw Acme is scaling AI.</div>
                   <div class="bub bub--in sd">Good timing. Let&rsquo;s talk.</div>
                 </div>
-                <div class="chat sd" data-ch="1">
+                <div class="chat chat--2 sd" data-ch="1">
                   <div class="chat-head"><span class="cav" style="background:linear-gradient(135deg,#4fc3a1,#2f9e8f)">JM</span>James Miller</div>
                   <div class="bub bub--out sd">Time to reconnect?</div>
                   <div class="bub bub--in sd">Yes. Book me in.</div>
                 </div>
-                <div class="chat sd" data-ch="2">
+                <div class="chat chat--3 sd" data-ch="2">
                   <div class="chat-head"><span class="cav" style="background:linear-gradient(135deg,#ff9d76,#f2709c)">AM</span>Alex Morgan</div>
                   <div class="bub bub--out sd">Saw you&rsquo;re hiring ops.</div>
                   <div class="bub bub--in sd">Let&rsquo;s do a call.</div>
                 </div>
               </div>
-              <svg class="cmerge" viewBox="0 0 980 140" preserveAspectRatio="none" aria-hidden="true">
-                <path class="lpath lpath--base lpath--draw fm" pathLength="100" d="M200 0 C200 84, 490 60, 490 140" />
-                <path class="lpath lpath--base lpath--draw fm" pathLength="100" d="M490 0 V140" />
-                <path class="lpath lpath--base lpath--draw fm" pathLength="100" d="M780 0 C780 84, 490 60, 490 140" />
-              </svg>
               <div class="pipe-pos">
                 <div class="dbox dbox--final dbox--pipeline sd" id="pipe-box">Pipeline</div>
+              </div>
               </div>
             </div>
           </div>
@@ -982,15 +979,17 @@
     const ph1sub = document.getElementById('ph1sub');
     const ph2 = document.getElementById('ph2');
     const ph3 = document.getElementById('ph3');
+    const ph4 = document.getElementById('ph4');
     const chips = [...document.querySelectorAll('[data-c]')];
-    const wires = [1,2,3,4,5,6].map(i => document.getElementById('w' + i));
-    const layerMap = document.getElementById('layer-map');
+    const wiresA = [...document.querySelectorAll('.wa')];
+    const wiresB = [...document.querySelectorAll('.wb')];
+    const wiresC = [...document.querySelectorAll('.wc')];
     const mapTrack = document.getElementById('map-track');
+    const srcStage = document.getElementById('src-stage');
+    const convStage = document.getElementById('conv-stage');
     const personCards = [...document.querySelectorAll('[data-p]')];
-    const layerFunnel = document.getElementById('layer-funnel');
     const chatCards = [...document.querySelectorAll('[data-ch]')];
     const chatBubs = chatCards.map(c => [...c.querySelectorAll('.bub')]);
-    const funnelMerges = [...document.querySelectorAll('.fm')];
     const pipeBox = document.getElementById('pipe-box');
 
     function fade(el, o, y) {
@@ -999,16 +998,17 @@
     }
 
     /* ---------- scene lengths (recomputed on resize) ----------
-       hero zoom, then three story moments, then a short hold before unpinning. */
-    let heroScroll = 0, L1 = 0, L2 = 0, L3 = 0, holdScroll = 0, totalScroll = 0;
+       hero zoom, then four beats of one left-to-right flow, then a short hold. */
+    let heroScroll = 0, L1 = 0, L2 = 0, L3 = 0, L4 = 0, holdScroll = 0, totalScroll = 0;
     function measure() {
       const vh = window.innerHeight;
       heroScroll = Math.round(vh * 0.9);
       L1 = Math.round(vh * 0.85);
-      L2 = Math.round(vh * 1.0);
-      L3 = Math.round(vh * 1.05);
+      L2 = Math.round(vh * 0.95);
+      L3 = Math.round(vh * 0.95);
+      L4 = Math.round(vh * 1.0);
       holdScroll = Math.round(vh * 0.4);
-      totalScroll = heroScroll + L1 + L2 + L3 + holdScroll;
+      totalScroll = heroScroll + L1 + L2 + L3 + L4 + holdScroll;
       intro.style.height = (totalScroll + vh) + 'px';
       // scale the story so the whole diagram always fits one screen
       if (window.innerWidth > 640) {
@@ -1042,47 +1042,60 @@
       const p1 = clamp(t / L1, 0, 1);
       const p2 = clamp((t - L1) / L2, 0, 1);
       const p3 = clamp((t - L1 - L2) / L3, 0, 1);
+      const p4 = clamp((t - L1 - L2 - L3) / L4, 0, 1);
+      const ease = k => 1 - Math.pow(1 - k, 3);
 
-      /* moment 1: the six sources pop in, one after another */
+      /* beat 1: the six sources pop in, one after another */
       chips.forEach((el, i) => fade(el, sub(p1, 0.04 + i * 0.11, 0.26 + i * 0.11), 16));
 
-      /* moment 2: the map slides left, wires fan out, the buyers appear */
+      /* one continuous flow: each beat pans the camera further right */
       if (window.innerWidth > 640) {
-        const shift = sub(p2, 0, 0.4);
-        const eased = 1 - Math.pow(1 - shift, 3);
-        mapTrack.style.transform = 'translateX(' + (240 * (1 - eased)).toFixed(1) + 'px)';
+        const tx = 270
+          - 270 * ease(sub(p2, 0, 0.4))     // sources -> buyers
+          - 540 * ease(sub(p3, 0, 0.42))    // buyers -> conversations
+          - 610 * ease(sub(p4, 0, 0.45));   // conversations -> pipeline
+        mapTrack.style.transform = 'translateX(' + tx.toFixed(1) + 'px)';
+        srcStage.style.opacity = ''; srcStage.style.visibility = '';
+        convStage.style.opacity = ''; convStage.style.visibility = '';
       } else {
+        /* phones: no pan, the conversations take over the same screen */
         mapTrack.style.transform = '';
+        srcStage.style.opacity = (1 - sub(p3, 0, 0.25)).toFixed(3);
+        srcStage.style.visibility = p3 >= 0.25 ? 'hidden' : 'visible';
+        convStage.style.opacity = sub(p3, 0.15, 0.35).toFixed(3);
+        convStage.style.visibility = p3 < 0.15 ? 'hidden' : 'visible';
       }
-      wires.forEach((w, i) => {
+
+      /* beat 2: wires fan out of the sources, the buyers appear */
+      wiresA.forEach((w, i) => {
         w.style.strokeDashoffset = (100 * (1 - sub(p2, 0.12 + i * 0.05, 0.48 + i * 0.05))).toFixed(1);
       });
       personCards.forEach((el, i) => fade(el, sub(p2, 0.45 + i * 0.12, 0.68 + i * 0.12), 20));
 
-      /* moment 3: everything converges into one outcome */
-      fade(layerMap, 1 - sub(p3, 0, 0.22));
-      layerMap.style.visibility = p3 >= 0.22 ? 'hidden' : 'visible';
-
-      fade(layerFunnel, sub(p3, 0.12, 0.28));
-      layerFunnel.style.visibility = p3 < 0.12 ? 'hidden' : 'visible';
-      /* the chat windows open one by one, then the messages land like real replies */
-      chatCards.forEach((el, i) => fade(el, sub(p3, 0.12 + i * 0.06, 0.26 + i * 0.06), 16));
-      chatBubs.forEach((arr, i) => arr.forEach((b, j) =>
-        fade(b, sub(p3, 0.3 + i * 0.05 + j * 0.14, 0.4 + i * 0.05 + j * 0.14), 8)));
-      funnelMerges.forEach(m => {
-        m.style.strokeDashoffset = (100 * (1 - sub(p3, 0.58, 0.74))).toFixed(1);
+      /* beat 3: wires continue right, the chats open, messages land like real replies */
+      wiresB.forEach((w, i) => {
+        w.style.strokeDashoffset = (100 * (1 - sub(p3, 0.16 + i * 0.06, 0.46 + i * 0.06))).toFixed(1);
       });
-      const pipe = sub(p3, 0.76, 0.9);
+      chatCards.forEach((el, i) => fade(el, sub(p3, 0.36 + i * 0.07, 0.52 + i * 0.07), 16));
+      chatBubs.forEach((arr, i) => arr.forEach((b, j) =>
+        fade(b, sub(p3, 0.52 + i * 0.05 + j * 0.15, 0.62 + i * 0.05 + j * 0.15), 8)));
+
+      /* beat 4: the three conversations wire into one pipeline */
+      wiresC.forEach((w, i) => {
+        w.style.strokeDashoffset = (100 * (1 - sub(p4, 0.2 + i * 0.06, 0.5 + i * 0.06))).toFixed(1);
+      });
+      const pipe = sub(p4, 0.52, 0.7);
       pipeBox.style.opacity = pipe.toFixed(3);
       pipeBox.style.transform = 'scale(' + (0.9 + pipe * 0.1).toFixed(3) + ')';
       pipeBox.classList.toggle('lit', pipe >= 0.99);
 
-      /* the phrases, crossfading in sync with the diagram */
+      /* the phrases, crossfading in sync with the flow */
       const storyO = clamp((heroP - 0.55) / 0.35, 0, 1);
       ph1.style.opacity = (Math.min(sub(p1, 0.02, 0.16), 1 - sub(p2, 0, 0.2)) * storyO).toFixed(3);
       ph1sub.style.opacity = (Math.min(sub(p1, 0.3, 0.5), 1 - sub(p2, 0, 0.16)) * storyO).toFixed(3);
       ph2.style.opacity = (Math.min(sub(p2, 0.24, 0.42), 1 - sub(p3, 0, 0.18)) * storyO).toFixed(3);
-      ph3.style.opacity = (sub(p3, 0.14, 0.32) * storyO).toFixed(3);
+      ph3.style.opacity = (Math.min(sub(p3, 0.3, 0.48), 1 - sub(p4, 0, 0.18)) * storyO).toFixed(3);
+      ph4.style.opacity = (sub(p4, 0.4, 0.6) * storyO).toFixed(3);
     }
 
     function loop() {
