@@ -171,26 +171,18 @@
     opacity: 0; will-change: opacity; pointer-events: none;
     text-wrap: balance;
   }
+  .phrase--sub {
+    top: calc(7% + clamp(38px, 5vw, 58px));
+    font-family: "Inter", sans-serif; font-weight: 400;
+    font-size: clamp(14px, 1.6vw, 17px); letter-spacing: 0; color: #2c4a66;
+  }
 
   /* elements the scroll driver fades in / out */
   .sd { opacity: 0; will-change: opacity, transform; }
 
-  /* ---- source group cards (GPC-flow card language, Tool Monsters colors) ---- */
-  .src {
-    position: absolute; width: 212px;
-    background: #fff; border: 1px solid rgba(22,49,77,.1); border-radius: 16px;
-    padding: 16px 20px 15px;
-    box-shadow: 0 22px 44px -30px rgba(22,49,77,.5);
-  }
-  .src strong {
-    display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
-    font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #2f6fe0;
-    margin-bottom: 11px;
-  }
-  .srow { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: #33425a; }
-  .srow + .srow { margin-top: 8px; }
+  /* ---- the six sources: one small chip each, nothing more ---- */
   .sico {
-    width: 21px; height: 21px; border-radius: 6px; flex: 0 0 auto; overflow: hidden;
+    width: 24px; height: 24px; border-radius: 7px; flex: 0 0 auto; overflow: hidden;
     display: flex; align-items: center; justify-content: center;
     box-shadow: 0 5px 12px -7px rgba(22,49,77,.55); border: 1px solid rgba(22,49,77,.07);
     background: #fff;
@@ -200,17 +192,27 @@
   .sico--fit img { object-fit: contain; }
   .sico svg { display: block; }
   .sico--line { color: #2f6fe0; background: #f0f6ff; border-color: rgba(47,111,224,.16); }
-  .src--audience      { left: 40px;  top: 90px; }
-  .src--network       { left: 728px; top: 90px; }
-  .src--relationships { left: 40px;  top: 402px; }
-  .src--signals       { left: 728px; top: 402px; }
+  /* everything in the map slides a touch left as the buyers appear */
+  .map-track { position: absolute; inset: 0; will-change: transform; }
+  .schip {
+    position: absolute; width: 200px; height: 50px;
+    display: flex; align-items: center; gap: 11px; padding: 0 17px;
+    background: #fff; border: 1px solid rgba(22,49,77,.1); border-radius: 14px;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 15px;
+    letter-spacing: -.01em; color: #16314d;
+    box-shadow: 0 18px 36px -26px rgba(22,49,77,.55);
+  }
+  .schip--1 { left: 150px; top: 100px; }
+  .schip--2 { left: 150px; top: 170px; }
+  .schip--3 { left: 150px; top: 240px; }
+  .schip--4 { left: 150px; top: 310px; }
+  .schip--5 { left: 150px; top: 380px; }
+  .schip--6 { left: 150px; top: 450px; }
 
   /* thin connectors from the groups toward the center */
   .wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-  .wire { fill: none; stroke: #2f6fe0; stroke-width: 2; stroke-linecap: round;
+  .wire { fill: none; stroke: #2f6fe0; stroke-width: 1.6; stroke-linecap: round;
           stroke-dasharray: 100; stroke-dashoffset: 100; }
-  /* once the wires are drawn, glowing dots keep flowing into the core */
-  #wire-dots { opacity: 0; transition: opacity .45s ease; }
 
   .dbox {
     position: relative; z-index: 1;
@@ -220,62 +222,28 @@
     letter-spacing: -.02em; color: #16314d;
     box-shadow: 0 22px 44px -30px rgba(22,49,77,.5);
   }
-  .dbox--product {
-    display: inline-flex; align-items: center; gap: 9px;
-    background: linear-gradient(135deg, #2f3358 0%, #1c1e36 100%);
-    border: none; color: #fff;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.16),
-                inset 0 0 0 1px rgba(255,255,255,.05),
-                0 26px 48px -22px rgba(20,22,45,.8),
-                0 5px 14px -5px rgba(20,22,45,.55);
-  }
-  .dbox--product svg { flex: 0 0 auto; color: #a9b4ff; }
-  .dbox--product img {
-    width: 27px; height: 27px; border-radius: 8px; flex: 0 0 auto; display: block;
-    box-shadow: 0 0 0 1.5px rgba(255,255,255,.28), 0 4px 10px -4px rgba(0,0,0,.5);
-  }
   /* final box, the one business outcome */
   .dbox--final { background: #2f6fe0; border: none; color: #fff;
     box-shadow: 0 24px 44px -22px rgba(47,111,224,.6); }
 
-  .tm-node { position: absolute; left: 50%; top: 285px; transform: translateX(-50%); }
-
-  /* the three operations under the core */
-  .ops { position: absolute; left: 50%; top: 362px; transform: translateX(-50%);
-         display: flex; gap: 10px; }
-  .op {
-    background: #fff; border: 1px solid rgba(22,49,77,.1); border-radius: 999px;
-    padding: 9px 18px;
-    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
-    font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #16314d;
-    box-shadow: 0 14px 26px -18px rgba(22,49,77,.5);
-  }
-
-  /* ---- moment 3: real prospects ---- */
-  .people { position: absolute; left: 50%; top: 205px; transform: translateX(-50%);
-            display: flex; gap: 26px; }
+  /* ---- the buyers: minimal person cards, a face and a name ---- */
   .person {
-    width: 250px; background: #fff; border: 1px solid rgba(22,49,77,.1); border-radius: 18px;
-    padding: 22px 22px 19px;
+    position: absolute; left: 650px; width: 260px;
+    display: flex; align-items: center; gap: 15px; padding: 17px 20px;
+    background: #fff; border: 1px solid rgba(22,49,77,.1); border-radius: 18px;
     box-shadow: 0 28px 54px -32px rgba(22,49,77,.55);
   }
+  .person--1 { top: 140px; }
+  .person--2 { top: 268px; }
+  .person--3 { top: 396px; }
   .person .avatar {
-    width: 46px; height: 46px; border-radius: 14px; margin-bottom: 13px;
+    width: 44px; height: 44px; border-radius: 13px; flex: 0 0 auto;
     display: flex; align-items: center; justify-content: center;
     color: #fff; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 15px;
   }
   .person b { display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
               font-size: 16.5px; letter-spacing: -.01em; color: #16314d; }
   .person .role { display: block; font-size: 13px; color: #6a7689; margin-top: 2px; }
-  .fit {
-    display: inline-block; margin-top: 12px;
-    background: #e6f6ee; border: 1px solid #c7e7d8; border-radius: 999px;
-    padding: 4px 11px; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
-    font-size: 11px; letter-spacing: .1em; color: #106b46;
-  }
-  .why { display: flex; align-items: center; gap: 7px; margin-top: 12px; padding-top: 12px;
-         border-top: 1px solid rgba(22,49,77,.08); font-size: 13px; color: #33425a; }
-  .why svg { flex: 0 0 auto; color: #2f6fe0; }
 
   /* ---- moment 4: conversation -> pipeline ---- */
   .funnel { position: absolute; left: 50%; top: 120px; transform: translateX(-50%);
@@ -293,12 +261,6 @@
   .lpath { fill: none; stroke-linecap: round; }
   .lpath--base { stroke: #2f6fe0; stroke-width: 2; }
   .lpath--draw { stroke-dasharray: 100; stroke-dashoffset: 100; }
-  .crm-note {
-    margin-top: 10px; margin-bottom: 2px;
-    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
-    font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase;
-    color: #16314d; opacity: .55;
-  }
   .dbox--pipeline { font-size: 24px; padding: 20px 44px; border-radius: 16px;
     position: relative; overflow: hidden; }
   /* soft breathing glow + one shine sweep once the pipeline lands */
@@ -347,22 +309,6 @@
     96%  { stroke-dashoffset: 8;   opacity: 1; }
     100% { stroke-dashoffset: 0.4; opacity: 0; }
   }
-  /* hand-drawn annotation (same Caveat language as before) */
-  .anno {
-    position: absolute; display: flex; align-items: center; gap: 2px; width: max-content;
-    pointer-events: none;
-  }
-  .anno-arrow { width: 92px; height: 42px; flex: 0 0 auto; overflow: visible; }
-  .anno-arrow path {
-    fill: none; stroke: #16314d; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round;
-  }
-  .anno-text {
-    font-family: "Caveat", cursive; font-weight: 700; font-size: 25px; line-height: 1.12;
-    color: #16314d; max-width: 190px;
-  }
-  .people-anno { left: 30px; top: 470px; }
-  .people-anno .anno-arrow { transform: scaleY(-1); }
-
   /* corner CTA on the story */
   .corner-cta {
     position: absolute; bottom: 30px; right: 30px; z-index: 6;
@@ -406,13 +352,15 @@
     font-size: clamp(28px, 4vw, 40px); letter-spacing: -.02em; color: #16314d; margin: 0 auto 52px; max-width: 22ch;
   }
 
-  /* ---- real examples: four mini-workflows ---- */
-  .examples { position: relative; z-index: 5; padding: 110px 24px 40px; background: transparent; }
-  .ex-grid { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  @media (max-width: 880px) { .ex-grid { grid-template-columns: 1fr; max-width: 520px; } }
+  /* ---- four tiny workflow diagrams, right after the story ---- */
+  .examples { position: relative; z-index: 5; padding: 80px 24px 40px; background: transparent; }
+  .ex-grid { max-width: 1060px; margin: 0 auto; display: grid;
+    grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 1000px) { .ex-grid { grid-template-columns: repeat(2, 1fr); max-width: 560px; } }
+  @media (max-width: 560px) { .ex-grid { grid-template-columns: 1fr; max-width: 320px; } }
   .ex-card {
-    background: #fff; border: 1px solid rgba(22,49,77,.06); border-radius: 24px;
-    padding: 30px 30px 26px; display: flex; flex-direction: column; align-items: center;
+    background: #fff; border: 1px solid rgba(22,49,77,.06); border-radius: 22px;
+    padding: 22px 20px 20px; display: flex; flex-direction: column; align-items: center;
     box-shadow: 0 44px 80px -44px rgba(22,49,77,.55);
     transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
   }
@@ -421,17 +369,17 @@
     box-shadow: 0 60px 100px -48px rgba(22,49,77,.65);
   }
   .ex-head {
-    align-self: flex-start; display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px;
+    align-self: flex-start; display: flex; align-items: baseline; gap: 8px; margin-bottom: 18px;
     font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
   }
-  .ex-head .num { font-size: 13px; color: #2f6fe0; opacity: .7; }
-  .ex-head .name { font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: #16314d; }
+  .ex-head .num { font-size: 12px; color: #2f6fe0; opacity: .7; }
+  .ex-head .name { font-size: 12.5px; letter-spacing: .13em; text-transform: uppercase; color: #16314d; }
 
   /* ---- GPC-flow diagram language, one mini system per card ----
      logo tiles as sources, colored lanes with arrow tips, white step cards
      with a title + a quiet sub-line, dark terminal node. Lines draw, nodes
      rise, all staggered via --d, exactly like the reference. */
-  .gflow { width: 100%; max-width: 430px; height: auto; display: block; overflow: visible; margin: 0 auto; }
+  .gflow { width: 100%; max-width: 240px; height: auto; display: block; overflow: visible; margin: 0 auto; }
   .gcard { fill: #fff; stroke: rgba(22,49,77,.12);
     filter: drop-shadow(0 2px 3px rgba(11,18,32,.05)) drop-shadow(0 12px 20px rgba(11,18,32,.08)); }
   .gtile { fill: #fff;
@@ -445,19 +393,10 @@
   .ln-o { stroke: #FF6719; }        /* the Substack lane */
   .ln-b { stroke: #0A66C2; }        /* the LinkedIn lane */
   .ln-n { stroke: #93a8c0; }        /* neutral lane */
-  .gt-title { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 14.5px;
+  .gt-title { font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 13.5px;
     letter-spacing: -.01em; fill: #16314d; text-anchor: middle; }
-  .gt-sub { font-family: "Inter", sans-serif; font-size: 11.5px; fill: #6a7689; text-anchor: middle; }
-  .gt-badge { font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 9.5px;
-    letter-spacing: .12em; fill: #fff; text-anchor: middle; }
-  .gbadge { fill: #16191F; }
-  .gt-term { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 16px;
+  .gt-term { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 14px;
     letter-spacing: -.01em; fill: #fff; text-anchor: middle; }
-  .gt-termchip { font-family: "Inter", sans-serif; font-size: 9.5px; fill: rgba(255,255,255,.78); text-anchor: middle; }
-  .gtermchip { fill: rgba(255,255,255,.12); }
-  .gt-more { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 14px;
-    fill: #16314d; text-anchor: middle; }
-  .gt-more-sub { font-family: "Inter", sans-serif; font-size: 8.5px; fill: #6a7689; text-anchor: middle; }
   .gav { stroke: #fff; stroke-width: 2;
     transform: scale(0); transform-box: fill-box; transform-origin: center; }
   .gav--1 { fill: #79a8ff; } .gav--2 { fill: #4fc3a1; } .gav--3 { fill: #ff9d76; }
@@ -481,48 +420,6 @@
   .ex-card .gd { animation: none; opacity: 0; }
   .ex-card.in .gd { animation: seg3 3s linear 1.9s infinite; }
 
-  .ex-copy {
-    margin-top: 22px; text-align: center;
-    font-family: "Caveat", cursive; font-weight: 700; font-size: 24px; color: #16314d;
-    opacity: 0; transition: opacity .6s ease 1.2s;
-  }
-  .ex-card.in .ex-copy { opacity: 1; }
-
-  .ex-more {
-    max-width: 640px; margin: 44px auto 0; text-align: center;
-    font-size: 14.5px; line-height: 1.7; color: #2c4a66;
-  }
-  .ex-more b { font-family: "Bricolage Grotesque", sans-serif; color: #16314d; }
-
-  /* ---- how we work ---- */
-  .how { position: relative; z-index: 5; padding: 110px 24px 30px; background: transparent; }
-  .how-row { display: flex; align-items: stretch; justify-content: center; gap: 0; flex-wrap: wrap; }
-  .how-step {
-    width: 250px; background: #fff; border: 1px solid rgba(22,49,77,.08); border-radius: 18px;
-    padding: 24px 26px; text-align: center;
-    box-shadow: 0 26px 50px -34px rgba(22,49,77,.55);
-  }
-  .how-step strong {
-    display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
-    font-size: 14px; letter-spacing: .16em; text-transform: uppercase; color: #2f6fe0;
-  }
-  .how-step span { display: block; margin-top: 8px; font-size: 14px; line-height: 1.5; color: #5a6a80; }
-  .how-link { align-self: center; width: 54px; height: 24px; flex: 0 0 auto; }
-  .how-link svg { width: 100%; height: 100%; display: block; overflow: visible; }
-  .how-link path { fill: none; stroke: #2f6fe0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .yours {
-    margin: 54px auto 0; text-align: center;
-  }
-  .yours b {
-    display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
-    font-size: clamp(20px, 2.6vw, 26px); letter-spacing: .04em; color: #16314d;
-  }
-  .yours span { display: block; margin-top: 8px; font-size: 14.5px; color: #2c4a66; }
-  @media (max-width: 880px) {
-    .how-row { flex-direction: column; align-items: center; gap: 0; }
-    .how-link { transform: rotate(90deg); height: 44px; }
-  }
-
   /* ===================== Bottom area (uses end.avif as background) ===================== */
   .bottom {
     position: relative; z-index: 5; margin-top: 90px;
@@ -539,7 +436,8 @@
     box-shadow: 0 44px 84px -42px rgba(47,111,224,.75);
   }
   .cta-card h2 { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 42px); letter-spacing: -.02em; text-wrap: balance; }
-  .cta-card .btns { justify-content: center; margin-top: 32px; }
+  .cta-card p { margin: 14px auto 0; font-size: 18px; color: rgba(255,255,255,.92); }
+  .cta-card .btns { justify-content: center; margin-top: 30px; }
   .footer-cta .btn-primary { background: #fff; color: #16314d; box-shadow: 0 0 0 0 rgba(0,0,0,0); }
   .footer-cta .btn-primary:hover { background: #eef3f9; box-shadow: 0 14px 26px -10px rgba(0,0,0,.35); }
   .foot-bar {
@@ -628,16 +526,6 @@
   .qback[hidden] { visibility: hidden; display: inline; }
   .qerr { font-size: 13px; color: #c0392b; margin-top: 12px; display: none; }
 
-  /* result rows */
-  .rrow {
-    display: flex; align-items: baseline; gap: 14px; padding: 15px 0;
-    border-bottom: 1px solid rgba(22,49,77,.08);
-  }
-  .rrow:last-of-type { border-bottom: none; }
-  .rrow .rname { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 16px;
-                 color: #16314d; min-width: 118px; }
-  .rrow .rsize { font-size: 13px; color: #2f6fe0; font-weight: 600; min-width: 92px; }
-  .rrow .rwhat { font-size: 14px; color: #5a6a80; line-height: 1.45; }
   .qthanks { text-align: center; padding: 12px 0 4px; }
   .qthanks .big { font-size: 44px; margin-bottom: 12px; }
   .qthanks p { font-size: 15px; color: #5a6a80; line-height: 1.6; margin-bottom: 24px; }
@@ -669,38 +557,24 @@
     .phrase { top: max(9%, calc(env(safe-area-inset-top) + 46px)); font-size: clamp(21px, 6.4vw, 27px); padding: 0 18px; }
     .wires { display: none; }
 
-    .layer--sources { display: flex; flex-direction: column; align-items: center; justify-content: center;
-                      padding-top: 12vh; }
-    .src-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; width: min(92vw, 380px); }
-    .src { position: static; width: auto; padding: 13px 15px 12px; border-radius: 14px; }
-    .src strong { font-size: 11px; margin-bottom: 7px; }
-    .srow { font-size: 11.5px; gap: 7px; }
-    .srow + .srow { margin-top: 6px; }
-    .sico { width: 18px; height: 18px; border-radius: 5px; }
-
     /* on phones only the monster mark floats, the wordmark would collide with content */
     .brand { top: 14px; left: 14px; }
     .brand img { width: 32px; height: 32px; border-radius: 10px; }
     .brand span { display: none; }
-    .m-wire { width: 2px; height: 26px; background: #2f6fe0; border-radius: 2px; margin: 12px 0; }
-    .tm-node { position: static; transform: none; }
-    .tm-node .dbox { font-size: 16px; padding: 14px 24px; }
-    .ops { position: static; transform: none; margin-top: 14px; gap: 8px; }
-    .op { font-size: 10.5px; padding: 8px 13px; }
 
-    .people { position: static; transform: none; flex-direction: column; gap: 12px;
-              align-items: center; }
-    .layer--people { display: flex; flex-direction: column; align-items: center; justify-content: center;
-                     padding-top: 10vh; }
-    .person { width: min(88vw, 320px); padding: 15px 18px 13px; border-radius: 15px;
-              display: grid; grid-template-columns: 40px 1fr auto; grid-template-rows: auto auto;
-              column-gap: 12px; align-items: center; }
-    .person .avatar { width: 40px; height: 40px; border-radius: 12px; margin: 0; grid-row: 1 / 3; }
+    /* the map flows vertically: chips on top, buyers below, no wires */
+    .layer--map { display: flex; align-items: center; justify-content: center; }
+    .map-track { position: static; display: flex; flex-direction: column; align-items: center;
+                 padding-top: 13vh; }
+    .chips6 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(90vw, 360px); }
+    .schip { position: static; width: auto; height: 42px; padding: 0 13px; gap: 8px;
+             font-size: 12.5px; border-radius: 12px; }
+    .sico { width: 19px; height: 19px; border-radius: 5px; }
+    .people3 { display: flex; flex-direction: column; gap: 11px; margin-top: 26px; }
+    .person { position: static; width: min(90vw, 320px); padding: 12px 16px; gap: 12px;
+              border-radius: 15px; }
+    .person .avatar { width: 38px; height: 38px; border-radius: 11px; }
     .person b { font-size: 15px; }
-    .person .role { margin-top: 1px; }
-    .fit { margin: 0; grid-column: 3; grid-row: 1 / 3; align-self: center; }
-    .why { grid-column: 2 / 4; margin-top: 9px; padding-top: 9px; }
-    .people-anno { display: none; }
 
     .layer--funnel { display: flex; align-items: center; justify-content: center; }
     .funnel { position: static; transform: none; padding-top: 6vh; }
@@ -712,15 +586,13 @@
     .to-top { display: inline-flex; }
 
     .qcard { padding: 30px 22px 26px; border-radius: 20px; }
-    .examples { padding-top: 80px; }
-    .how { padding-top: 80px; }
+    .examples { padding-top: 64px; }
   }
 
-  /* desktop keeps the absolute layout; hide the mobile-only wire + grid wrapper effects */
+  /* desktop keeps the absolute layout */
   @media (min-width: 641px) {
-    .src-grid { display: contents; }
-    .m-wire { display: none; }
-    .layer--sources, .layer--people, .layer--funnel { display: block; }
+    .chips6, .people3 { display: contents; }
+    .layer--map, .layer--funnel { display: block; }
   }
 
   @media (hover: none) {
@@ -790,7 +662,7 @@
 
       <div class="title">
         <h1>Your next customers are already around you.</h1>
-        <p>We build GTM systems that find buyers across your audience, network and market signals, and turn them into sales conversations.</p>
+        <p>We build GTM systems that turn your audience, network and market signals into sales conversations.</p>
         <div class="btns">
           <button class="btn btn-primary" data-open-quiz>Find my opportunities &rarr;</button>
           <a class="btn btn-ghost" href="#how" id="see-how">See how it works</a>
@@ -798,113 +670,50 @@
       </div>
 
       <!-- the story phrases, crossfading above the diagram -->
-      <p class="phrase" id="ph1">They&rsquo;re already somewhere.</p>
-      <p class="phrase" id="ph2">Find the right people.</p>
-      <p class="phrase" id="ph3">Know why they matter.</p>
-      <p class="phrase" id="ph4">Start the conversation.</p>
-      <p class="phrase" id="ph5">Build pipeline.</p>
+      <p class="phrase" id="ph1">They&rsquo;re already there.</p>
+      <p class="phrase phrase--sub" id="ph1sub">You already have the opportunities.</p>
+      <p class="phrase" id="ph2">We find the buyers.</p>
+      <p class="phrase" id="ph3">Then we start conversations.</p>
 
       <!-- the story: one evolving diagram behind the mountains -->
       <div class="story">
         <div class="story-inner">
 
-          <!-- moments 1 + 2: the sources, then the system -->
-          <div class="layer layer--sources" id="layer-sources">
-            <svg class="wires" viewBox="0 0 980 620" preserveAspectRatio="none" aria-hidden="true">
-              <path class="wire" id="w1" pathLength="100" d="M256 156 C370 156, 330 288, 389 291" />
-              <path class="wire" id="w2" pathLength="100" d="M724 156 C610 156, 650 288, 591 291" />
-              <path class="wire" id="w3" pathLength="100" d="M256 462 C370 462, 330 318, 389 315" />
-              <path class="wire" id="w4" pathLength="100" d="M724 462 C610 462, 650 318, 591 315" />
-              <g id="wire-dots">
-                <path class="lpath--dot dot--1" pathLength="100" fill="none" d="M256 156 C370 156, 330 288, 389 291" />
-                <path class="lpath--dot dot--2" pathLength="100" fill="none" d="M724 156 C610 156, 650 288, 591 291" />
-                <path class="lpath--dot dot--3" pathLength="100" fill="none" d="M256 462 C370 462, 330 318, 389 315" />
-                <path class="lpath--dot dot--2" pathLength="100" fill="none" d="M724 462 C610 462, 650 318, 591 315" />
-              </g>
-            </svg>
-
-            <div class="src-grid">
-              <div class="src src--audience sd" data-m1="0">
-                <strong>Audience</strong>
-                <div class="srow"><span class="sico"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="#FF6719" d="M2.5 3.5h19v2.7h-19zM2.5 8.3h19V11h-19zM2.5 13.1h19v7.9l-9.5-4.4-9.5 4.4z"/></svg></span>Newsletter</div>
-                <div class="srow"><span class="sico"><svg viewBox="0 0 24 24" width="15" height="15"><rect x="1" y="4.6" width="22" height="14.8" rx="4" fill="#FF0000"/><path d="M9.8 8.7v6.6L15.8 12z" fill="#fff"/></svg></span>YouTube</div>
-                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Community</div>
-              </div>
-              <div class="src src--network sd" data-m1="1">
-                <strong>Network</strong>
-                <div class="srow"><span class="sico"><img src="logos/sq-linkedin.png" alt="" /></span>LinkedIn</div>
-                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg></span>Connections</div>
-                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Followers</div>
-              </div>
-              <div class="src src--relationships sd" data-m1="2">
-                <strong>Relationships</strong>
-                <div class="srow"><span class="sico sico--fit"><img src="logos/sq-gmail.svg" alt="" /></span>Email</div>
-                <div class="srow"><span class="sico"><img src="logos/sq-hubspot.png" alt="" /></span>CRM</div>
-                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Past conversations</div>
-              </div>
-              <div class="src src--signals sd" data-m1="3">
-                <strong>Signals</strong>
-                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><path d="M12 2v4"/></svg></span>Competitors</div>
-                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>Hiring</div>
-                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>Events</div>
-              </div>
-            </div>
-
-            <div class="m-wire sd" id="m-wire"></div>
-
-            <div class="tm-node sd" id="tm-node">
-              <div class="dbox dbox--product">
-                <img src="fav.png" alt="" />
-                <span>Tool Monsters</span>
-              </div>
-            </div>
-
-            <div class="ops">
-              <span class="op sd" data-op="0">Find</span>
-              <span class="op sd" data-op="1">Qualify</span>
-              <span class="op sd" data-op="2">Prioritize</span>
-            </div>
-          </div>
-
-          <!-- moment 3: real prospects -->
-          <div class="layer layer--people sd" id="layer-people">
-            <div class="people">
-              <div class="person sd" data-p="0">
-                <div class="avatar" style="background:linear-gradient(135deg,#79a8ff,#b9aaff)">SC</div>
-                <b>Sarah Chen</b>
-                <span class="role">VP AI &middot; Acme</span>
-                <span class="fit">High fit</span>
-                <div class="why">
-                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                  Engaged with a competitor
-                </div>
-              </div>
-              <div class="person sd" data-p="1">
-                <div class="avatar" style="background:linear-gradient(135deg,#4fc3a1,#2f9e8f)">JM</div>
-                <b>James Miller</b>
-                <span class="role">Founder &middot; Northstar</span>
-                <span class="fit">High fit</span>
-                <div class="why">
-                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                  Already in your network
-                </div>
-              </div>
-              <div class="person sd" data-p="2">
-                <div class="avatar" style="background:linear-gradient(135deg,#ff9d76,#f2709c)">AM</div>
-                <b>Alex Morgan</b>
-                <span class="role">VP Operations &middot; Vertex</span>
-                <span class="fit">High fit</span>
-                <div class="why">
-                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                  Hiring right now
-                </div>
-              </div>
-            </div>
-            <div class="anno people-anno">
-              <svg class="anno-arrow" viewBox="0 0 96 44">
-                <path d="M12 8 C40 2, 66 28, 84 28 M84 28 L71 21 M84 28 L71 35" />
+          <!-- moments 1 + 2: six sources, then the buyers they hide -->
+          <div class="layer layer--map" id="layer-map">
+            <div class="map-track" id="map-track">
+              <svg class="wires" viewBox="0 0 980 620" preserveAspectRatio="none" aria-hidden="true">
+                <path class="wire" id="w1" pathLength="100" d="M350 125 C470 125, 530 182, 650 182" />
+                <path class="wire" id="w2" pathLength="100" d="M350 195 C470 195, 530 182, 650 182" />
+                <path class="wire" id="w3" pathLength="100" d="M350 265 C470 265, 530 310, 650 310" />
+                <path class="wire" id="w4" pathLength="100" d="M350 335 C470 335, 530 310, 650 310" />
+                <path class="wire" id="w5" pathLength="100" d="M350 405 C470 405, 530 438, 650 438" />
+                <path class="wire" id="w6" pathLength="100" d="M350 475 C470 475, 530 438, 650 438" />
               </svg>
-              <p class="anno-text">real people, not a list</p>
+
+              <div class="chips6">
+                <div class="schip schip--1 sd" data-c="0"><span class="sico"><img src="logos/sq-linkedin.png" alt="" /></span>LinkedIn</div>
+                <div class="schip schip--2 sd" data-c="1"><span class="sico"><svg viewBox="0 0 24 24" width="14" height="14"><path fill="#FF6719" d="M2.5 3.5h19v2.7h-19zM2.5 8.3h19V11h-19zM2.5 13.1h19v7.9l-9.5-4.4-9.5 4.4z"/></svg></span>Newsletter</div>
+                <div class="schip schip--3 sd" data-c="2"><span class="sico sico--fit"><img src="logos/sq-gmail.svg" alt="" /></span>Email + CRM</div>
+                <div class="schip schip--4 sd" data-c="3"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><path d="M12 2v4"/></svg></span>Competitors</div>
+                <div class="schip schip--5 sd" data-c="4"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>Hiring</div>
+                <div class="schip schip--6 sd" data-c="5"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>Events</div>
+              </div>
+
+              <div class="people3">
+                <div class="person person--1 sd" data-p="0">
+                  <div class="avatar" style="background:linear-gradient(135deg,#79a8ff,#b9aaff)">SC</div>
+                  <div><b>Sarah Chen</b><span class="role">VP AI &middot; Acme</span></div>
+                </div>
+                <div class="person person--2 sd" data-p="1">
+                  <div class="avatar" style="background:linear-gradient(135deg,#4fc3a1,#2f9e8f)">JM</div>
+                  <div><b>James Miller</b><span class="role">Founder &middot; Northstar</span></div>
+                </div>
+                <div class="person person--3 sd" data-p="2">
+                  <div class="avatar" style="background:linear-gradient(135deg,#ff9d76,#f2709c)">AM</div>
+                  <div><b>Alex Morgan</b><span class="role">VP Operations &middot; Vertex</span></div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -923,8 +732,7 @@
                   <path class="lpath lpath--base lpath--draw fm" pathLength="100" d="M202 0 C202 56, 150 40, 150 96" />
                 </svg>
               </div>
-              <div class="dbox sd" id="conv-box">Conversation</div>
-              <div class="crm-note sd" id="crm-note">Synced to your CRM</div>
+              <div class="dbox sd" id="conv-box">Sales conversation</div>
               <div class="dline">
                 <svg viewBox="0 0 24 74" preserveAspectRatio="none">
                   <path class="lpath lpath--base lpath--draw" id="fline" pathLength="100" d="M12 0 V74" vector-effect="non-scaling-stroke" />
@@ -943,10 +751,9 @@
     </div>
   </div>
 
-  <!-- ===================== Real examples ===================== -->
+  <!-- ===================== Four tiny examples ===================== -->
   <section class="examples" id="examples">
-    <p class="sec-eyebrow rise">Real examples</p>
-    <h2 class="sec-title rise">What this can look like.</h2>
+    <p class="sec-eyebrow rise">For example</p>
 
     <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
       <linearGradient id="gdgrad" x1="0" y1="0" x2="1" y2="1">
@@ -958,242 +765,160 @@
 
       <div class="ex-card">
         <div class="ex-head"><span class="num">01</span><span class="name">Newsletter</span></div>
-        <svg class="gflow" viewBox="0 0 430 486" role="img" aria-label="Newsletter workflow: 100K subscribers, identify people, ICP matches, conversations">
+        <svg class="gflow" viewBox="0 0 240 250" role="img" aria-label="Newsletter: 100K subscribers become potential buyers, then conversations">
           <g class="gnode" style="--d:0s">
-            <rect class="gtile" x="187" y="4" width="56" height="56" rx="16" />
-            <path fill="#FF6719" d="M201 19h28v3.6h-28zM201 25.4h28V29h-28zM201 31.8h28v11.4l-14-6.4-14 6.4z"/>
-            <rect class="gring" x="187" y="4" width="56" height="56" rx="16" />
+            <rect class="gtile" x="100" y="0" width="40" height="40" rx="12" />
+            <path fill="#FF6719" d="M110 11.5h20v2.6h-20zM110 16h20v2.6h-20zM110 20.5h20v8.2l-10-4.6-10 4.6z"/>
+            <rect class="gring" x="100" y="0" width="40" height="40" rx="12" />
           </g>
-          <path class="gline ln-o" pathLength="1" style="--d:.15s" d="M215 66 V96" />
-          <path class="gtip ln-o" style="--d:.32s" d="M210 91 L215 96 L220 91" />
-          <g class="gnode" style="--d:.3s">
-            <rect class="gcard" x="95" y="104" width="240" height="60" rx="14" />
-            <text class="gt-title" x="215" y="130" data-count="100" data-suffix="K subscribers">100K subscribers</text>
-            <text class="gt-sub" x="215" y="149">the audience you already own</text>
+          <path class="gline ln-o" pathLength="1" style="--d:.12s" d="M120 44 V64" />
+          <path class="gtip ln-o" style="--d:.26s" d="M116 60 L120 64 L124 60" />
+          <g class="gnode" style="--d:.24s">
+            <rect class="gcard" x="20" y="68" width="200" height="36" rx="12" />
+            <text class="gt-title" x="120" y="91" data-count="100" data-suffix="K subscribers">100K subscribers</text>
           </g>
-          <path class="gline ln-o" pathLength="1" style="--d:.5s" d="M215 168 V198" />
-          <path class="gtip ln-o" style="--d:.67s" d="M210 193 L215 198 L220 193" />
-          <g class="gnode" style="--d:.65s">
-            <rect class="gcard" x="95" y="206" width="240" height="60" rx="14" />
-            <text class="gt-title" x="215" y="232">Identify people</text>
-            <text class="gt-sub" x="215" y="251">readers become named leads</text>
+          <path class="gline ln-o" pathLength="1" style="--d:.42s" d="M120 104 V124" />
+          <path class="gtip ln-o" style="--d:.56s" d="M116 120 L120 124 L124 120" />
+          <g class="gnode" style="--d:.54s">
+            <rect class="gcard" x="20" y="128" width="200" height="50" rx="12" />
+            <text class="gt-title" x="120" y="149">Potential buyers</text>
+            <circle class="gav gav--1" cx="106" cy="163" r="7" style="--d:1.15s" />
+            <circle class="gav gav--2" cx="120" cy="163" r="7" style="--d:1.28s" />
+            <circle class="gav gav--3" cx="134" cy="163" r="7" style="--d:1.41s" />
           </g>
-          <path class="gline ln-o" pathLength="1" style="--d:.85s" d="M215 270 V300" />
-          <path class="gtip ln-o" style="--d:1.02s" d="M210 295 L215 300 L220 295" />
-          <g class="gnode" style="--d:1s">
-            <rect class="gcard" x="95" y="308" width="240" height="80" rx="14" />
-            <text class="gt-title" x="215" y="334">ICP matches</text>
-            <text class="gt-sub" x="215" y="353">the ones who fit what you sell</text>
-            <circle class="gav gav--1" cx="201" cy="369" r="8" style="--d:1.35s" />
-            <circle class="gav gav--2" cx="215" cy="369" r="8" style="--d:1.48s" />
-            <circle class="gav gav--3" cx="229" cy="369" r="8" style="--d:1.61s" />
-          </g>
-          <path class="gline ln-n" pathLength="1" style="--d:1.2s" d="M215 392 V420" />
-          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 392 V420" />
-          <path class="gtip ln-n" style="--d:1.37s" d="M210 415 L215 420 L220 415" />
-          <g class="gnode" style="--d:1.35s">
-            <rect class="gdark" x="110" y="428" width="210" height="54" rx="16" />
-            <text class="gt-term" x="215" y="452">Conversations</text>
-            <rect class="gtermchip" x="157" y="460" width="116" height="15" rx="7.5" />
-            <text class="gt-termchip" x="215" y="470.5">with the right people</text>
+          <path class="gline ln-n" pathLength="1" style="--d:.72s" d="M120 178 V198" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M120 178 V198" />
+          <path class="gtip ln-n" style="--d:.86s" d="M116 194 L120 198 L124 194" />
+          <g class="gnode" style="--d:.84s">
+            <rect class="gdark" x="45" y="202" width="150" height="44" rx="14" />
+            <text class="gt-term" x="120" y="229">Conversations</text>
           </g>
         </svg>
-        <p class="ex-copy">Find the buyers already paying attention.</p>
       </div>
 
       <div class="ex-card">
         <div class="ex-head"><span class="num">02</span><span class="name">LinkedIn</span></div>
-        <svg class="gflow" viewBox="0 0 430 412" role="img" aria-label="LinkedIn workflow: connections and followers, qualified into priority buyers, conversations">
+        <svg class="gflow" viewBox="0 0 240 250" role="img" aria-label="LinkedIn: your network becomes buyers, then conversations">
           <g class="gnode" style="--d:0s">
-            <clipPath id="c2li"><rect x="187" y="4" width="56" height="56" rx="16" /></clipPath>
-            <image href="logos/sq-linkedin.png" x="187" y="4" width="56" height="56" clip-path="url(#c2li)" />
-            <rect class="gring" x="187" y="4" width="56" height="56" rx="16" />
+            <clipPath id="c2li"><rect x="100" y="0" width="40" height="40" rx="12" /></clipPath>
+            <image href="logos/sq-linkedin.png" x="100" y="0" width="40" height="40" clip-path="url(#c2li)" />
+            <rect class="gring" x="100" y="0" width="40" height="40" rx="12" />
           </g>
-          <path class="gline ln-b" pathLength="1" style="--d:.15s" d="M215 66 C215 88, 110 84, 110 108" />
-          <path class="gline ln-b" pathLength="1" style="--d:.15s" d="M215 66 C215 88, 320 84, 320 108" />
-          <path class="gtip ln-b" style="--d:.34s" d="M105 103 L110 108 L115 103" />
-          <path class="gtip ln-b" style="--d:.34s" d="M315 103 L320 108 L325 103" />
-          <g class="gnode" style="--d:.32s">
-            <rect class="gcard" x="15" y="116" width="190" height="58" rx="14" />
-            <text class="gt-title" x="110" y="141">Connections</text>
-            <text class="gt-sub" x="110" y="160">your 1st-degree network</text>
+          <path class="gline ln-b" pathLength="1" style="--d:.12s" d="M120 44 V64" />
+          <path class="gtip ln-b" style="--d:.26s" d="M116 60 L120 64 L124 60" />
+          <g class="gnode" style="--d:.24s">
+            <rect class="gcard" x="20" y="68" width="200" height="36" rx="12" />
+            <text class="gt-title" x="120" y="91">Your network</text>
           </g>
-          <g class="gnode" style="--d:.42s">
-            <rect class="gcard" x="225" y="116" width="190" height="58" rx="14" />
-            <text class="gt-title" x="320" y="141">Followers</text>
-            <text class="gt-sub" x="320" y="160">people who chose you</text>
+          <path class="gline ln-b" pathLength="1" style="--d:.42s" d="M120 104 V124" />
+          <path class="gtip ln-b" style="--d:.56s" d="M116 120 L120 124 L124 120" />
+          <g class="gnode" style="--d:.54s">
+            <rect class="gcard" x="20" y="128" width="200" height="50" rx="12" />
+            <text class="gt-title" x="120" y="149">Buyers</text>
+            <circle class="gav gav--1" cx="106" cy="163" r="7" style="--d:1.15s" />
+            <circle class="gav gav--2" cx="120" cy="163" r="7" style="--d:1.28s" />
+            <circle class="gav gav--3" cx="134" cy="163" r="7" style="--d:1.41s" />
           </g>
-          <path class="gline ln-b" pathLength="1" style="--d:.62s" d="M110 174 C110 200, 215 194, 215 220" />
-          <path class="gline ln-b" pathLength="1" style="--d:.62s" d="M320 174 C320 200, 215 194, 215 220" />
-          <path class="gtip ln-b" style="--d:.8s" d="M210 215 L215 220 L220 215" />
-          <g class="gnode" style="--d:.78s">
-            <rect class="gcard" x="95" y="228" width="240" height="80" rx="14" />
-            <text class="gt-title" x="215" y="254">Priority buyers</text>
-            <text class="gt-sub" x="215" y="273">qualified and ranked for you</text>
-            <circle class="gav gav--1" cx="201" cy="289" r="8" style="--d:1.3s" />
-            <circle class="gav gav--2" cx="215" cy="289" r="8" style="--d:1.43s" />
-            <circle class="gav gav--3" cx="229" cy="289" r="8" style="--d:1.56s" />
-          </g>
-          <path class="gline ln-n" pathLength="1" style="--d:1s" d="M215 312 V344" />
-          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 312 V344" />
-          <path class="gtip ln-n" style="--d:1.17s" d="M210 339 L215 344 L220 339" />
-          <g class="gnode" style="--d:1.15s">
-            <rect class="gdark" x="110" y="352" width="210" height="54" rx="16" />
-            <text class="gt-term" x="215" y="376">Conversations</text>
-            <rect class="gtermchip" x="157" y="384" width="116" height="15" rx="7.5" />
-            <text class="gt-termchip" x="215" y="394.5">with the right people</text>
+          <path class="gline ln-n" pathLength="1" style="--d:.72s" d="M120 178 V198" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M120 178 V198" />
+          <path class="gtip ln-n" style="--d:.86s" d="M116 194 L120 198 L124 194" />
+          <g class="gnode" style="--d:.84s">
+            <rect class="gdark" x="45" y="202" width="150" height="44" rx="14" />
+            <text class="gt-term" x="120" y="229">Conversations</text>
           </g>
         </svg>
-        <p class="ex-copy">Find the right people already around you.</p>
       </div>
 
       <div class="ex-card">
-        <div class="ex-head"><span class="num">03</span><span class="name">Competitor monitoring</span></div>
-        <svg class="gflow" viewBox="0 0 430 470" role="img" aria-label="Competitor monitoring workflow: a monitored LinkedIn profile posts, relevant engagers become ICP matches, then conversations">
+        <div class="ex-head"><span class="num">03</span><span class="name">Competitors</span></div>
+        <svg class="gflow" viewBox="0 0 240 310" role="img" aria-label="Competitors: a competitor post reveals relevant engagers, buyers, then conversations">
           <g class="gnode" style="--d:0s">
-            <clipPath id="c3li"><rect x="187" y="8" width="56" height="56" rx="16" /></clipPath>
-            <image href="logos/sq-linkedin.png" x="187" y="8" width="56" height="56" clip-path="url(#c3li)" />
-            <rect class="gring" x="187" y="8" width="56" height="56" rx="16" />
-            <circle cx="243" cy="10" r="5" fill="#e5484d" stroke="#fff" stroke-width="2" />
-            <circle class="gping" cx="243" cy="10" r="5" />
+            <clipPath id="c3li"><rect x="100" y="0" width="40" height="40" rx="12" /></clipPath>
+            <image href="logos/sq-linkedin.png" x="100" y="0" width="40" height="40" clip-path="url(#c3li)" />
+            <rect class="gring" x="100" y="0" width="40" height="40" rx="12" />
+            <circle cx="140" cy="2" r="4.5" fill="#e5484d" stroke="#fff" stroke-width="2" />
+            <circle class="gping" cx="140" cy="2" r="4.5" />
           </g>
-          <g class="gnode" style="--d:.12s">
-            <rect class="gbadge" x="257" y="26" width="92" height="20" rx="10" />
-            <text class="gt-badge" x="303" y="39.5">MONITORED</text>
+          <path class="gline ln-b" pathLength="1" style="--d:.12s" d="M120 44 V64" />
+          <path class="gtip ln-b" style="--d:.26s" d="M116 60 L120 64 L124 60" />
+          <g class="gnode" style="--d:.24s">
+            <rect class="gcard" x="20" y="68" width="200" height="36" rx="12" />
+            <text class="gt-title" x="120" y="91">Competitor post</text>
           </g>
-          <path class="gline ln-b" pathLength="1" style="--d:.2s" d="M215 70 V98" />
-          <path class="gtip ln-b" style="--d:.37s" d="M210 93 L215 98 L220 93" />
-          <g class="gnode" style="--d:.35s">
-            <rect class="gcard" x="95" y="106" width="240" height="58" rx="14" />
-            <text class="gt-title" x="215" y="131">New post</text>
-            <text class="gt-sub" x="215" y="150">every morning, the last 24 h</text>
+          <path class="gline ln-b" pathLength="1" style="--d:.42s" d="M120 104 V124" />
+          <path class="gtip ln-b" style="--d:.56s" d="M116 120 L120 124 L124 120" />
+          <g class="gnode" style="--d:.54s">
+            <rect class="gcard" x="20" y="128" width="200" height="36" rx="12" />
+            <text class="gt-title" x="120" y="151">Relevant engagers</text>
           </g>
-          <path class="gline ln-b" pathLength="1" style="--d:.55s" d="M215 164 V192" />
-          <path class="gtip ln-b" style="--d:.72s" d="M210 187 L215 192 L220 187" />
-          <g class="gnode" style="--d:.7s">
-            <rect class="gcard" x="95" y="200" width="240" height="80" rx="14" />
-            <text class="gt-title" x="215" y="226">Relevant engagers</text>
-            <text class="gt-sub" x="215" y="245">who liked, who commented</text>
-            <circle class="gav gav--1" cx="201" cy="261" r="8" style="--d:1.4s" />
-            <circle class="gav gav--2" cx="215" cy="261" r="8" style="--d:1.53s" />
-            <circle class="gav gav--3" cx="229" cy="261" r="8" style="--d:1.66s" />
+          <path class="gline ln-b" pathLength="1" style="--d:.72s" d="M120 164 V184" />
+          <path class="gtip ln-b" style="--d:.86s" d="M116 180 L120 184 L124 180" />
+          <g class="gnode" style="--d:.84s">
+            <rect class="gcard" x="20" y="188" width="200" height="50" rx="12" />
+            <text class="gt-title" x="120" y="209">Buyers</text>
+            <circle class="gav gav--1" cx="106" cy="223" r="7" style="--d:1.45s" />
+            <circle class="gav gav--2" cx="120" cy="223" r="7" style="--d:1.58s" />
+            <circle class="gav gav--3" cx="134" cy="223" r="7" style="--d:1.71s" />
           </g>
-          <path class="gline ln-b" pathLength="1" style="--d:.9s" d="M215 280 V308" />
-          <path class="gtip ln-b" style="--d:1.07s" d="M210 303 L215 308 L220 303" />
-          <g class="gnode" style="--d:1.05s">
-            <rect class="gcard" x="95" y="316" width="240" height="58" rx="14" />
-            <text class="gt-title" x="215" y="341">ICP matches</text>
-            <text class="gt-sub" x="215" y="360">size, role, market fit</text>
-          </g>
-          <path class="gline ln-n" pathLength="1" style="--d:1.25s" d="M215 374 V402" />
-          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 374 V402" />
-          <path class="gtip ln-n" style="--d:1.42s" d="M210 397 L215 402 L220 397" />
-          <g class="gnode" style="--d:1.4s">
-            <rect class="gdark" x="110" y="410" width="210" height="54" rx="16" />
-            <text class="gt-term" x="215" y="434">Conversations</text>
-            <rect class="gtermchip" x="157" y="442" width="116" height="15" rx="7.5" />
-            <text class="gt-termchip" x="215" y="452.5">with the right people</text>
+          <path class="gline ln-n" pathLength="1" style="--d:1.02s" d="M120 238 V258" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M120 238 V258" />
+          <path class="gtip ln-n" style="--d:1.16s" d="M116 254 L120 258 L124 254" />
+          <g class="gnode" style="--d:1.14s">
+            <rect class="gdark" x="45" y="262" width="150" height="44" rx="14" />
+            <text class="gt-term" x="120" y="289">Conversations</text>
           </g>
         </svg>
-        <p class="ex-copy">Your competitors generate signals too.</p>
       </div>
 
       <div class="ex-card">
-        <div class="ex-head"><span class="num">04</span><span class="name">Hiring signals</span></div>
-        <svg class="gflow" viewBox="0 0 430 470" role="img" aria-label="Hiring signals workflow: job boards feed job posting signals, the decision-maker is identified, then a conversation">
+        <div class="ex-head"><span class="num">04</span><span class="name">Hiring</span></div>
+        <svg class="gflow" viewBox="0 0 240 310" role="img" aria-label="Hiring: a new job posting points to the relevant company and its decision maker, then a conversation">
           <g class="gnode" style="--d:0s">
-            <clipPath id="c4li"><rect x="121" y="6" width="48" height="48" rx="14" /></clipPath>
-            <image href="logos/sq-linkedin.png" x="121" y="6" width="48" height="48" clip-path="url(#c4li)" />
-            <rect class="gring" x="121" y="6" width="48" height="48" rx="14" />
-          </g>
-          <g class="gnode" style="--d:.08s">
-            <rect class="gtile" x="191" y="6" width="48" height="48" rx="14" style="fill:url(#gdgrad)" />
-            <g fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="203" y="21.5" width="24" height="17.5" rx="2.5" />
-              <path d="M210 21.5 V18 a2.5 2.5 0 0 1 2.5 -2.5 h5 a2.5 2.5 0 0 1 2.5 2.5 v3.5" />
+            <rect class="gtile" x="100" y="0" width="40" height="40" rx="12" style="fill:url(#gdgrad)" />
+            <g fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="110" y="13" width="20" height="15" rx="2.2" />
+              <path d="M116 13 V10.2 a2.2 2.2 0 0 1 2.2 -2.2 h3.6 a2.2 2.2 0 0 1 2.2 2.2 V13" />
             </g>
           </g>
-          <g class="gnode" style="--d:.16s">
-            <rect class="gtile" x="261" y="6" width="48" height="48" rx="14" />
-            <rect class="gring" x="261" y="6" width="48" height="48" rx="14" />
-            <text class="gt-more" x="285" y="30">+6</text>
-            <text class="gt-more-sub" x="285" y="43">JOB BOARDS</text>
+          <path class="gline ln-n" pathLength="1" style="--d:.12s" d="M120 44 V64" />
+          <path class="gtip ln-n" style="--d:.26s" d="M116 60 L120 64 L124 60" />
+          <g class="gnode" style="--d:.24s">
+            <rect class="gcard" x="20" y="68" width="200" height="36" rx="12" />
+            <text class="gt-title" x="120" y="91">New job posting</text>
           </g>
-          <path class="gline ln-n" pathLength="1" style="--d:.3s" d="M145 58 C145 80, 215 76, 215 100" />
-          <path class="gline ln-n" pathLength="1" style="--d:.3s" d="M215 58 V100" />
-          <path class="gline ln-n" pathLength="1" style="--d:.3s" d="M285 58 C285 80, 215 76, 215 100" />
-          <path class="gtip ln-n" style="--d:.48s" d="M210 95 L215 100 L220 95" />
-          <g class="gnode" style="--d:.46s">
-            <rect class="gcard" x="95" y="108" width="240" height="58" rx="14" />
-            <text class="gt-title" x="215" y="133">Job posting signals</text>
-            <text class="gt-sub" x="215" y="152">every morning, jobs posted in the last 24 h</text>
+          <path class="gline ln-n" pathLength="1" style="--d:.42s" d="M120 104 V124" />
+          <path class="gtip ln-n" style="--d:.56s" d="M116 120 L120 124 L124 120" />
+          <g class="gnode" style="--d:.54s">
+            <rect class="gcard" x="20" y="128" width="200" height="36" rx="12" />
+            <text class="gt-title" x="120" y="151">Relevant company</text>
           </g>
-          <path class="gline ln-n" pathLength="1" style="--d:.66s" d="M215 166 V196" />
-          <path class="gtip ln-n" style="--d:.83s" d="M210 191 L215 196 L220 191" />
-          <g class="gnode" style="--d:.8s">
-            <rect class="gcard" x="95" y="204" width="240" height="58" rx="14" />
-            <text class="gt-title" x="215" y="229">Relevant company</text>
-            <text class="gt-sub" x="215" y="248">the ones worth your time</text>
+          <path class="gline ln-n" pathLength="1" style="--d:.72s" d="M120 164 V184" />
+          <path class="gtip ln-n" style="--d:.86s" d="M116 180 L120 184 L124 180" />
+          <g class="gnode" style="--d:.84s">
+            <rect class="gcard" x="20" y="188" width="200" height="50" rx="12" />
+            <text class="gt-title" x="120" y="209">Decision maker</text>
+            <circle class="gav gav--1" cx="120" cy="223" r="7" style="--d:1.45s" />
           </g>
-          <path class="gline ln-n" pathLength="1" style="--d:1s" d="M215 262 V292" />
-          <path class="gtip ln-n" style="--d:1.17s" d="M210 287 L215 292 L220 287" />
-          <g class="gnode" style="--d:1.15s">
-            <rect class="gcard" x="95" y="300" width="240" height="74" rx="14" />
-            <text class="gt-title" x="215" y="326">Decision-maker</text>
-            <text class="gt-sub" x="215" y="345">the person who signs</text>
-            <circle class="gav gav--1" cx="215" cy="359" r="8" style="--d:1.6s" />
-          </g>
-          <path class="gline ln-n" pathLength="1" style="--d:1.35s" d="M215 374 V402" />
-          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 374 V402" />
-          <path class="gtip ln-n" style="--d:1.52s" d="M210 397 L215 402 L220 397" />
-          <g class="gnode" style="--d:1.5s">
-            <rect class="gdark" x="110" y="410" width="210" height="54" rx="16" />
-            <text class="gt-term" x="215" y="434">Conversation</text>
-            <rect class="gtermchip" x="152" y="442" width="126" height="15" rx="7.5" />
-            <text class="gt-termchip" x="215" y="452.5">at exactly the right time</text>
+          <path class="gline ln-n" pathLength="1" style="--d:1.02s" d="M120 238 V258" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M120 238 V258" />
+          <path class="gtip ln-n" style="--d:1.16s" d="M116 254 L120 258 L124 254" />
+          <g class="gnode" style="--d:1.14s">
+            <rect class="gdark" x="45" y="262" width="150" height="44" rx="14" />
+            <text class="gt-term" x="120" y="289">Conversation</text>
           </g>
         </svg>
-        <p class="ex-copy">Sometimes a job posting tells you exactly when to talk.</p>
       </div>
 
     </div>
-
-    <p class="ex-more rise">These are examples, not the menu. <b>Email history</b> becomes dormant opportunities, <b>sales calls</b> become a relationship graph, <b>conference speakers</b> become ICP matches. We build custom systems around whatever you already have.</p>
   </section>
 
-  <!-- ===================== How we work ===================== -->
-  <section class="how">
-    <p class="sec-eyebrow rise">How we work</p>
-    <h2 class="sec-title rise">We build the system. Then we run it.</h2>
-
-    <div class="how-row rise">
-      <div class="how-step">
-        <strong>Discover</strong>
-        <span>Find the sources of opportunity.</span>
-      </div>
-      <span class="how-link"><svg viewBox="0 0 54 24"><path d="M4 12 H44 M44 12 L36 6 M44 12 L36 18" /></svg></span>
-      <div class="how-step">
-        <strong>Build</strong>
-        <span>Create the custom GTM system.</span>
-      </div>
-      <span class="how-link"><svg viewBox="0 0 54 24"><path d="M4 12 H44 M44 12 L36 6 M44 12 L36 18" /></svg></span>
-      <div class="how-step">
-        <strong>Run</strong>
-        <span>Keep opportunities moving toward conversations.</span>
-      </div>
-    </div>
-
-    <div class="yours rise">
-      <b>Your system. Your data.</b>
-      <span>Built on your infrastructure whenever possible.</span>
-    </div>
-  </section>
 
   <!-- ===================== Bottom (end.avif) : final CTA + footer ===================== -->
   <div class="bottom">
     <section class="footer-cta">
       <div class="cta-card rise">
-        <h2>You&rsquo;re probably sitting on more opportunities than you think.</h2>
+        <h2>What opportunities are you sitting on?</h2>
+        <p>Let&rsquo;s find out.</p>
         <div class="btns">
           <button class="btn btn-primary" data-open-quiz>Find my opportunities &rarr;</button>
         </div>
@@ -1224,21 +949,19 @@
     function sub(p, a, b) { return clamp((p - a) / (b - a), 0, 1); }
 
     /* ---------- story element refs ---------- */
-    const ph = [1,2,3,4,5].map(i => document.getElementById('ph' + i));
-    const srcCards = [...document.querySelectorAll('[data-m1]')];
-    const wires = [1,2,3,4].map(i => document.getElementById('w' + i));
-    const wireDots = document.getElementById('wire-dots');
-    const mWire = document.getElementById('m-wire');
-    const tmNode = document.getElementById('tm-node');
-    const opPills = [...document.querySelectorAll('[data-op]')];
-    const layerSources = document.getElementById('layer-sources');
-    const layerPeople = document.getElementById('layer-people');
+    const ph1 = document.getElementById('ph1');
+    const ph1sub = document.getElementById('ph1sub');
+    const ph2 = document.getElementById('ph2');
+    const ph3 = document.getElementById('ph3');
+    const chips = [...document.querySelectorAll('[data-c]')];
+    const wires = [1,2,3,4,5,6].map(i => document.getElementById('w' + i));
+    const layerMap = document.getElementById('layer-map');
+    const mapTrack = document.getElementById('map-track');
     const personCards = [...document.querySelectorAll('[data-p]')];
     const layerFunnel = document.getElementById('layer-funnel');
     const funnelAvs = [...document.querySelectorAll('[data-f]')];
     const funnelMerges = [...document.querySelectorAll('.fm')];
     const convBox = document.getElementById('conv-box');
-    const crmNote = document.getElementById('crm-note');
     const fline = document.getElementById('fline');
     const pipeBox = document.getElementById('pipe-box');
 
@@ -1248,17 +971,16 @@
     }
 
     /* ---------- scene lengths (recomputed on resize) ----------
-       hero zoom, then four story moments, then a short hold before unpinning. */
-    let heroScroll = 0, L1 = 0, L2 = 0, L3 = 0, L4 = 0, holdScroll = 0, totalScroll = 0;
+       hero zoom, then three story moments, then a short hold before unpinning. */
+    let heroScroll = 0, L1 = 0, L2 = 0, L3 = 0, holdScroll = 0, totalScroll = 0;
     function measure() {
       const vh = window.innerHeight;
       heroScroll = Math.round(vh * 0.9);
       L1 = Math.round(vh * 0.85);
       L2 = Math.round(vh * 1.0);
-      L3 = Math.round(vh * 0.9);
-      L4 = Math.round(vh * 1.05);
+      L3 = Math.round(vh * 1.05);
       holdScroll = Math.round(vh * 0.4);
-      totalScroll = heroScroll + L1 + L2 + L3 + L4 + holdScroll;
+      totalScroll = heroScroll + L1 + L2 + L3 + holdScroll;
       intro.style.height = (totalScroll + vh) + 'px';
       // scale the story so the whole diagram always fits one screen
       if (window.innerWidth > 640) {
@@ -1292,58 +1014,46 @@
       const p1 = clamp(t / L1, 0, 1);
       const p2 = clamp((t - L1) / L2, 0, 1);
       const p3 = clamp((t - L1 - L2) / L3, 0, 1);
-      const p4 = clamp((t - L1 - L2 - L3) / L4, 0, 1);
 
-      /* moment 1: the four source groups pop in, one after another */
-      srcCards.forEach((el, i) => fade(el, sub(p1, 0.06 + i * 0.17, 0.3 + i * 0.17), 18));
+      /* moment 1: the six sources pop in, one after another */
+      chips.forEach((el, i) => fade(el, sub(p1, 0.04 + i * 0.11, 0.26 + i * 0.11), 16));
 
-      /* moment 2: wires draw toward the core, then the three operations */
+      /* moment 2: the map slides left, wires fan out, the buyers appear */
+      if (window.innerWidth > 640) {
+        const shift = sub(p2, 0, 0.4);
+        const eased = 1 - Math.pow(1 - shift, 3);
+        mapTrack.style.transform = 'translateX(' + (240 * (1 - eased)).toFixed(1) + 'px)';
+      } else {
+        mapTrack.style.transform = '';
+      }
       wires.forEach((w, i) => {
-        w.style.strokeDashoffset = (100 * (1 - sub(p2, 0.04 + i * 0.07, 0.42 + i * 0.07))).toFixed(1);
+        w.style.strokeDashoffset = (100 * (1 - sub(p2, 0.12 + i * 0.05, 0.48 + i * 0.05))).toFixed(1);
       });
-      fade(mWire, sub(p2, 0.05, 0.35));
-      // glowing dots start flowing once every wire has finished drawing
-      wireDots.style.opacity = (p2 >= 0.68 && p3 < 0.05) ? '1' : '0';
-      const core = sub(p2, 0.3, 0.55);
-      tmNode.style.opacity = core.toFixed(3);
-      tmNode.style.transform = (window.innerWidth > 640 ? 'translateX(-50%) ' : '')
-        + 'scale(' + (0.92 + core * 0.08).toFixed(3) + ')';
-      opPills.forEach((el, i) => fade(el, sub(p2, 0.58 + i * 0.09, 0.78 + i * 0.09), 10));
+      personCards.forEach((el, i) => fade(el, sub(p2, 0.45 + i * 0.12, 0.68 + i * 0.12), 20));
 
-      /* layer visibility: sources fade as the people arrive, and so on */
-      fade(layerSources, 1 - sub(p3, 0, 0.22));
-      layerSources.style.visibility = p3 >= 0.22 ? 'hidden' : 'visible';
+      /* moment 3: everything converges into one outcome */
+      fade(layerMap, 1 - sub(p3, 0, 0.22));
+      layerMap.style.visibility = p3 >= 0.22 ? 'hidden' : 'visible';
 
-      fade(layerPeople, Math.min(sub(p3, 0.14, 0.34), 1 - sub(p4, 0, 0.2)));
-      layerPeople.style.visibility = (p3 < 0.14 || p4 >= 0.2) ? 'hidden' : 'visible';
-      personCards.forEach((el, i) => fade(el, Math.min(sub(p3, 0.16 + i * 0.13, 0.38 + i * 0.13), 1 - sub(p4, 0, 0.2)), 20));
-
-      /* moment 4: the prospects converge into one outcome */
-      const funnelO = sub(p4, 0.14, 0.32);
-      fade(layerFunnel, funnelO);
-      layerFunnel.style.visibility = p4 < 0.14 ? 'hidden' : 'visible';
-      funnelAvs.forEach((el, i) => fade(el, sub(p4, 0.14 + i * 0.05, 0.28 + i * 0.05), 10));
+      fade(layerFunnel, sub(p3, 0.14, 0.32));
+      layerFunnel.style.visibility = p3 < 0.14 ? 'hidden' : 'visible';
+      funnelAvs.forEach((el, i) => fade(el, sub(p3, 0.14 + i * 0.05, 0.28 + i * 0.05), 10));
       funnelMerges.forEach(m => {
-        m.style.strokeDashoffset = (100 * (1 - sub(p4, 0.26, 0.48))).toFixed(1);
+        m.style.strokeDashoffset = (100 * (1 - sub(p3, 0.26, 0.48))).toFixed(1);
       });
-      fade(convBox, sub(p4, 0.44, 0.58), 12);
-      fade(crmNote, sub(p4, 0.52, 0.64));
-      fline.style.strokeDashoffset = (100 * (1 - sub(p4, 0.58, 0.72))).toFixed(1);
-      const pipe = sub(p4, 0.72, 0.88);
+      fade(convBox, sub(p3, 0.44, 0.58), 12);
+      fline.style.strokeDashoffset = (100 * (1 - sub(p3, 0.58, 0.72))).toFixed(1);
+      const pipe = sub(p3, 0.72, 0.88);
       pipeBox.style.opacity = pipe.toFixed(3);
       pipeBox.style.transform = 'scale(' + (0.9 + pipe * 0.1).toFixed(3) + ')';
       pipeBox.classList.toggle('lit', pipe >= 0.99);
 
       /* the phrases, crossfading in sync with the diagram */
-      const phO = [
-        Math.min(sub(p1, 0.02, 0.16), 1 - sub(p2, 0.0, 0.22)),                 // they're already somewhere
-        Math.min(sub(p2, 0.28, 0.46), 1 - sub(p3, 0.0, 0.18)),                 // find the right people
-        Math.min(sub(p3, 0.14, 0.32), 1 - sub(p4, 0.0, 0.16)),                 // know why they matter
-        Math.min(sub(p4, 0.14, 0.32), 1 - sub(p4, 0.62, 0.74)),                // start the conversation
-        sub(p4, 0.7, 0.86)                                                     // build pipeline
-      ];
       const storyO = clamp((heroP - 0.55) / 0.35, 0, 1);
-      ph.forEach((el, i) => { el.style.opacity = (phO[i] * storyO).toFixed(3); });
+      ph1.style.opacity = (Math.min(sub(p1, 0.02, 0.16), 1 - sub(p2, 0, 0.2)) * storyO).toFixed(3);
+      ph1sub.style.opacity = (Math.min(sub(p1, 0.3, 0.5), 1 - sub(p2, 0, 0.16)) * storyO).toFixed(3);
+      ph2.style.opacity = (Math.min(sub(p2, 0.24, 0.42), 1 - sub(p3, 0, 0.18)) * storyO).toFixed(3);
+      ph3.style.opacity = (sub(p3, 0.14, 0.32) * storyO).toFixed(3);
     }
 
     function loop() {
@@ -1406,29 +1116,19 @@
       linkedin:   '<span class="cico"><img src="logos/sq-linkedin.png" alt=""></span>',
       newsletter: '<span class="cico"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="#FF6719" d="M2.5 3.5h19v2.7h-19zM2.5 8.3h19V11h-19zM2.5 13.1h19v7.9l-9.5-4.4-9.5 4.4z"/></svg></span>',
       youtube:    '<span class="cico"><svg viewBox="0 0 24 24" width="15" height="15"><rect x="1" y="4.6" width="22" height="14.8" rx="4" fill="#FF0000"/><path d="M9.8 8.7v6.6L15.8 12z" fill="#fff"/></svg></span>',
-      email:      '<span class="cico cico--fit"><img src="logos/sq-gmail.svg" alt=""></span>',
-      crm:        '<span class="cico"><img src="logos/sq-hubspot.png" alt=""></span>'
+      emailcrm:   '<span class="cico cico--fit"><img src="logos/sq-gmail.svg" alt=""></span>'
     };
     const SOURCES = [
-      { id: 'linkedin',   label: 'LinkedIn',   unit: 'people',      score: 90, what: 'Find ICPs already in your network' },
-      { id: 'newsletter', label: 'Newsletter', unit: 'subscribers', score: 85, what: 'Identify potential buyers reading you' },
-      { id: 'youtube',    label: 'YouTube',    unit: 'subscribers', score: 60, what: 'Identify the buyers in your audience' },
-      { id: 'email',      label: 'Email',      unit: 'contacts',    score: 70, what: 'Surface buyers hiding in your inbox' },
-      { id: 'crm',        label: 'CRM',        unit: 'contacts',    score: 75, what: 'Wake up past leads and dormant deals' },
-      { id: 'community',  label: 'Community',  unit: 'members',     score: 55, what: 'Qualify the members who match your ICP' },
-      { id: 'other',      label: 'Other',      unit: 'people',      score: 40, what: 'Map the reach you already have' }
+      { id: 'linkedin',   label: 'LinkedIn',    unit: 'people' },
+      { id: 'newsletter', label: 'Newsletter',  unit: 'subscribers' },
+      { id: 'youtube',    label: 'YouTube',     unit: 'subscribers' },
+      { id: 'emailcrm',   label: 'Email / CRM', unit: 'contacts' },
+      { id: 'community',  label: 'Community',   unit: 'members' },
+      { id: 'other',      label: 'Other',       unit: 'people' }
     ];
-    const EXTRAS = [
-      { id: 'emailhist',   label: 'Email history',        score: 68, what: 'Surface dormant opportunities' },
-      { id: 'pastleads',   label: 'Past leads / CRM',     score: 72, what: 'Wake up past leads and dormant deals' },
-      { id: 'salescalls',  label: 'Sales calls',          score: 62, what: 'Rebuild the relationship graph from your calls' },
-      { id: 'competitors', label: 'LinkedIn competitors', score: 80, what: 'Detect relevant engagement', rlabel: 'Competitors' },
-      { id: 'hiring',      label: 'Hiring signals',       score: 65, what: 'Catch companies at exactly the right moment' },
-      { id: 'events',      label: 'Events / conferences', score: 58, what: 'Turn speaker and attendee lists into ICP matches', rlabel: 'Events' },
-      { id: 'notsure',     label: 'Not sure',             score: 0,  what: '' }
-    ];
+    const EXTRAS = ['Competitors', 'Email history', 'Past leads', 'Hiring signals', 'Events', 'Not sure'];
     const SELLS = ['Consulting / Services', 'Agency', 'SaaS', 'Recruiting', 'Other'];
-    const VALUES = ['< $10K', '$10–25K', '$25–50K', '$50–100K', '$100K+'];
+    const VALUES = ['< $10K', '$10\u201325K', '$25\u201350K', '$50\u2013100K', '$100K+'];
 
     const state = { sources: [], sizes: {}, sell: '', value: '', extras: [], contact: {} };
     let qstep = 1;
@@ -1464,7 +1164,7 @@
 
     function nav(showBack, nextLabel, onNext, onBack) {
       const n = document.createElement('div'); n.className = 'qnav';
-      const back = document.createElement('button'); back.className = 'qback'; back.textContent = '← Back';
+      const back = document.createElement('button'); back.className = 'qback'; back.textContent = '\u2190 Back';
       if (!showBack) back.hidden = true;
       back.addEventListener('click', onBack);
       const next = document.createElement('button'); next.className = 'btn btn-primary'; next.innerHTML = nextLabel;
@@ -1487,15 +1187,12 @@
         stepLabel.textContent = 'Step 1 of 4';
         h.textContent = 'Where do you already have reach?';
         qbody.append(stepLabel, h);
-        const hint = document.createElement('p'); hint.className = 'qhint';
-        hint.textContent = 'Newsletter covers Substack, Beehiiv and the rest. Pick everything that applies.';
-        qbody.append(hint);
         qbody.append(chipRow(SOURCES, state.sources, (id, on) => {
           if (on) { if (!state.sources.includes(id)) state.sources.push(id); }
-          else state.sources = state.sources.filter(s => s !== id);
+          else state.sources = state.sources.filter(x => x !== id);
         }));
         const e = document.createElement('p'); e.className = 'qerr'; qbody.append(e);
-        qbody.append(nav(false, 'Continue →', () => {
+        qbody.append(nav(false, 'Continue \u2192', () => {
           if (!state.sources.length) return err('Pick at least one.');
           qstep = 2; renderQuiz();
         }));
@@ -1505,11 +1202,8 @@
         stepLabel.textContent = 'Step 2 of 4';
         h.textContent = 'Roughly how large?';
         qbody.append(stepLabel, h);
-        const hint = document.createElement('p'); hint.className = 'qhint';
-        hint.textContent = 'Ballpark numbers are perfect.';
-        qbody.append(hint);
         state.sources.forEach(id => {
-          const src = SOURCES.find(s => s.id === id);
+          const src = SOURCES.find(x => x.id === id);
           const f = document.createElement('div'); f.className = 'qfield';
           const lab = document.createElement('label');
           lab.innerHTML = src.label + ' <small>' + src.unit + '</small>';
@@ -1519,7 +1213,7 @@
           inp.addEventListener('input', () => { state.sizes[id] = inp.value; });
           f.append(lab, inp); qbody.append(f);
         });
-        qbody.append(nav(true, 'Continue →', () => { qstep = 3; renderQuiz(); }, () => { qstep = 1; renderQuiz(); }));
+        qbody.append(nav(true, 'Continue \u2192', () => { qstep = 3; renderQuiz(); }, () => { qstep = 1; renderQuiz(); }));
       }
 
       if (qstep === 3) {
@@ -1532,7 +1226,7 @@
         qbody.append(sub2);
         qbody.append(chipRow(VALUES, [state.value], (id, on) => { state.value = on ? id : ''; }, true));
         const e = document.createElement('p'); e.className = 'qerr'; qbody.append(e);
-        qbody.append(nav(true, 'Continue →', () => {
+        qbody.append(nav(true, 'Continue \u2192', () => {
           if (!state.sell) return err('Pick what you sell.');
           qstep = 4; renderQuiz();
         }, () => { qstep = 2; renderQuiz(); }));
@@ -1544,47 +1238,17 @@
         qbody.append(stepLabel, h);
         qbody.append(chipRow(EXTRAS, state.extras, (id, on) => {
           if (on) { if (!state.extras.includes(id)) state.extras.push(id); }
-          else state.extras = state.extras.filter(s => s !== id);
+          else state.extras = state.extras.filter(x => x !== id);
         }));
-        qbody.append(nav(true, 'See my opportunities →', () => { qstep = 5; renderQuiz(); }, () => { qstep = 3; renderQuiz(); }));
+        qbody.append(nav(true, 'Continue \u2192', () => { qstep = 5; renderQuiz(); }, () => { qstep = 3; renderQuiz(); }));
       }
 
       if (qstep === 5) {
-        stepLabel.textContent = 'Your opportunities';
-        h.textContent = '3 places we’d look first';
+        stepLabel.textContent = 'Last step';
+        h.textContent = 'Let\u2019s find out.';
         qbody.append(stepLabel, h);
-
-        // rank the selected sources + extras, biggest signals first
-        const parseSize = v => parseInt(String(v || '').replace(/[^0-9]/g, ''), 10) || 0;
-        const cands = [];
-        state.sources.forEach(id => {
-          const s = SOURCES.find(x => x.id === id);
-          const n = parseSize(state.sizes[id]);
-          cands.push({ label: s.label, size: n ? n.toLocaleString('en-US') + ' ' + s.unit : '',
-                       score: s.score + Math.min(n / 1000, 40), what: s.what });
-        });
-        state.extras.forEach(id => {
-          const x = EXTRAS.find(e => e.id === id);
-          if (x && x.score) cands.push({ label: x.rlabel || x.label, size: '', score: x.score, what: x.what });
-        });
-        cands.sort((a, b) => b.score - a.score);
-        const top = cands.slice(0, 3);
-
-        top.forEach(c => {
-          const r = document.createElement('div'); r.className = 'rrow';
-          r.innerHTML = '<span class="rname">' + c.label + '</span>'
-            + '<span class="rsize">' + c.size + '</span>'
-            + '<span class="rwhat">→ ' + c.what + '</span>';
-          qbody.append(r);
-        });
-
-        const sub2 = document.createElement('p'); sub2.className = 'qsub';
-        sub2.style.marginTop = '26px';
-        sub2.textContent = 'Let’s map what we’d build first.';
-        qbody.append(sub2);
-
-        [['name', 'Name', 'text'], ['email', 'Work email', 'email'],
-         ['company', 'Company', 'text'], ['website', 'Website / LinkedIn', 'text']].forEach(([id, label, type]) => {
+        [['name', 'Name', 'text'], ['company', 'Company', 'text'],
+         ['email', 'Work email', 'email'], ['website', 'Website / LinkedIn', 'text']].forEach(([id, label, type]) => {
           const f = document.createElement('div'); f.className = 'qfield';
           const lab = document.createElement('label'); lab.textContent = label;
           const inp = document.createElement('input'); inp.type = type;
@@ -1593,9 +1257,9 @@
           f.append(lab, inp); qbody.append(f);
         });
         const e = document.createElement('p'); e.className = 'qerr'; qbody.append(e);
-        qbody.append(nav(true, 'Send →', () => {
+        qbody.append(nav(true, 'Find my opportunities \u2192', () => {
           if (!state.contact.name || !state.contact.email || !/.+@.+\..+/.test(state.contact.email))
-            return err('Your name and a valid work email, and we’re good.');
+            return err('Your name and a valid work email, and we\u2019re good.');
           if (LEAD_ENDPOINT) {
             fetch(LEAD_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(state), keepalive: true }).catch(() => {});
@@ -1608,11 +1272,11 @@
         const t = document.createElement('div'); t.className = 'qthanks';
         const cal = CALENDLY + '?name=' + encodeURIComponent(state.contact.name || '')
                   + '&email=' + encodeURIComponent(state.contact.email || '');
-        t.innerHTML = '<div class="big">👋</div>'
-          + '<h3>Got it. We’ll map your opportunities.</h3>'
-          + '<p>We’ll come back to you at ' + (state.contact.email || 'your email')
-          + ' with what we’d build first. Want to skip the wait?</p>'
-          + '<a class="btn btn-primary" href="' + cal + '" target="_blank" rel="noopener">Book a 30 min call →</a>';
+        t.innerHTML = '<div class="big">\ud83d\udc4b</div>'
+          + '<h3>Got it. We\u2019ll map your opportunities.</h3>'
+          + '<p>We\u2019ll come back to you at ' + (state.contact.email || 'your email')
+          + ' with what we\u2019d look at first. Want to skip the wait?</p>'
+          + '<a class="btn btn-primary" href="' + cal + '" target="_blank" rel="noopener">Book a 30 min call \u2192</a>';
         qbody.append(t);
       }
     }
