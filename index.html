@@ -347,39 +347,6 @@
     96%  { stroke-dashoffset: 8;   opacity: 1; }
     100% { stroke-dashoffset: 0.4; opacity: 0; }
   }
-  /* four-segment variant for the competitor example (it has 4 hops) */
-  .dotq--1 { animation: qseg1 4s linear infinite; }
-  .dotq--2 { animation: qseg2 4s linear infinite; }
-  .dotq--3 { animation: qseg3 4s linear infinite; }
-  .dotq--4 { animation: qseg4 4s linear infinite; }
-  @keyframes qseg1 {
-    0%   { stroke-dashoffset: 100; opacity: 0; }
-    4%   { stroke-dashoffset: 88;  opacity: 1; }
-    21%  { stroke-dashoffset: 10;  opacity: 1; }
-    25%  { stroke-dashoffset: 0.4; opacity: 0; }
-    100% { stroke-dashoffset: 0.4; opacity: 0; }
-  }
-  @keyframes qseg2 {
-    0%, 25% { stroke-dashoffset: 100; opacity: 0; }
-    29%  { stroke-dashoffset: 88;  opacity: 1; }
-    46%  { stroke-dashoffset: 10;  opacity: 1; }
-    50%  { stroke-dashoffset: 0.4; opacity: 0; }
-    100% { stroke-dashoffset: 0.4; opacity: 0; }
-  }
-  @keyframes qseg3 {
-    0%, 50% { stroke-dashoffset: 100; opacity: 0; }
-    54%  { stroke-dashoffset: 88;  opacity: 1; }
-    71%  { stroke-dashoffset: 10;  opacity: 1; }
-    75%  { stroke-dashoffset: 0.4; opacity: 0; }
-    100% { stroke-dashoffset: 0.4; opacity: 0; }
-  }
-  @keyframes qseg4 {
-    0%, 75% { stroke-dashoffset: 100; opacity: 0; }
-    79%  { stroke-dashoffset: 88;  opacity: 1; }
-    96%  { stroke-dashoffset: 8;   opacity: 1; }
-    100% { stroke-dashoffset: 0.4; opacity: 0; }
-  }
-
   /* hand-drawn annotation (same Caveat language as before) */
   .anno {
     position: absolute; display: flex; align-items: center; gap: 2px; width: max-content;
@@ -460,78 +427,65 @@
   .ex-head .num { font-size: 13px; color: #2f6fe0; opacity: .7; }
   .ex-head .name { font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: #16314d; }
 
-  /* official-logo tile above each flow (GPC tile language) */
-  .ex-tile {
-    position: relative; width: 50px; height: 50px; border-radius: 14px; margin-bottom: 16px;
-    overflow: visible;
-    opacity: 0; transform: translateY(9px) scale(.94);
-    transition: opacity .5s cubic-bezier(.2,.8,.2,1), transform .5s cubic-bezier(.2,.8,.2,1);
-  }
-  .ex-tile .art {
-    width: 100%; height: 100%; border-radius: 14px; overflow: hidden;
-    display: flex; align-items: center; justify-content: center; background: #fff;
-    box-shadow: 0 16px 30px -16px rgba(22,49,77,.55), 0 0 0 1px rgba(22,49,77,.07);
-  }
-  .ex-tile .art img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .ex-tile .art svg { display: block; }
-  .ex-card.in .ex-tile { opacity: 1; transform: none; }
-  /* live-monitoring ping on the competitor tile, "new" ping on the job tile */
-  .ex-tile .ping {
-    position: absolute; top: -4px; right: -4px; width: 13px; height: 13px; border-radius: 50%;
-    border: 2.5px solid #fff; background: #e5484d;
-  }
-  .ex-tile .ping--green { background: #30a46c; }
-  .ex-tile .ping::after {
-    content: ""; position: absolute; inset: -2.5px; border-radius: 50%;
-    border: 2px solid currentColor; color: #e5484d; opacity: 0;
-  }
-  .ex-tile .ping--green::after { color: #30a46c; }
-  .ex-card.in .ex-tile .ping::after { animation: ping 2s ease-out infinite; }
-  @keyframes ping { 0% { transform: scale(.6); opacity: .9; } 70%, 100% { transform: scale(2.1); opacity: 0; } }
+  /* ---- GPC-flow diagram language, one mini system per card ----
+     logo tiles as sources, colored lanes with arrow tips, white step cards
+     with a title + a quiet sub-line, dark terminal node. Lines draw, nodes
+     rise, all staggered via --d, exactly like the reference. */
+  .gflow { width: 100%; max-width: 430px; height: auto; display: block; overflow: visible; margin: 0 auto; }
+  .gcard { fill: #fff; stroke: rgba(22,49,77,.12);
+    filter: drop-shadow(0 2px 3px rgba(11,18,32,.05)) drop-shadow(0 12px 20px rgba(11,18,32,.08)); }
+  .gtile { fill: #fff;
+    filter: drop-shadow(0 2px 3px rgba(11,18,32,.06)) drop-shadow(0 10px 18px rgba(11,18,32,.12)); }
+  .gring { fill: none; stroke: rgba(22,49,77,.13); }
+  .gdark { fill: url(#gdgrad);
+    filter: drop-shadow(0 14px 22px rgba(20,22,45,.4)); }
+  .gline { fill: none; stroke-width: 1.6; stroke-linecap: round;
+    stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .gtip  { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .ln-o { stroke: #FF6719; }        /* the Substack lane */
+  .ln-b { stroke: #0A66C2; }        /* the LinkedIn lane */
+  .ln-n { stroke: #93a8c0; }        /* neutral lane */
+  .gt-title { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 14.5px;
+    letter-spacing: -.01em; fill: #16314d; text-anchor: middle; }
+  .gt-sub { font-family: "Inter", sans-serif; font-size: 11.5px; fill: #6a7689; text-anchor: middle; }
+  .gt-badge { font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 9.5px;
+    letter-spacing: .12em; fill: #fff; text-anchor: middle; }
+  .gbadge { fill: #16191F; }
+  .gt-term { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 16px;
+    letter-spacing: -.01em; fill: #fff; text-anchor: middle; }
+  .gt-termchip { font-family: "Inter", sans-serif; font-size: 9.5px; fill: rgba(255,255,255,.78); text-anchor: middle; }
+  .gtermchip { fill: rgba(255,255,255,.12); }
+  .gt-more { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 14px;
+    fill: #16314d; text-anchor: middle; }
+  .gt-more-sub { font-family: "Inter", sans-serif; font-size: 8.5px; fill: #6a7689; text-anchor: middle; }
+  .gav { stroke: #fff; stroke-width: 2;
+    transform: scale(0); transform-box: fill-box; transform-origin: center; }
+  .gav--1 { fill: #79a8ff; } .gav--2 { fill: #4fc3a1; } .gav--3 { fill: #ff9d76; }
+  .gping { fill: none; stroke: #e5484d; stroke-width: 2;
+    transform-box: fill-box; transform-origin: center; opacity: 0; }
 
-  /* tiny avatar cluster that pops inside a node once it lands */
-  .mavs { display: inline-flex; margin-left: 9px; vertical-align: -3px; }
-  .mavs i {
-    width: 17px; height: 17px; border-radius: 50%; border: 2px solid #fff; margin-left: -5px;
-    transform: scale(0); transition: transform .4s cubic-bezier(.34,1.56,.64,1);
-  }
-  .mavs i:first-child { margin-left: 0; }
-  .mavs i:nth-child(1) { background: linear-gradient(135deg,#79a8ff,#b9aaff); transition-delay: .95s; }
-  .mavs i:nth-child(2) { background: linear-gradient(135deg,#4fc3a1,#2f9e8f); transition-delay: 1.08s; }
-  .mavs i:nth-child(3) { background: linear-gradient(135deg,#ff9d76,#f2709c); transition-delay: 1.21s; }
-  .ex-card.in .mavs i { transform: scale(1); }
-  .ex-flow { display: flex; flex-direction: column; align-items: center; }
-  .ex-node {
-    background: #f5f9fe; border: 1px solid rgba(47,111,224,.14); border-radius: 999px;
-    padding: 9px 20px; white-space: nowrap;
-    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 14px;
-    letter-spacing: -.01em; color: #16314d;
-    opacity: 0; transform: translateY(9px);
-    transition: opacity .45s cubic-bezier(.2,.8,.2,1), transform .45s cubic-bezier(.2,.8,.2,1);
-  }
-  .ex-node--start { background: #fff; border: 1px solid rgba(22,49,77,.12);
-    font-weight: 700; box-shadow: 0 14px 26px -18px rgba(22,49,77,.5); }
-  .ex-node--end { background: #2f6fe0; border: none; color: #fff;
-    box-shadow: 0 14px 26px -14px rgba(47,111,224,.55); }
-  .ex-card.in .ex-node--end { animation: endpulse 2.4s ease-in-out 1.4s infinite; }
-  @keyframes endpulse {
-    0%, 100% { box-shadow: 0 14px 26px -14px rgba(47,111,224,.55), 0 0 0 0 rgba(47,111,224,.32); }
-    50%      { box-shadow: 0 14px 26px -14px rgba(47,111,224,.55), 0 0 0 10px rgba(47,111,224,0); }
-  }
-  .ex-line { width: 24px; height: 34px; }
-  .ex-line svg { width: 100%; height: 100%; display: block; overflow: visible; }
-  .ex-line .lpath--base { stroke-dasharray: 100; stroke-dashoffset: 100;
-    transition: stroke-dashoffset .5s ease; }
-  .ex-line .lpath--dot, .ex-line .lpath--dotq { opacity: 0; }
+  /* entrance: lines draw, nodes/tips rise, avatars pop, all when the card scrolls in */
+  .gnode { opacity: 0; transform: translateY(9px); }
+  .gtip { opacity: 0; }
+  .ex-card.in .gline { animation: gdraw .5s ease-in-out forwards; animation-delay: var(--d, 0s); }
+  .ex-card.in .gnode { animation: grise .5s cubic-bezier(.2,.8,.2,1) forwards; animation-delay: var(--d, 0s); }
+  .ex-card.in .gtip { animation: gfade .3s ease forwards; animation-delay: var(--d, 0s); }
+  .ex-card.in .gav { animation: gpop .45s cubic-bezier(.34,1.56,.64,1) forwards; animation-delay: var(--d, 1.3s); }
+  .ex-card.in .gping { animation: gping 2s ease-out 1.2s infinite; }
+  @keyframes gdraw { to { stroke-dashoffset: 0; } }
+  @keyframes grise { to { opacity: 1; transform: none; } }
+  @keyframes gfade { to { opacity: 1; } }
+  @keyframes gpop { to { transform: scale(1); } }
+  @keyframes gping { 0% { transform: scale(.55); opacity: .9; } 70%, 100% { transform: scale(2.4); opacity: 0; } }
+  /* one glowing dot rides the last lane into the terminal, once the diagram is built */
+  .ex-card .gd { animation: none; opacity: 0; }
+  .ex-card.in .gd { animation: seg3 3s linear 1.9s infinite; }
+
   .ex-copy {
     margin-top: 22px; text-align: center;
     font-family: "Caveat", cursive; font-weight: 700; font-size: 24px; color: #16314d;
-    opacity: 0; transition: opacity .6s ease .5s;
+    opacity: 0; transition: opacity .6s ease 1.2s;
   }
-  /* staggered reveal once the card scrolls in */
-  .ex-card.in .ex-node { opacity: 1; transform: none; }
-  .ex-card.in .ex-line .lpath--base { stroke-dashoffset: 0; }
-  .ex-card.in .ex-line .lpath--dot, .ex-card.in .ex-line .lpath--dotq { opacity: 1; }
   .ex-card.in .ex-copy { opacity: 1; }
 
   .ex-more {
@@ -776,10 +730,10 @@
 
   @media (prefers-reduced-motion: reduce) {
     .track { animation: none; }
-    .lpath--dot, .lpath--dotq, .dot--1, .dot--2, .dot--3,
-    .dotq--1, .dotq--2, .dotq--3, .dotq--4 { animation: none; opacity: 0 !important; }
-    .dbox--pipeline.lit, .dbox--pipeline.lit::after,
-    .ex-card.in .ex-node--end, .ex-card.in .ex-tile .ping::after { animation: none; }
+    .lpath--dot, .dot--1, .dot--2, .dot--3 { animation: none; opacity: 0 !important; }
+    .dbox--pipeline.lit, .dbox--pipeline.lit::after, .ex-card.in .gping { animation: none; }
+    .ex-card.in .gline { animation-duration: .01s; }
+    .ex-card.in .gnode, .ex-card.in .gtip, .ex-card.in .gav { animation-duration: .01s; }
     .rise { transition: none; opacity: 1; transform: none; }
   }
 </style>
@@ -994,106 +948,211 @@
     <p class="sec-eyebrow rise">Real examples</p>
     <h2 class="sec-title rise">What this can look like.</h2>
 
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+      <linearGradient id="gdgrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#2f3358" /><stop offset="1" stop-color="#1c1e36" />
+      </linearGradient>
+    </defs></svg>
+
     <div class="ex-grid">
 
       <div class="ex-card">
         <div class="ex-head"><span class="num">01</span><span class="name">Newsletter</span></div>
-        <div class="ex-tile"><span class="art"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="#FF6719" d="M2.5 3.5h19v2.7h-19zM2.5 8.3h19V11h-19zM2.5 13.1h19v7.9l-9.5-4.4-9.5 4.4z"/></svg></span></div>
-        <div class="ex-flow">
-          <span class="ex-node ex-node--start" style="transition-delay:.05s"><b data-count="100" data-suffix="K">100K</b> subscribers</span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.15s" />
-            <path class="lpath lpath--dot dot--1" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node" style="transition-delay:.3s">Identify people</span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.4s" />
-            <path class="lpath lpath--dot dot--2" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node" style="transition-delay:.55s">ICP matches<span class="mavs"><i></i><i></i><i></i></span></span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.65s" />
-            <path class="lpath lpath--dot dot--3" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node ex-node--end" style="transition-delay:.8s">Conversations</span>
-        </div>
+        <svg class="gflow" viewBox="0 0 430 486" role="img" aria-label="Newsletter workflow: 100K subscribers, identify people, ICP matches, conversations">
+          <g class="gnode" style="--d:0s">
+            <rect class="gtile" x="187" y="4" width="56" height="56" rx="16" />
+            <path fill="#FF6719" d="M201 19h28v3.6h-28zM201 25.4h28V29h-28zM201 31.8h28v11.4l-14-6.4-14 6.4z"/>
+            <rect class="gring" x="187" y="4" width="56" height="56" rx="16" />
+          </g>
+          <path class="gline ln-o" pathLength="1" style="--d:.15s" d="M215 66 V96" />
+          <path class="gtip ln-o" style="--d:.32s" d="M210 91 L215 96 L220 91" />
+          <g class="gnode" style="--d:.3s">
+            <rect class="gcard" x="95" y="104" width="240" height="60" rx="14" />
+            <text class="gt-title" x="215" y="130" data-count="100" data-suffix="K subscribers">100K subscribers</text>
+            <text class="gt-sub" x="215" y="149">the audience you already own</text>
+          </g>
+          <path class="gline ln-o" pathLength="1" style="--d:.5s" d="M215 168 V198" />
+          <path class="gtip ln-o" style="--d:.67s" d="M210 193 L215 198 L220 193" />
+          <g class="gnode" style="--d:.65s">
+            <rect class="gcard" x="95" y="206" width="240" height="60" rx="14" />
+            <text class="gt-title" x="215" y="232">Identify people</text>
+            <text class="gt-sub" x="215" y="251">readers become named leads</text>
+          </g>
+          <path class="gline ln-o" pathLength="1" style="--d:.85s" d="M215 270 V300" />
+          <path class="gtip ln-o" style="--d:1.02s" d="M210 295 L215 300 L220 295" />
+          <g class="gnode" style="--d:1s">
+            <rect class="gcard" x="95" y="308" width="240" height="80" rx="14" />
+            <text class="gt-title" x="215" y="334">ICP matches</text>
+            <text class="gt-sub" x="215" y="353">the ones who fit what you sell</text>
+            <circle class="gav gav--1" cx="201" cy="369" r="8" style="--d:1.35s" />
+            <circle class="gav gav--2" cx="215" cy="369" r="8" style="--d:1.48s" />
+            <circle class="gav gav--3" cx="229" cy="369" r="8" style="--d:1.61s" />
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:1.2s" d="M215 392 V420" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 392 V420" />
+          <path class="gtip ln-n" style="--d:1.37s" d="M210 415 L215 420 L220 415" />
+          <g class="gnode" style="--d:1.35s">
+            <rect class="gdark" x="110" y="428" width="210" height="54" rx="16" />
+            <text class="gt-term" x="215" y="452">Conversations</text>
+            <rect class="gtermchip" x="157" y="460" width="116" height="15" rx="7.5" />
+            <text class="gt-termchip" x="215" y="470.5">with the right people</text>
+          </g>
+        </svg>
         <p class="ex-copy">Find the buyers already paying attention.</p>
       </div>
 
       <div class="ex-card">
         <div class="ex-head"><span class="num">02</span><span class="name">LinkedIn</span></div>
-        <div class="ex-tile"><span class="art"><img src="logos/sq-linkedin.png" alt="LinkedIn" /></span></div>
-        <div class="ex-flow">
-          <span class="ex-node ex-node--start" style="transition-delay:.05s">Connections + followers</span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.15s" />
-            <path class="lpath lpath--dot dot--1" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node" style="transition-delay:.3s">Qualify</span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.4s" />
-            <path class="lpath lpath--dot dot--2" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node" style="transition-delay:.55s">Priority buyers<span class="mavs"><i></i><i></i><i></i></span></span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.65s" />
-            <path class="lpath lpath--dot dot--3" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node ex-node--end" style="transition-delay:.8s">Conversations</span>
-        </div>
+        <svg class="gflow" viewBox="0 0 430 412" role="img" aria-label="LinkedIn workflow: connections and followers, qualified into priority buyers, conversations">
+          <g class="gnode" style="--d:0s">
+            <clipPath id="c2li"><rect x="187" y="4" width="56" height="56" rx="16" /></clipPath>
+            <image href="logos/sq-linkedin.png" x="187" y="4" width="56" height="56" clip-path="url(#c2li)" />
+            <rect class="gring" x="187" y="4" width="56" height="56" rx="16" />
+          </g>
+          <path class="gline ln-b" pathLength="1" style="--d:.15s" d="M215 66 C215 88, 110 84, 110 108" />
+          <path class="gline ln-b" pathLength="1" style="--d:.15s" d="M215 66 C215 88, 320 84, 320 108" />
+          <path class="gtip ln-b" style="--d:.34s" d="M105 103 L110 108 L115 103" />
+          <path class="gtip ln-b" style="--d:.34s" d="M315 103 L320 108 L325 103" />
+          <g class="gnode" style="--d:.32s">
+            <rect class="gcard" x="15" y="116" width="190" height="58" rx="14" />
+            <text class="gt-title" x="110" y="141">Connections</text>
+            <text class="gt-sub" x="110" y="160">your 1st-degree network</text>
+          </g>
+          <g class="gnode" style="--d:.42s">
+            <rect class="gcard" x="225" y="116" width="190" height="58" rx="14" />
+            <text class="gt-title" x="320" y="141">Followers</text>
+            <text class="gt-sub" x="320" y="160">people who chose you</text>
+          </g>
+          <path class="gline ln-b" pathLength="1" style="--d:.62s" d="M110 174 C110 200, 215 194, 215 220" />
+          <path class="gline ln-b" pathLength="1" style="--d:.62s" d="M320 174 C320 200, 215 194, 215 220" />
+          <path class="gtip ln-b" style="--d:.8s" d="M210 215 L215 220 L220 215" />
+          <g class="gnode" style="--d:.78s">
+            <rect class="gcard" x="95" y="228" width="240" height="80" rx="14" />
+            <text class="gt-title" x="215" y="254">Priority buyers</text>
+            <text class="gt-sub" x="215" y="273">qualified and ranked for you</text>
+            <circle class="gav gav--1" cx="201" cy="289" r="8" style="--d:1.3s" />
+            <circle class="gav gav--2" cx="215" cy="289" r="8" style="--d:1.43s" />
+            <circle class="gav gav--3" cx="229" cy="289" r="8" style="--d:1.56s" />
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:1s" d="M215 312 V344" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 312 V344" />
+          <path class="gtip ln-n" style="--d:1.17s" d="M210 339 L215 344 L220 339" />
+          <g class="gnode" style="--d:1.15s">
+            <rect class="gdark" x="110" y="352" width="210" height="54" rx="16" />
+            <text class="gt-term" x="215" y="376">Conversations</text>
+            <rect class="gtermchip" x="157" y="384" width="116" height="15" rx="7.5" />
+            <text class="gt-termchip" x="215" y="394.5">with the right people</text>
+          </g>
+        </svg>
         <p class="ex-copy">Find the right people already around you.</p>
       </div>
 
       <div class="ex-card">
         <div class="ex-head"><span class="num">03</span><span class="name">Competitor monitoring</span></div>
-        <div class="ex-tile"><span class="art"><img src="logos/sq-linkedin.png" alt="LinkedIn" /></span><span class="ping"></span></div>
-        <div class="ex-flow">
-          <span class="ex-node ex-node--start" style="transition-delay:.05s">Monitored LinkedIn profile</span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.13s" />
-            <path class="lpath lpath--dotq dotq--1" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node" style="transition-delay:.26s">New post</span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.34s" />
-            <path class="lpath lpath--dotq dotq--2" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node" style="transition-delay:.47s">Relevant engagers<span class="mavs"><i></i><i></i><i></i></span></span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.55s" />
-            <path class="lpath lpath--dotq dotq--3" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node" style="transition-delay:.68s">ICP matches</span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.76s" />
-            <path class="lpath lpath--dotq dotq--4" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node ex-node--end" style="transition-delay:.89s">Conversations</span>
-        </div>
+        <svg class="gflow" viewBox="0 0 430 470" role="img" aria-label="Competitor monitoring workflow: a monitored LinkedIn profile posts, relevant engagers become ICP matches, then conversations">
+          <g class="gnode" style="--d:0s">
+            <clipPath id="c3li"><rect x="187" y="8" width="56" height="56" rx="16" /></clipPath>
+            <image href="logos/sq-linkedin.png" x="187" y="8" width="56" height="56" clip-path="url(#c3li)" />
+            <rect class="gring" x="187" y="8" width="56" height="56" rx="16" />
+            <circle cx="243" cy="10" r="5" fill="#e5484d" stroke="#fff" stroke-width="2" />
+            <circle class="gping" cx="243" cy="10" r="5" />
+          </g>
+          <g class="gnode" style="--d:.12s">
+            <rect class="gbadge" x="257" y="26" width="92" height="20" rx="10" />
+            <text class="gt-badge" x="303" y="39.5">MONITORED</text>
+          </g>
+          <path class="gline ln-b" pathLength="1" style="--d:.2s" d="M215 70 V98" />
+          <path class="gtip ln-b" style="--d:.37s" d="M210 93 L215 98 L220 93" />
+          <g class="gnode" style="--d:.35s">
+            <rect class="gcard" x="95" y="106" width="240" height="58" rx="14" />
+            <text class="gt-title" x="215" y="131">New post</text>
+            <text class="gt-sub" x="215" y="150">every morning, the last 24 h</text>
+          </g>
+          <path class="gline ln-b" pathLength="1" style="--d:.55s" d="M215 164 V192" />
+          <path class="gtip ln-b" style="--d:.72s" d="M210 187 L215 192 L220 187" />
+          <g class="gnode" style="--d:.7s">
+            <rect class="gcard" x="95" y="200" width="240" height="80" rx="14" />
+            <text class="gt-title" x="215" y="226">Relevant engagers</text>
+            <text class="gt-sub" x="215" y="245">who liked, who commented</text>
+            <circle class="gav gav--1" cx="201" cy="261" r="8" style="--d:1.4s" />
+            <circle class="gav gav--2" cx="215" cy="261" r="8" style="--d:1.53s" />
+            <circle class="gav gav--3" cx="229" cy="261" r="8" style="--d:1.66s" />
+          </g>
+          <path class="gline ln-b" pathLength="1" style="--d:.9s" d="M215 280 V308" />
+          <path class="gtip ln-b" style="--d:1.07s" d="M210 303 L215 308 L220 303" />
+          <g class="gnode" style="--d:1.05s">
+            <rect class="gcard" x="95" y="316" width="240" height="58" rx="14" />
+            <text class="gt-title" x="215" y="341">ICP matches</text>
+            <text class="gt-sub" x="215" y="360">size, role, market fit</text>
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:1.25s" d="M215 374 V402" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 374 V402" />
+          <path class="gtip ln-n" style="--d:1.42s" d="M210 397 L215 402 L220 397" />
+          <g class="gnode" style="--d:1.4s">
+            <rect class="gdark" x="110" y="410" width="210" height="54" rx="16" />
+            <text class="gt-term" x="215" y="434">Conversations</text>
+            <rect class="gtermchip" x="157" y="442" width="116" height="15" rx="7.5" />
+            <text class="gt-termchip" x="215" y="452.5">with the right people</text>
+          </g>
+        </svg>
         <p class="ex-copy">Your competitors generate signals too.</p>
       </div>
 
       <div class="ex-card">
         <div class="ex-head"><span class="num">04</span><span class="name">Hiring signals</span></div>
-        <div class="ex-tile"><span class="art" style="background:linear-gradient(135deg,#2f3358,#1c1e36)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span><span class="ping ping--green"></span></div>
-        <div class="ex-flow">
-          <span class="ex-node ex-node--start" style="transition-delay:.05s">Job posted</span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.15s" />
-            <path class="lpath lpath--dot dot--1" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node" style="transition-delay:.3s">Relevant company</span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.4s" />
-            <path class="lpath lpath--dot dot--2" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node" style="transition-delay:.55s">Decision-maker<span class="mavs"><i></i></span></span>
-          <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
-            <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.65s" />
-            <path class="lpath lpath--dot dot--3" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
-          </svg></span>
-          <span class="ex-node ex-node--end" style="transition-delay:.8s">Conversation</span>
-        </div>
+        <svg class="gflow" viewBox="0 0 430 470" role="img" aria-label="Hiring signals workflow: job boards feed job posting signals, the decision-maker is identified, then a conversation">
+          <g class="gnode" style="--d:0s">
+            <clipPath id="c4li"><rect x="121" y="6" width="48" height="48" rx="14" /></clipPath>
+            <image href="logos/sq-linkedin.png" x="121" y="6" width="48" height="48" clip-path="url(#c4li)" />
+            <rect class="gring" x="121" y="6" width="48" height="48" rx="14" />
+          </g>
+          <g class="gnode" style="--d:.08s">
+            <rect class="gtile" x="191" y="6" width="48" height="48" rx="14" style="fill:url(#gdgrad)" />
+            <g fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="203" y="21.5" width="24" height="17.5" rx="2.5" />
+              <path d="M210 21.5 V18 a2.5 2.5 0 0 1 2.5 -2.5 h5 a2.5 2.5 0 0 1 2.5 2.5 v3.5" />
+            </g>
+          </g>
+          <g class="gnode" style="--d:.16s">
+            <rect class="gtile" x="261" y="6" width="48" height="48" rx="14" />
+            <rect class="gring" x="261" y="6" width="48" height="48" rx="14" />
+            <text class="gt-more" x="285" y="30">+6</text>
+            <text class="gt-more-sub" x="285" y="43">JOB BOARDS</text>
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:.3s" d="M145 58 C145 80, 215 76, 215 100" />
+          <path class="gline ln-n" pathLength="1" style="--d:.3s" d="M215 58 V100" />
+          <path class="gline ln-n" pathLength="1" style="--d:.3s" d="M285 58 C285 80, 215 76, 215 100" />
+          <path class="gtip ln-n" style="--d:.48s" d="M210 95 L215 100 L220 95" />
+          <g class="gnode" style="--d:.46s">
+            <rect class="gcard" x="95" y="108" width="240" height="58" rx="14" />
+            <text class="gt-title" x="215" y="133">Job posting signals</text>
+            <text class="gt-sub" x="215" y="152">every morning, jobs posted in the last 24 h</text>
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:.66s" d="M215 166 V196" />
+          <path class="gtip ln-n" style="--d:.83s" d="M210 191 L215 196 L220 191" />
+          <g class="gnode" style="--d:.8s">
+            <rect class="gcard" x="95" y="204" width="240" height="58" rx="14" />
+            <text class="gt-title" x="215" y="229">Relevant company</text>
+            <text class="gt-sub" x="215" y="248">the ones worth your time</text>
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:1s" d="M215 262 V292" />
+          <path class="gtip ln-n" style="--d:1.17s" d="M210 287 L215 292 L220 287" />
+          <g class="gnode" style="--d:1.15s">
+            <rect class="gcard" x="95" y="300" width="240" height="74" rx="14" />
+            <text class="gt-title" x="215" y="326">Decision-maker</text>
+            <text class="gt-sub" x="215" y="345">the person who signs</text>
+            <circle class="gav gav--1" cx="215" cy="359" r="8" style="--d:1.6s" />
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:1.35s" d="M215 374 V402" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 374 V402" />
+          <path class="gtip ln-n" style="--d:1.52s" d="M210 397 L215 402 L220 397" />
+          <g class="gnode" style="--d:1.5s">
+            <rect class="gdark" x="110" y="410" width="210" height="54" rx="16" />
+            <text class="gt-term" x="215" y="434">Conversation</text>
+            <rect class="gtermchip" x="152" y="442" width="126" height="15" rx="7.5" />
+            <text class="gt-termchip" x="215" y="452.5">at exactly the right time</text>
+          </g>
+        </svg>
         <p class="ex-copy">Sometimes a job posting tells you exactly when to talk.</p>
       </div>
 
