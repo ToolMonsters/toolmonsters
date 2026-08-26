@@ -131,6 +131,20 @@
   .logo--wix        { height: 23px; }
   .logo--base44     { height: 30px; }
 
+  /* fixed brand mark, always on top of the experience */
+  .brand {
+    position: fixed; top: 20px; left: 24px; z-index: 20;
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+  }
+  .brand img {
+    width: 38px; height: 38px; border-radius: 12px; display: block;
+    box-shadow: 0 10px 22px -10px rgba(22,49,77,.55), 0 0 0 2px rgba(255,255,255,.65);
+  }
+  .brand span {
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 17px;
+    letter-spacing: -.02em; color: #16314d; white-space: nowrap;
+  }
+
   /* ===================== The story (inside the pinned stage) ===================== */
   /* One evolving diagram, revealed as the mountains fade, then driven by scroll.
      Moment 1: the four source groups. Moment 2: they connect to Tool Monsters.
@@ -171,9 +185,21 @@
   .src strong {
     display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
     font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #2f6fe0;
-    margin-bottom: 9px;
+    margin-bottom: 11px;
   }
-  .src span { display: block; font-size: 13.5px; line-height: 1.65; color: #5a6a80; }
+  .srow { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: #33425a; }
+  .srow + .srow { margin-top: 8px; }
+  .sico {
+    width: 21px; height: 21px; border-radius: 6px; flex: 0 0 auto; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 5px 12px -7px rgba(22,49,77,.55); border: 1px solid rgba(22,49,77,.07);
+    background: #fff;
+  }
+  .sico img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sico--fit { padding: 3px; }
+  .sico--fit img { object-fit: contain; }
+  .sico svg { display: block; }
+  .sico--line { color: #2f6fe0; background: #f0f6ff; border-color: rgba(47,111,224,.16); }
   .src--audience      { left: 40px;  top: 90px; }
   .src--network       { left: 728px; top: 90px; }
   .src--relationships { left: 40px;  top: 402px; }
@@ -183,6 +209,8 @@
   .wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
   .wire { fill: none; stroke: #2f6fe0; stroke-width: 2; stroke-linecap: round;
           stroke-dasharray: 100; stroke-dashoffset: 100; }
+  /* once the wires are drawn, glowing dots keep flowing into the core */
+  #wire-dots { opacity: 0; transition: opacity .45s ease; }
 
   .dbox {
     position: relative; z-index: 1;
@@ -202,6 +230,10 @@
                 0 5px 14px -5px rgba(20,22,45,.55);
   }
   .dbox--product svg { flex: 0 0 auto; color: #a9b4ff; }
+  .dbox--product img {
+    width: 27px; height: 27px; border-radius: 8px; flex: 0 0 auto; display: block;
+    box-shadow: 0 0 0 1.5px rgba(255,255,255,.28), 0 4px 10px -4px rgba(0,0,0,.5);
+  }
   /* final box, the one business outcome */
   .dbox--final { background: #2f6fe0; border: none; color: #fff;
     box-shadow: 0 24px 44px -22px rgba(47,111,224,.6); }
@@ -267,7 +299,21 @@
     font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase;
     color: #16314d; opacity: .55;
   }
-  .dbox--pipeline { font-size: 24px; padding: 20px 44px; border-radius: 16px; }
+  .dbox--pipeline { font-size: 24px; padding: 20px 44px; border-radius: 16px;
+    position: relative; overflow: hidden; }
+  /* soft breathing glow + one shine sweep once the pipeline lands */
+  .dbox--pipeline.lit { animation: pipeglow 2.6s ease-in-out infinite; }
+  .dbox--pipeline::after {
+    content: ""; position: absolute; top: 0; bottom: 0; left: -80%; width: 55%;
+    background: linear-gradient(105deg, transparent, rgba(255,255,255,.42), transparent);
+    transform: skewX(-18deg);
+  }
+  .dbox--pipeline.lit::after { animation: shine 2.6s ease-in-out infinite; }
+  @keyframes pipeglow {
+    0%, 100% { box-shadow: 0 24px 44px -22px rgba(47,111,224,.6), 0 0 0 0 rgba(47,111,224,.35); }
+    50%      { box-shadow: 0 24px 44px -22px rgba(47,111,224,.6), 0 0 0 14px rgba(47,111,224,0); }
+  }
+  @keyframes shine { 0% { left: -80%; } 55%, 100% { left: 130%; } }
 
   /* one glowing dot flows the drawn lines (same dot as the old roadmap) */
   .lpath--dot {
@@ -379,6 +425,11 @@
   .to-top:active { transform: translateY(1px) scale(.96); }
 
   /* ===================== Sections after the stage ===================== */
+  /* gentle fade-up for section blocks as they enter */
+  .rise { opacity: 0; transform: translateY(18px);
+    transition: opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1); }
+  .rise.in { opacity: 1; transform: none; }
+
   .sec-eyebrow {
     text-align: center; font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
     font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: #2f6fe0; margin-bottom: 14px;
@@ -396,13 +447,59 @@
     background: #fff; border: 1px solid rgba(22,49,77,.06); border-radius: 24px;
     padding: 30px 30px 26px; display: flex; flex-direction: column; align-items: center;
     box-shadow: 0 44px 80px -44px rgba(22,49,77,.55);
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
+  }
+  .ex-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 60px 100px -48px rgba(22,49,77,.65);
   }
   .ex-head {
-    align-self: flex-start; display: flex; align-items: baseline; gap: 10px; margin-bottom: 24px;
+    align-self: flex-start; display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px;
     font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
   }
   .ex-head .num { font-size: 13px; color: #2f6fe0; opacity: .7; }
   .ex-head .name { font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: #16314d; }
+
+  /* official-logo tile above each flow (GPC tile language) */
+  .ex-tile {
+    position: relative; width: 50px; height: 50px; border-radius: 14px; margin-bottom: 16px;
+    overflow: visible;
+    opacity: 0; transform: translateY(9px) scale(.94);
+    transition: opacity .5s cubic-bezier(.2,.8,.2,1), transform .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .ex-tile .art {
+    width: 100%; height: 100%; border-radius: 14px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; background: #fff;
+    box-shadow: 0 16px 30px -16px rgba(22,49,77,.55), 0 0 0 1px rgba(22,49,77,.07);
+  }
+  .ex-tile .art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ex-tile .art svg { display: block; }
+  .ex-card.in .ex-tile { opacity: 1; transform: none; }
+  /* live-monitoring ping on the competitor tile, "new" ping on the job tile */
+  .ex-tile .ping {
+    position: absolute; top: -4px; right: -4px; width: 13px; height: 13px; border-radius: 50%;
+    border: 2.5px solid #fff; background: #e5484d;
+  }
+  .ex-tile .ping--green { background: #30a46c; }
+  .ex-tile .ping::after {
+    content: ""; position: absolute; inset: -2.5px; border-radius: 50%;
+    border: 2px solid currentColor; color: #e5484d; opacity: 0;
+  }
+  .ex-tile .ping--green::after { color: #30a46c; }
+  .ex-card.in .ex-tile .ping::after { animation: ping 2s ease-out infinite; }
+  @keyframes ping { 0% { transform: scale(.6); opacity: .9; } 70%, 100% { transform: scale(2.1); opacity: 0; } }
+
+  /* tiny avatar cluster that pops inside a node once it lands */
+  .mavs { display: inline-flex; margin-left: 9px; vertical-align: -3px; }
+  .mavs i {
+    width: 17px; height: 17px; border-radius: 50%; border: 2px solid #fff; margin-left: -5px;
+    transform: scale(0); transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .mavs i:first-child { margin-left: 0; }
+  .mavs i:nth-child(1) { background: linear-gradient(135deg,#79a8ff,#b9aaff); transition-delay: .95s; }
+  .mavs i:nth-child(2) { background: linear-gradient(135deg,#4fc3a1,#2f9e8f); transition-delay: 1.08s; }
+  .mavs i:nth-child(3) { background: linear-gradient(135deg,#ff9d76,#f2709c); transition-delay: 1.21s; }
+  .ex-card.in .mavs i { transform: scale(1); }
   .ex-flow { display: flex; flex-direction: column; align-items: center; }
   .ex-node {
     background: #f5f9fe; border: 1px solid rgba(47,111,224,.14); border-radius: 999px;
@@ -416,6 +513,11 @@
     font-weight: 700; box-shadow: 0 14px 26px -18px rgba(22,49,77,.5); }
   .ex-node--end { background: #2f6fe0; border: none; color: #fff;
     box-shadow: 0 14px 26px -14px rgba(47,111,224,.55); }
+  .ex-card.in .ex-node--end { animation: endpulse 2.4s ease-in-out 1.4s infinite; }
+  @keyframes endpulse {
+    0%, 100% { box-shadow: 0 14px 26px -14px rgba(47,111,224,.55), 0 0 0 0 rgba(47,111,224,.32); }
+    50%      { box-shadow: 0 14px 26px -14px rgba(47,111,224,.55), 0 0 0 10px rgba(47,111,224,0); }
+  }
   .ex-line { width: 24px; height: 34px; }
   .ex-line svg { width: 100%; height: 100%; display: block; overflow: visible; }
   .ex-line .lpath--base { stroke-dasharray: 100; stroke-dashoffset: 100;
@@ -493,6 +595,9 @@
   }
   .foot-bar a { color: #16314d; font-weight: 600; text-decoration: none; }
   .foot-bar a:hover { opacity: .7; }
+  .foot-brand { display: inline-flex; align-items: center; gap: 9px; }
+  .foot-brand img { width: 26px; height: 26px; border-radius: 8px; display: block;
+    box-shadow: 0 6px 14px -8px rgba(22,49,77,.6); }
 
   /* ===================== "Find my opportunities" modal ===================== */
   .veil {
@@ -528,12 +633,22 @@
   .qhint { font-size: 13.5px; color: #6a7689; margin: -14px 0 20px; }
   .chips { display: flex; flex-wrap: wrap; gap: 9px; }
   .chip {
+    display: inline-flex; align-items: center; gap: 8px;
     border: 1.5px solid rgba(22,49,77,.14); border-radius: 999px; background: #fff;
     padding: 10px 19px; cursor: pointer;
     font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 14.5px;
     letter-spacing: -.01em; color: #16314d;
     transition: border-color .15s ease, background .15s ease, color .15s ease;
   }
+  .chip .cico {
+    width: 18px; height: 18px; border-radius: 5px; overflow: hidden; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center; background: #fff;
+    box-shadow: 0 0 0 1px rgba(22,49,77,.08);
+  }
+  .chip .cico img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .chip .cico--fit { padding: 2px; }
+  .chip .cico--fit img { object-fit: contain; }
+  .chip .cico svg { display: block; }
   .chip:hover { border-color: rgba(47,111,224,.5); }
   .chip.on { background: #2f6fe0; border-color: #2f6fe0; color: #fff; }
   .qfield { margin-bottom: 15px; }
@@ -604,8 +719,15 @@
                       padding-top: 12vh; }
     .src-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; width: min(92vw, 380px); }
     .src { position: static; width: auto; padding: 13px 15px 12px; border-radius: 14px; }
-    .src strong { font-size: 11px; margin-bottom: 6px; }
-    .src span { font-size: 12px; line-height: 1.55; }
+    .src strong { font-size: 11px; margin-bottom: 7px; }
+    .srow { font-size: 11.5px; gap: 7px; }
+    .srow + .srow { margin-top: 6px; }
+    .sico { width: 18px; height: 18px; border-radius: 5px; }
+
+    /* on phones only the monster mark floats, the wordmark would collide with content */
+    .brand { top: 14px; left: 14px; }
+    .brand img { width: 32px; height: 32px; border-radius: 10px; }
+    .brand span { display: none; }
     .m-wire { width: 2px; height: 26px; background: #2f6fe0; border-radius: 2px; margin: 12px 0; }
     .tm-node { position: static; transform: none; }
     .tm-node .dbox { font-size: 16px; padding: 14px 24px; }
@@ -656,10 +778,18 @@
     .track { animation: none; }
     .lpath--dot, .lpath--dotq, .dot--1, .dot--2, .dot--3,
     .dotq--1, .dotq--2, .dotq--3, .dotq--4 { animation: none; opacity: 0 !important; }
+    .dbox--pipeline.lit, .dbox--pipeline.lit::after,
+    .ex-card.in .ex-node--end, .ex-card.in .ex-tile .ping::after { animation: none; }
+    .rise { transition: none; opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
+
+  <a class="brand" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+    <img src="fav.png" alt="Tool Monsters" />
+    <span>Tool Monsters</span>
+  </a>
 
   <div class="intro">
     <div class="stage">
@@ -731,24 +861,38 @@
               <path class="wire" id="w2" pathLength="100" d="M724 156 C610 156, 650 288, 591 291" />
               <path class="wire" id="w3" pathLength="100" d="M256 462 C370 462, 330 318, 389 315" />
               <path class="wire" id="w4" pathLength="100" d="M724 462 C610 462, 650 318, 591 315" />
+              <g id="wire-dots">
+                <path class="lpath--dot dot--1" pathLength="100" fill="none" d="M256 156 C370 156, 330 288, 389 291" />
+                <path class="lpath--dot dot--2" pathLength="100" fill="none" d="M724 156 C610 156, 650 288, 591 291" />
+                <path class="lpath--dot dot--3" pathLength="100" fill="none" d="M256 462 C370 462, 330 318, 389 315" />
+                <path class="lpath--dot dot--2" pathLength="100" fill="none" d="M724 462 C610 462, 650 318, 591 315" />
+              </g>
             </svg>
 
             <div class="src-grid">
               <div class="src src--audience sd" data-m1="0">
                 <strong>Audience</strong>
-                <span>Newsletter<br/>YouTube<br/>Community</span>
+                <div class="srow"><span class="sico"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="#FF6719" d="M2.5 3.5h19v2.7h-19zM2.5 8.3h19V11h-19zM2.5 13.1h19v7.9l-9.5-4.4-9.5 4.4z"/></svg></span>Newsletter</div>
+                <div class="srow"><span class="sico"><svg viewBox="0 0 24 24" width="15" height="15"><rect x="1" y="4.6" width="22" height="14.8" rx="4" fill="#FF0000"/><path d="M9.8 8.7v6.6L15.8 12z" fill="#fff"/></svg></span>YouTube</div>
+                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Community</div>
               </div>
               <div class="src src--network sd" data-m1="1">
                 <strong>Network</strong>
-                <span>LinkedIn<br/>Connections<br/>Followers</span>
+                <div class="srow"><span class="sico"><img src="logos/sq-linkedin.png" alt="" /></span>LinkedIn</div>
+                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg></span>Connections</div>
+                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Followers</div>
               </div>
               <div class="src src--relationships sd" data-m1="2">
                 <strong>Relationships</strong>
-                <span>Email<br/>CRM<br/>Past conversations</span>
+                <div class="srow"><span class="sico sico--fit"><img src="logos/sq-gmail.svg" alt="" /></span>Email</div>
+                <div class="srow"><span class="sico"><img src="logos/sq-hubspot.png" alt="" /></span>CRM</div>
+                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Past conversations</div>
               </div>
               <div class="src src--signals sd" data-m1="3">
                 <strong>Signals</strong>
-                <span>Competitors<br/>Hiring<br/>Events</span>
+                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><path d="M12 2v4"/></svg></span>Competitors</div>
+                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>Hiring</div>
+                <div class="srow"><span class="sico sico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>Events</div>
               </div>
             </div>
 
@@ -756,7 +900,7 @@
 
             <div class="tm-node sd" id="tm-node">
               <div class="dbox dbox--product">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+                <img src="fav.png" alt="" />
                 <span>Tool Monsters</span>
               </div>
             </div>
@@ -847,15 +991,16 @@
 
   <!-- ===================== Real examples ===================== -->
   <section class="examples" id="examples">
-    <p class="sec-eyebrow">Real examples</p>
-    <h2 class="sec-title">What this can look like.</h2>
+    <p class="sec-eyebrow rise">Real examples</p>
+    <h2 class="sec-title rise">What this can look like.</h2>
 
     <div class="ex-grid">
 
       <div class="ex-card">
         <div class="ex-head"><span class="num">01</span><span class="name">Newsletter</span></div>
+        <div class="ex-tile"><span class="art"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="#FF6719" d="M2.5 3.5h19v2.7h-19zM2.5 8.3h19V11h-19zM2.5 13.1h19v7.9l-9.5-4.4-9.5 4.4z"/></svg></span></div>
         <div class="ex-flow">
-          <span class="ex-node ex-node--start" style="transition-delay:.05s">100K subscribers</span>
+          <span class="ex-node ex-node--start" style="transition-delay:.05s"><b data-count="100" data-suffix="K">100K</b> subscribers</span>
           <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
             <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.15s" />
             <path class="lpath lpath--dot dot--1" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
@@ -865,7 +1010,7 @@
             <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.4s" />
             <path class="lpath lpath--dot dot--2" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
           </svg></span>
-          <span class="ex-node" style="transition-delay:.55s">ICP matches</span>
+          <span class="ex-node" style="transition-delay:.55s">ICP matches<span class="mavs"><i></i><i></i><i></i></span></span>
           <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
             <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.65s" />
             <path class="lpath lpath--dot dot--3" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
@@ -877,6 +1022,7 @@
 
       <div class="ex-card">
         <div class="ex-head"><span class="num">02</span><span class="name">LinkedIn</span></div>
+        <div class="ex-tile"><span class="art"><img src="logos/sq-linkedin.png" alt="LinkedIn" /></span></div>
         <div class="ex-flow">
           <span class="ex-node ex-node--start" style="transition-delay:.05s">Connections + followers</span>
           <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
@@ -888,7 +1034,7 @@
             <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.4s" />
             <path class="lpath lpath--dot dot--2" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
           </svg></span>
-          <span class="ex-node" style="transition-delay:.55s">Priority buyers</span>
+          <span class="ex-node" style="transition-delay:.55s">Priority buyers<span class="mavs"><i></i><i></i><i></i></span></span>
           <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
             <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.65s" />
             <path class="lpath lpath--dot dot--3" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
@@ -900,6 +1046,7 @@
 
       <div class="ex-card">
         <div class="ex-head"><span class="num">03</span><span class="name">Competitor monitoring</span></div>
+        <div class="ex-tile"><span class="art"><img src="logos/sq-linkedin.png" alt="LinkedIn" /></span><span class="ping"></span></div>
         <div class="ex-flow">
           <span class="ex-node ex-node--start" style="transition-delay:.05s">Monitored LinkedIn profile</span>
           <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
@@ -911,7 +1058,7 @@
             <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.34s" />
             <path class="lpath lpath--dotq dotq--2" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
           </svg></span>
-          <span class="ex-node" style="transition-delay:.47s">Relevant engagers</span>
+          <span class="ex-node" style="transition-delay:.47s">Relevant engagers<span class="mavs"><i></i><i></i><i></i></span></span>
           <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
             <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.55s" />
             <path class="lpath lpath--dotq dotq--3" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
@@ -928,6 +1075,7 @@
 
       <div class="ex-card">
         <div class="ex-head"><span class="num">04</span><span class="name">Hiring signals</span></div>
+        <div class="ex-tile"><span class="art" style="background:linear-gradient(135deg,#2f3358,#1c1e36)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span><span class="ping ping--green"></span></div>
         <div class="ex-flow">
           <span class="ex-node ex-node--start" style="transition-delay:.05s">Job posted</span>
           <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
@@ -939,7 +1087,7 @@
             <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.4s" />
             <path class="lpath lpath--dot dot--2" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
           </svg></span>
-          <span class="ex-node" style="transition-delay:.55s">Decision-maker</span>
+          <span class="ex-node" style="transition-delay:.55s">Decision-maker<span class="mavs"><i></i></span></span>
           <span class="ex-line"><svg viewBox="0 0 24 34" preserveAspectRatio="none">
             <path class="lpath lpath--base" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" style="transition-delay:.65s" />
             <path class="lpath lpath--dot dot--3" pathLength="100" d="M12 0 V34" vector-effect="non-scaling-stroke" />
@@ -951,15 +1099,15 @@
 
     </div>
 
-    <p class="ex-more">These are examples, not the menu. <b>Email history</b> becomes dormant opportunities, <b>sales calls</b> become a relationship graph, <b>conference speakers</b> become ICP matches. We build custom systems around whatever you already have.</p>
+    <p class="ex-more rise">These are examples, not the menu. <b>Email history</b> becomes dormant opportunities, <b>sales calls</b> become a relationship graph, <b>conference speakers</b> become ICP matches. We build custom systems around whatever you already have.</p>
   </section>
 
   <!-- ===================== How we work ===================== -->
   <section class="how">
-    <p class="sec-eyebrow">How we work</p>
-    <h2 class="sec-title">We build the system. Then we run it.</h2>
+    <p class="sec-eyebrow rise">How we work</p>
+    <h2 class="sec-title rise">We build the system. Then we run it.</h2>
 
-    <div class="how-row">
+    <div class="how-row rise">
       <div class="how-step">
         <strong>Discover</strong>
         <span>Find the sources of opportunity.</span>
@@ -976,7 +1124,7 @@
       </div>
     </div>
 
-    <div class="yours">
+    <div class="yours rise">
       <b>Your system. Your data.</b>
       <span>Built on your infrastructure whenever possible.</span>
     </div>
@@ -985,14 +1133,14 @@
   <!-- ===================== Bottom (end.avif) : final CTA + footer ===================== -->
   <div class="bottom">
     <section class="footer-cta">
-      <div class="cta-card">
+      <div class="cta-card rise">
         <h2>You&rsquo;re probably sitting on more opportunities than you think.</h2>
         <div class="btns">
           <button class="btn btn-primary" data-open-quiz>Find my opportunities &rarr;</button>
         </div>
       </div>
       <div class="foot-bar">
-        <span>&copy; 2026 Tool Monsters</span>
+        <span class="foot-brand"><img src="fav.png" alt="" />&copy; 2026 Tool Monsters</span>
         <span><a href="mailto:hello@toolmonsters.com">hello@toolmonsters.com</a></span>
       </div>
     </section>
@@ -1020,6 +1168,7 @@
     const ph = [1,2,3,4,5].map(i => document.getElementById('ph' + i));
     const srcCards = [...document.querySelectorAll('[data-m1]')];
     const wires = [1,2,3,4].map(i => document.getElementById('w' + i));
+    const wireDots = document.getElementById('wire-dots');
     const mWire = document.getElementById('m-wire');
     const tmNode = document.getElementById('tm-node');
     const opPills = [...document.querySelectorAll('[data-op]')];
@@ -1094,6 +1243,8 @@
         w.style.strokeDashoffset = (100 * (1 - sub(p2, 0.04 + i * 0.07, 0.42 + i * 0.07))).toFixed(1);
       });
       fade(mWire, sub(p2, 0.05, 0.35));
+      // glowing dots start flowing once every wire has finished drawing
+      wireDots.style.opacity = (p2 >= 0.68 && p3 < 0.05) ? '1' : '0';
       const core = sub(p2, 0.3, 0.55);
       tmNode.style.opacity = core.toFixed(3);
       tmNode.style.transform = (window.innerWidth > 640 ? 'translateX(-50%) ' : '')
@@ -1122,6 +1273,7 @@
       const pipe = sub(p4, 0.72, 0.88);
       pipeBox.style.opacity = pipe.toFixed(3);
       pipeBox.style.transform = 'scale(' + (0.9 + pipe * 0.1).toFixed(3) + ')';
+      pipeBox.classList.toggle('lit', pipe >= 0.99);
 
       /* the phrases, crossfading in sync with the diagram */
       const phO = [
@@ -1158,17 +1310,46 @@
     // initial settle
     measure(); readTarget(); curr = target; apply(curr);
 
-    /* ---------- examples reveal on scroll ---------- */
+    /* ---------- examples + sections reveal on scroll ---------- */
+    function runCounter(el) {
+      const targetN = parseFloat(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const dur = 1300, t0 = performance.now();
+      function frame(now) {
+        const k = Math.min((now - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - k, 3);           // easeOutCubic
+        el.textContent = Math.round(targetN * eased) + suffix;
+        if (k < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
     const exObserver = new IntersectionObserver((entries) => {
-      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); exObserver.unobserve(en.target); } });
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        en.target.classList.add('in');
+        en.target.querySelectorAll('[data-count]').forEach(runCounter);
+        exObserver.unobserve(en.target);
+      });
     }, { threshold: 0.35 });
     document.querySelectorAll('.ex-card').forEach(c => exObserver.observe(c));
+
+    const riseObserver = new IntersectionObserver((entries) => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); riseObserver.unobserve(en.target); } });
+    }, { threshold: 0.25 });
+    document.querySelectorAll('.rise').forEach(el => riseObserver.observe(el));
 
     /* ===================== qualification modal ===================== */
     // drop a webhook / Formspree URL here to receive the answers as JSON
     const LEAD_ENDPOINT = '';
     const CALENDLY = 'https://calendly.com/hello-toolmonsters/30min';
 
+    const ICONS = {
+      linkedin:   '<span class="cico"><img src="logos/sq-linkedin.png" alt=""></span>',
+      newsletter: '<span class="cico"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="#FF6719" d="M2.5 3.5h19v2.7h-19zM2.5 8.3h19V11h-19zM2.5 13.1h19v7.9l-9.5-4.4-9.5 4.4z"/></svg></span>',
+      youtube:    '<span class="cico"><svg viewBox="0 0 24 24" width="15" height="15"><rect x="1" y="4.6" width="22" height="14.8" rx="4" fill="#FF0000"/><path d="M9.8 8.7v6.6L15.8 12z" fill="#fff"/></svg></span>',
+      email:      '<span class="cico cico--fit"><img src="logos/sq-gmail.svg" alt=""></span>',
+      crm:        '<span class="cico"><img src="logos/sq-hubspot.png" alt=""></span>'
+    };
     const SOURCES = [
       { id: 'linkedin',   label: 'LinkedIn',   unit: 'people',      score: 90, what: 'Find ICPs already in your network' },
       { id: 'newsletter', label: 'Newsletter', unit: 'subscribers', score: 85, what: 'Identify potential buyers reading you' },
@@ -1211,7 +1392,7 @@
         const id = typeof it === 'string' ? it : it.id;
         const b = document.createElement('button');
         b.type = 'button'; b.className = 'chip' + (selected.includes(id) ? ' on' : '');
-        b.textContent = label;
+        b.innerHTML = (ICONS[id] || '') + '<span>' + label + '</span>';
         b.addEventListener('click', () => {
           if (single) { wrap.querySelectorAll('.chip').forEach(c => c.classList.remove('on')); b.classList.add('on'); }
           else b.classList.toggle('on');
