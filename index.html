@@ -245,8 +245,8 @@
   .person--3 { top: 396px; }
   .person .avatar {
     width: 44px; height: 44px; border-radius: 13px; flex: 0 0 auto;
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 15px;
+    object-fit: cover; display: block;
+    box-shadow: 0 0 0 1px rgba(22,49,77,.08);
   }
   .person b { display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
               font-size: 16.5px; letter-spacing: -.01em; color: #16314d; }
@@ -269,8 +269,8 @@
   }
   .cav {
     width: 26px; height: 26px; border-radius: 8px; flex: 0 0 auto;
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 10.5px; font-weight: 700;
+    object-fit: cover; display: block;
+    box-shadow: 0 0 0 1px rgba(22,49,77,.08);
   }
   .bub {
     width: fit-content; max-width: 86%; padding: 8px 12px;
@@ -770,16 +770,16 @@
 
               <div class="people3">
                 <div class="person person--1 sd" data-p="0">
-                  <div class="avatar" style="background:linear-gradient(135deg,#79a8ff,#b9aaff)">SC</div>
-                  <div><b>Sarah Chen</b><span class="role">VP AI &middot; Acme</span></div>
+                  <img class="avatar" src="people/elon.jpg" alt="Elon Musk" />
+                  <div><b>Elon Musk</b><span class="role">CEO &middot; Tesla</span></div>
                 </div>
                 <div class="person person--2 sd" data-p="1">
-                  <div class="avatar" style="background:linear-gradient(135deg,#4fc3a1,#2f9e8f)">JM</div>
-                  <div><b>James Miller</b><span class="role">Founder &middot; Northstar</span></div>
+                  <img class="avatar" src="people/melanie.jpg" alt="Melanie Perkins" />
+                  <div><b>Melanie Perkins</b><span class="role">CEO &middot; Canva</span></div>
                 </div>
                 <div class="person person--3 sd" data-p="2">
-                  <div class="avatar" style="background:linear-gradient(135deg,#ff9d76,#f2709c)">AM</div>
-                  <div><b>Alex Morgan</b><span class="role">VP Operations &middot; Vertex</span></div>
+                  <img class="avatar" src="people/sam.jpg" alt="Sam Altman" />
+                  <div><b>Sam Altman</b><span class="role">CEO &middot; OpenAI</span></div>
                 </div>
               </div>
               </div>
@@ -787,18 +787,18 @@
               <div class="conv-stage" id="conv-stage">
               <div class="chats">
                 <div class="chat chat--1 sd" data-ch="0">
-                  <div class="chat-head"><span class="cav" style="background:linear-gradient(135deg,#79a8ff,#b9aaff)">SC</span>Sarah Chen</div>
-                  <div class="bub bub--out sd">Saw Acme is scaling AI.</div>
+                  <div class="chat-head"><img class="cav" src="people/elon.jpg" alt="" />Elon Musk</div>
+                  <div class="bub bub--out sd">Saw the Optimus launch.</div>
                   <div class="bub bub--in sd">Good timing. Let&rsquo;s talk.</div>
                 </div>
                 <div class="chat chat--2 sd" data-ch="1">
-                  <div class="chat-head"><span class="cav" style="background:linear-gradient(135deg,#4fc3a1,#2f9e8f)">JM</span>James Miller</div>
+                  <div class="chat-head"><img class="cav" src="people/melanie.jpg" alt="" />Melanie Perkins</div>
                   <div class="bub bub--out sd">Time to reconnect?</div>
                   <div class="bub bub--in sd">Yes. Book me in.</div>
                 </div>
                 <div class="chat chat--3 sd" data-ch="2">
-                  <div class="chat-head"><span class="cav" style="background:linear-gradient(135deg,#ff9d76,#f2709c)">AM</span>Alex Morgan</div>
-                  <div class="bub bub--out sd">Saw you&rsquo;re hiring ops.</div>
+                  <div class="chat-head"><img class="cav" src="people/sam.jpg" alt="" />Sam Altman</div>
+                  <div class="bub bub--out sd">Saw the GPT-6 news.</div>
                   <div class="bub bub--in sd">Let&rsquo;s do a call.</div>
                 </div>
               </div>
