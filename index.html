@@ -485,22 +485,77 @@
     background: rgba(16,32,50,.5);
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     display: none; align-items: flex-start; justify-content: center;
-    padding: 5vh 16px 16px; overflow-y: auto;
+    padding: 4vh 16px 16px; overflow-y: auto;
   }
   .veil.open { display: flex; }
   .qcard {
-    width: min(580px, 100%); background: #fff; border-radius: 24px;
-    padding: 38px 40px 34px; position: relative;
+    width: min(880px, 100%); background: #fff; border-radius: 24px;
+    display: flex; overflow: hidden; position: relative;
     box-shadow: 0 60px 120px -40px rgba(10,20,40,.6);
     animation: qin .3s cubic-bezier(.2,.8,.2,1);
   }
   @keyframes qin { from { opacity: 0; transform: translateY(14px) scale(.985); } }
   .qclose {
-    position: absolute; top: 18px; right: 18px; width: 36px; height: 36px;
+    position: absolute; top: 16px; right: 16px; z-index: 3; width: 36px; height: 36px;
     border: none; border-radius: 50%; background: #f1f5fa; color: #16314d; cursor: pointer;
     display: flex; align-items: center; justify-content: center; font-size: 16px;
   }
   .qclose:hover { background: #e5ecf5; }
+
+  /* ---- left: the visitor's own system, built live as they answer ---- */
+  .qside {
+    width: 272px; flex: 0 0 auto; padding: 26px 24px 24px;
+    background: linear-gradient(180deg, #e9f4fd 0%, #d8ebfa 100%);
+    display: flex; flex-direction: column;
+  }
+  .qside-label {
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
+    font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #2f6fe0;
+    margin-bottom: 16px;
+  }
+  .qtiles { display: flex; flex-wrap: wrap; gap: 9px; min-height: 44px; }
+  .qtile {
+    width: 66px; background: #fff; border: 1px solid rgba(22,49,77,.08); border-radius: 12px;
+    padding: 9px 4px 7px; display: flex; flex-direction: column; align-items: center; gap: 4px;
+    box-shadow: 0 10px 20px -14px rgba(22,49,77,.5);
+    animation: qtilein .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes qtilein { from { opacity: 0; transform: scale(.6); } }
+  .qtile .cico { width: 26px; height: 26px; border-radius: 8px; }
+  .qtile b {
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 9.5px;
+    color: #16314d; letter-spacing: 0;
+  }
+  .qtile i { font-style: normal; font-size: 9.5px; font-weight: 600; color: #2f6fe0; min-height: 12px; }
+  .qtiles-empty { font-size: 12px; color: #6a8cad; line-height: 1.5; padding-top: 4px; }
+  .qwire {
+    width: 2px; height: 26px; background: #2f6fe0; border-radius: 2px; margin: 12px auto;
+    transform: scaleY(0); transform-origin: top; transition: transform .4s ease;
+  }
+  .qwire.on { transform: none; }
+  .qnode {
+    background: linear-gradient(135deg, #2f3358 0%, #1c1e36 100%);
+    border-radius: 15px; padding: 13px 16px; text-align: center; color: #fff;
+    box-shadow: 0 18px 34px -18px rgba(20,22,45,.7);
+    opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease;
+  }
+  .qnode.on { opacity: 1; transform: none; }
+  .qnode b {
+    display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800;
+    font-size: 23px; letter-spacing: -.02em; line-height: 1.1;
+  }
+  .qnode .qn-l { display: block; margin-top: 3px; font-size: 10.5px; color: rgba(255,255,255,.75); }
+  .qnode--conv {
+    background: #2f6fe0; margin-top: 0;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 14.5px;
+    box-shadow: 0 18px 34px -18px rgba(47,111,224,.7);
+  }
+
+  /* ---- right: the questions ---- */
+  .qmain { flex: 1; min-width: 0; padding: 36px 40px 30px; position: relative; }
+  .qprogress { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: rgba(22,49,77,.07); }
+  .qprogress i { display: block; height: 100%; width: 0; background: #2f6fe0; transition: width .4s ease; }
+  .qview { will-change: opacity, transform; }
   .qstep-label {
     font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
     font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #2f6fe0; margin-bottom: 10px;
@@ -510,7 +565,25 @@
     font-size: clamp(21px, 3vw, 26px); letter-spacing: -.02em; color: #16314d; margin-bottom: 22px;
     text-wrap: balance;
   }
-  .qhint { font-size: 13.5px; color: #6a7689; margin: -14px 0 20px; }
+  /* step 1: source cards with the official marks */
+  .srcgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .srcopt {
+    position: relative; border: 1.5px solid rgba(22,49,77,.13); border-radius: 15px; background: #fff;
+    padding: 15px 8px 13px; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 9px;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 13.5px;
+    letter-spacing: -.01em; color: #16314d;
+    transition: border-color .15s ease, background .15s ease, transform .15s ease;
+  }
+  .srcopt:hover { border-color: rgba(47,111,224,.5); }
+  .srcopt:active { transform: scale(.97); }
+  .srcopt .cico { width: 30px; height: 30px; border-radius: 9px; }
+  .srcopt.on { border-color: #2f6fe0; background: #f0f6ff; }
+  .srcopt .tick {
+    position: absolute; top: 8px; right: 8px; width: 17px; height: 17px; border-radius: 50%;
+    background: #2f6fe0; color: #fff; display: none; align-items: center; justify-content: center;
+  }
+  .srcopt.on .tick { display: flex; }
   .chips { display: flex; flex-wrap: wrap; gap: 9px; }
   .chip {
     display: inline-flex; align-items: center; gap: 8px;
@@ -520,23 +593,25 @@
     letter-spacing: -.01em; color: #16314d;
     transition: border-color .15s ease, background .15s ease, color .15s ease;
   }
-  .chip .cico {
+  .chip:hover { border-color: rgba(47,111,224,.5); }
+  .chip.on { background: #2f6fe0; border-color: #2f6fe0; color: #fff; }
+  .cico {
     width: 18px; height: 18px; border-radius: 5px; overflow: hidden; flex: 0 0 auto;
     display: flex; align-items: center; justify-content: center; background: #fff;
     box-shadow: 0 0 0 1px rgba(22,49,77,.08);
   }
-  .chip .cico img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .chip .cico--fit { padding: 2px; }
-  .chip .cico--fit img { object-fit: contain; }
-  .chip .cico svg { display: block; }
-  .chip:hover { border-color: rgba(47,111,224,.5); }
-  .chip.on { background: #2f6fe0; border-color: #2f6fe0; color: #fff; }
+  .cico img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cico--fit { padding: 2px; }
+  .cico--fit img { object-fit: contain; }
+  .cico svg { display: block; }
+  .cico--line { color: #2f6fe0; background: #f0f6ff; }
   .qfield { margin-bottom: 15px; }
   .qfield label {
-    display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
     font-size: 13.5px; color: #16314d; margin-bottom: 6px;
   }
-  .qfield label small { font-weight: 500; color: #6a7689; margin-left: 6px; }
+  .qfield label small { font-weight: 500; color: #6a7689; }
   .qfield input {
     width: 100%; padding: 12px 15px; border: 1.5px solid rgba(22,49,77,.14); border-radius: 11px;
     font-family: "Inter", sans-serif; font-size: 15px; color: #16314d; outline: none;
@@ -554,9 +629,34 @@
   .qback[hidden] { visibility: hidden; display: inline; }
   .qerr { font-size: 13px; color: #c0392b; margin-top: 12px; display: none; }
 
-  .qthanks { text-align: center; padding: 12px 0 4px; }
-  .qthanks .big { font-size: 44px; margin-bottom: 12px; }
-  .qthanks p { font-size: 15px; color: #5a6a80; line-height: 1.6; margin-bottom: 24px; }
+  /* the computed result */
+  .rrow {
+    display: flex; align-items: center; gap: 11px; padding: 12px 0;
+    border-bottom: 1px solid rgba(22,49,77,.08); font-size: 14px; color: #33425a;
+  }
+  .rrow:last-of-type { border-bottom: none; }
+  .rrow .cico { width: 22px; height: 22px; border-radius: 7px; }
+  .rrow .rname { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; color: #16314d; }
+  .rrow .rsize { font-size: 12.5px; color: #6a7689; }
+  .rrow b { margin-left: auto; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
+            font-size: 14.5px; color: #2f6fe0; white-space: nowrap; padding-left: 10px; }
+  .rextras { margin-top: 14px; font-size: 13px; color: #6a7689; line-height: 1.5; }
+  .rtotal {
+    margin-top: 20px; padding: 18px 22px; border-radius: 16px; text-align: center;
+    background: linear-gradient(135deg, #2f3358 0%, #1c1e36 100%); color: #fff;
+    box-shadow: 0 20px 40px -22px rgba(20,22,45,.7);
+  }
+  .rtotal b {
+    display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800;
+    font-size: clamp(24px, 3vw, 30px); letter-spacing: -.02em;
+  }
+  .rtotal span { display: block; margin-top: 4px; font-size: 12.5px; color: rgba(255,255,255,.78); }
+  .rnote { margin-top: 10px; font-size: 11.5px; color: #8fa3b8; text-align: center; }
+
+  .qthanks { text-align: center; padding: 4px 0 0; }
+  .qthanks p { font-size: 14.5px; color: #5a6a80; line-height: 1.6; margin: 10px 0 18px; }
+  .qthanks iframe { width: 100%; height: 520px; border: 0; border-radius: 14px;
+    box-shadow: 0 0 0 1px rgba(22,49,77,.08); }
 
   /* ===================== Mobile ===================== */
   @media (max-width: 640px) {
@@ -624,7 +724,27 @@
     .corner-cta { display: none; }
     .to-top { display: inline-flex; }
 
-    .qcard { padding: 30px 22px 26px; border-radius: 20px; }
+    /* the modal stacks: a slim live-system strip on top, questions below */
+    .qcard { flex-direction: column; border-radius: 20px; }
+    .qside { width: auto; flex-direction: row; align-items: center; gap: 12px;
+             padding: 14px 60px 14px 16px; }
+    .qside-label { display: none; }
+    .qtiles { flex: 1; gap: 6px; min-height: 0; overflow: hidden; max-height: 34px; }
+    .qtile { width: 34px; padding: 4px; border-radius: 9px; }
+    .qtile b, .qtile i { display: none; }
+    .qtiles-empty { font-size: 11px; padding-top: 0; }
+    .qwire, .qnode--conv { display: none; }
+    .qnode { opacity: 1; transform: none; padding: 8px 13px; border-radius: 11px;
+             flex: 0 0 auto; }
+    .qnode b { font-size: 16px; }
+    .qnode .qn-l { font-size: 8.5px; margin-top: 1px; }
+    .qmain { padding: 24px 20px 22px; }
+    .srcgrid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .srcopt { padding: 12px 4px 10px; font-size: 12px; }
+    .rrow { font-size: 13px; }
+    .rrow .rsize { display: none; }
+    .rrow b { font-size: 13px; }
+    .qthanks iframe { height: 480px; }
     .examples { padding-top: 64px; }
   }
 
@@ -1142,7 +1262,24 @@
   <div class="veil" id="veil" role="dialog" aria-modal="true" aria-label="Find my opportunities">
     <div class="qcard">
       <button class="qclose" id="qclose" aria-label="Close">&#10005;</button>
-      <div id="qbody"><!-- steps rendered here --></div>
+
+      <!-- the visitor's own system, drawn live from their answers -->
+      <aside class="qside" aria-hidden="true">
+        <p class="qside-label">Your system</p>
+        <div class="qtiles" id="qtiles"></div>
+        <div class="qwire" id="qwire1"></div>
+        <div class="qnode" id="qnode">
+          <b id="qcount">&ndash;</b>
+          <span class="qn-l" id="qcount-l">potential buyers around you</span>
+        </div>
+        <div class="qwire" id="qwire2"></div>
+        <div class="qnode qnode--conv" id="qconv">Conversations</div>
+      </aside>
+
+      <div class="qmain">
+        <div class="qprogress"><i id="qbar"></i></div>
+        <div id="qbody"><!-- steps rendered here --></div>
+      </div>
     </div>
   </div>
 
@@ -1340,38 +1477,102 @@
       linkedin:   '<span class="cico"><img src="logos/sq-linkedin.png" alt=""></span>',
       newsletter: '<span class="cico"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="#FF6719" d="M2.5 3.5h19v2.7h-19zM2.5 8.3h19V11h-19zM2.5 13.1h19v7.9l-9.5-4.4-9.5 4.4z"/></svg></span>',
       youtube:    '<span class="cico"><svg viewBox="0 0 24 24" width="15" height="15"><rect x="1" y="4.6" width="22" height="14.8" rx="4" fill="#FF0000"/><path d="M9.8 8.7v6.6L15.8 12z" fill="#fff"/></svg></span>',
-      emailcrm:   '<span class="cico cico--fit"><img src="logos/sq-gmail.svg" alt=""></span>'
+      emailcrm:   '<span class="cico cico--fit"><img src="logos/sq-gmail.svg" alt=""></span>',
+      community:  '<span class="cico cico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>',
+      other:      '<span class="cico cico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg></span>'
     };
+    /* rough ICP-match ranges per source, the honest back-of-napkin version */
     const SOURCES = [
-      { id: 'linkedin',   label: 'LinkedIn',    unit: 'people' },
-      { id: 'newsletter', label: 'Newsletter',  unit: 'subscribers' },
-      { id: 'youtube',    label: 'YouTube',     unit: 'subscribers' },
-      { id: 'emailcrm',   label: 'Email / CRM', unit: 'contacts' },
-      { id: 'community',  label: 'Community',   unit: 'members' },
-      { id: 'other',      label: 'Other',       unit: 'people' }
+      { id: 'linkedin',   label: 'LinkedIn',    unit: 'people',      rate: [0.02, 0.04] },
+      { id: 'newsletter', label: 'Newsletter',  unit: 'subscribers', rate: [0.02, 0.04] },
+      { id: 'youtube',    label: 'YouTube',     unit: 'subscribers', rate: [0.005, 0.015] },
+      { id: 'emailcrm',   label: 'Email / CRM', unit: 'contacts',    rate: [0.05, 0.10] },
+      { id: 'community',  label: 'Community',   unit: 'members',     rate: [0.03, 0.06] },
+      { id: 'other',      label: 'Other',       unit: 'people',      rate: [0.01, 0.03] }
     ];
     const EXTRAS = ['Competitors', 'Email history', 'Past leads', 'Hiring signals', 'Events', 'Not sure'];
     const SELLS = ['Consulting / Services', 'Agency', 'SaaS', 'Recruiting', 'Other'];
-    const VALUES = ['< $10K', '$10\u201325K', '$25\u201350K', '$50\u2013100K', '$100K+'];
+    const VALUES = ['< $10K', '$10–25K', '$25–50K', '$50–100K', '$100K+'];
 
     const state = { sources: [], sizes: {}, sell: '', value: '', extras: [], contact: {} };
     let qstep = 1;
 
     const veil = document.getElementById('veil');
     const qbody = document.getElementById('qbody');
+    const qbar = document.getElementById('qbar');
+    const qtiles = document.getElementById('qtiles');
+    const qwire1 = document.getElementById('qwire1');
+    const qwire2 = document.getElementById('qwire2');
+    const qnodeEl = document.getElementById('qnode');
+    const qcount = document.getElementById('qcount');
+    const qconv = document.getElementById('qconv');
 
-    function openQuiz() { qstep = 1; renderQuiz(); veil.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function parseSize(v) { return parseInt(String(v || '').replace(/[^0-9]/g, ''), 10) || 0; }
+    function estimate() {
+      let lo = 0, hi = 0, any = false;
+      state.sources.forEach(id => {
+        const src = SOURCES.find(x => x.id === id);
+        const n = parseSize(state.sizes[id]);
+        if (n > 0) { any = true; lo += n * src.rate[0]; hi += n * src.rate[1]; }
+      });
+      return { lo: Math.round(lo), hi: Math.round(hi), any };
+    }
+    function nice(v) {
+      if (v >= 1000) return (Math.round(v / 100) * 100).toLocaleString('en-US');
+      if (v >= 100) return String(Math.round(v / 10) * 10);
+      return String(Math.max(Math.round(v), 1));
+    }
+    function fmtK(n) { return n >= 1000 ? (Math.round(n / 100) / 10) + 'K' : String(n); }
+
+    /* the counter in the dark node eases toward its new value */
+    let shownCount = 0, countRaf = null;
+    function setCount(target) {
+      cancelAnimationFrame(countRaf);
+      const from = shownCount, t0 = performance.now(), dur = 700;
+      function frame(now) {
+        const k = Math.min((now - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - k, 3);
+        shownCount = from + (target - from) * eased;
+        qcount.textContent = '~' + Math.round(shownCount).toLocaleString('en-US');
+        if (k < 1) countRaf = requestAnimationFrame(frame);
+        else qcount.textContent = '~' + nice(target);
+      }
+      countRaf = requestAnimationFrame(frame);
+    }
+
+    function updateDiagram() {
+      if (!state.sources.length) {
+        qtiles.innerHTML = '<p class="qtiles-empty">Pick your sources and watch your system build itself.</p>';
+      } else {
+        qtiles.innerHTML = state.sources.map(id => {
+          const src = SOURCES.find(x => x.id === id);
+          const n = parseSize(state.sizes[id]);
+          return '<div class="qtile">' + (ICONS[id] || '') + '<b>' + src.label + '</b><i>' + (n ? fmtK(n) : '') + '</i></div>';
+        }).join('');
+      }
+      const on = state.sources.length > 0;
+      qwire1.classList.toggle('on', on);
+      qnodeEl.classList.toggle('on', on);
+      const est = estimate();
+      if (est.any) setCount(Math.round((est.lo + est.hi) / 2));
+      else { shownCount = 0; qcount.textContent = '?'; }
+      const conv = qstep >= 5;
+      qwire2.classList.toggle('on', conv && on);
+      qconv.classList.toggle('on', conv && on);
+    }
+
+    function openQuiz() { qstep = 1; renderQuiz(1); veil.classList.add('open'); document.body.style.overflow = 'hidden'; }
     function closeQuiz() { veil.classList.remove('open'); document.body.style.overflow = ''; }
-    document.querySelectorAll('[data-open-quiz]').forEach(b => b.addEventListener('click', openQuiz));
+    document.querySelectorAll('[data-open-quiz]').forEach(b => b.addEventListener('click', () => openQuiz()));
 
     // each workflow card opens the modal with its source already selected
     const CARD_PRESETS = [
-      { sources: ['newsletter'] },                                   // 01 newsletter
+      { sources: ['newsletter'] },                                        // 01 newsletter
       { sources: ['emailcrm'], extras: ['Email history', 'Past leads'] }, // 02 dormant relationships
-      { sources: ['linkedin'], extras: ['Competitors'] },            // 03 competitor monitoring
-      { extras: ['Hiring signals'] },                                // 04 hiring signals
-      { sources: ['linkedin'] },                                     // 05 linkedin export
-      { extras: ['Events'] }                                         // 06 conferences
+      { sources: ['linkedin'], extras: ['Competitors'] },                 // 03 competitor monitoring
+      { extras: ['Hiring signals'] },                                     // 04 hiring signals
+      { sources: ['linkedin'] },                                          // 05 linkedin export
+      { extras: ['Events'] }                                              // 06 conferences
     ];
     document.querySelectorAll('.ex-card').forEach((card, i) => {
       card.style.cursor = 'pointer';
@@ -1383,9 +1584,33 @@
         openQuiz();
       });
     });
+
     document.getElementById('qclose').addEventListener('click', closeQuiz);
     veil.addEventListener('click', (e) => { if (e.target === veil) closeQuiz(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && veil.classList.contains('open')) closeQuiz(); });
+    document.addEventListener('keydown', (e) => {
+      if (!veil.classList.contains('open')) return;
+      if (e.key === 'Escape') closeQuiz();
+      if (e.key === 'Enter' && !e.target.matches('a,button')) {
+        const next = document.getElementById('qnext');
+        if (next) { e.preventDefault(); next.click(); }
+      }
+    });
+
+    /* steps slide in; dir is +1 forward, -1 back */
+    function mount(view, dir) {
+      qbody.innerHTML = '';
+      view.classList.add('qview');
+      qbody.appendChild(view);
+      view.style.opacity = '0';
+      view.style.transform = 'translateX(' + (26 * dir) + 'px)';
+      requestAnimationFrame(() => {
+        view.style.transition = 'opacity .28s ease, transform .34s cubic-bezier(.2,.8,.2,1)';
+        view.style.opacity = '1';
+        view.style.transform = 'none';
+      });
+      qbar.style.width = (qstep / 7 * 100).toFixed(1) + '%';
+      updateDiagram();
+    }
 
     function chipRow(items, selected, onToggle, single) {
       const wrap = document.createElement('div');
@@ -1406,91 +1631,142 @@
       return wrap;
     }
 
-    function nav(showBack, nextLabel, onNext, onBack) {
+    function nav(view, showBack, nextLabel, onNext, onBack) {
       const n = document.createElement('div'); n.className = 'qnav';
-      const back = document.createElement('button'); back.className = 'qback'; back.textContent = '\u2190 Back';
+      const back = document.createElement('button'); back.className = 'qback'; back.textContent = '← Back';
       if (!showBack) back.hidden = true;
       back.addEventListener('click', onBack);
-      const next = document.createElement('button'); next.className = 'btn btn-primary'; next.innerHTML = nextLabel;
+      const next = document.createElement('button'); next.className = 'btn btn-primary'; next.id = 'qnext';
+      next.innerHTML = nextLabel;
       next.addEventListener('click', onNext);
       n.append(back, next);
-      return n;
+      view.append(n);
     }
 
     function err(msg) {
-      let e = qbody.querySelector('.qerr');
-      e.textContent = msg; e.style.display = 'block';
+      const e = qbody.querySelector('.qerr');
+      if (e) { e.textContent = msg; e.style.display = 'block'; }
     }
 
-    function renderQuiz() {
-      qbody.innerHTML = '';
-      const stepLabel = document.createElement('p'); stepLabel.className = 'qstep-label';
-      const h = document.createElement('h3');
+    function head(view, label, title) {
+      const l = document.createElement('p'); l.className = 'qstep-label'; l.textContent = label;
+      const h = document.createElement('h3'); h.textContent = title;
+      view.append(l, h);
+    }
+
+    function renderQuiz(dir) {
+      const view = document.createElement('div');
 
       if (qstep === 1) {
-        stepLabel.textContent = 'Step 1 of 4';
-        h.textContent = 'Where do you already have reach?';
-        qbody.append(stepLabel, h);
-        qbody.append(chipRow(SOURCES, state.sources, (id, on) => {
-          if (on) { if (!state.sources.includes(id)) state.sources.push(id); }
-          else state.sources = state.sources.filter(x => x !== id);
-        }));
-        const e = document.createElement('p'); e.className = 'qerr'; qbody.append(e);
-        qbody.append(nav(false, 'Continue \u2192', () => {
+        head(view, 'Step 1 of 4', 'Where do you already have reach?');
+        const grid = document.createElement('div'); grid.className = 'srcgrid';
+        SOURCES.forEach(src => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'srcopt' + (state.sources.includes(src.id) ? ' on' : '');
+          b.innerHTML = ICONS[src.id] + '<span>' + src.label + '</span>'
+            + '<span class="tick"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>';
+          b.addEventListener('click', () => {
+            b.classList.toggle('on');
+            if (b.classList.contains('on')) { if (!state.sources.includes(src.id)) state.sources.push(src.id); }
+            else state.sources = state.sources.filter(x => x !== src.id);
+            updateDiagram();
+          });
+          grid.appendChild(b);
+        });
+        view.append(grid);
+        const e = document.createElement('p'); e.className = 'qerr'; view.append(e);
+        nav(view, false, 'Continue →', () => {
           if (!state.sources.length) return err('Pick at least one.');
-          qstep = 2; renderQuiz();
-        }));
+          qstep = 2; renderQuiz(1);
+        });
       }
 
       if (qstep === 2) {
-        stepLabel.textContent = 'Step 2 of 4';
-        h.textContent = 'Roughly how large?';
-        qbody.append(stepLabel, h);
+        head(view, 'Step 2 of 4', 'Roughly how large?');
         state.sources.forEach(id => {
           const src = SOURCES.find(x => x.id === id);
           const f = document.createElement('div'); f.className = 'qfield';
           const lab = document.createElement('label');
-          lab.innerHTML = src.label + ' <small>' + src.unit + '</small>';
+          lab.innerHTML = ICONS[id] + '<span>' + src.label + '</span> <small>' + src.unit + '</small>';
           const inp = document.createElement('input');
           inp.type = 'text'; inp.inputMode = 'numeric'; inp.placeholder = 'e.g. 25,000';
           inp.value = state.sizes[id] || '';
-          inp.addEventListener('input', () => { state.sizes[id] = inp.value; });
-          f.append(lab, inp); qbody.append(f);
+          inp.addEventListener('input', () => { state.sizes[id] = inp.value; updateDiagram(); });
+          f.append(lab, inp); view.append(f);
         });
-        qbody.append(nav(true, 'Continue \u2192', () => { qstep = 3; renderQuiz(); }, () => { qstep = 1; renderQuiz(); }));
+        nav(view, true, 'Continue →', () => { qstep = 3; renderQuiz(1); }, () => { qstep = 1; renderQuiz(-1); });
       }
 
       if (qstep === 3) {
-        stepLabel.textContent = 'Step 3 of 4';
-        h.textContent = 'What do you sell?';
-        qbody.append(stepLabel, h);
-        qbody.append(chipRow(SELLS, [state.sell], (id, on) => { state.sell = on ? id : ''; }, true));
+        head(view, 'Step 3 of 4', 'What do you sell?');
+        const advance = () => {
+          if (qstep === 3 && state.sell && state.value)
+            setTimeout(() => { if (qstep === 3) { qstep = 4; renderQuiz(1); } }, 320);
+        };
+        view.append(chipRow(SELLS, [state.sell], (id, on) => { state.sell = on ? id : ''; advance(); }, true));
         const sub2 = document.createElement('p'); sub2.className = 'qsub';
         sub2.textContent = 'Typical customer value';
-        qbody.append(sub2);
-        qbody.append(chipRow(VALUES, [state.value], (id, on) => { state.value = on ? id : ''; }, true));
-        const e = document.createElement('p'); e.className = 'qerr'; qbody.append(e);
-        qbody.append(nav(true, 'Continue \u2192', () => {
+        view.append(sub2);
+        view.append(chipRow(VALUES, [state.value], (id, on) => { state.value = on ? id : ''; advance(); }, true));
+        const e = document.createElement('p'); e.className = 'qerr'; view.append(e);
+        nav(view, true, 'Continue →', () => {
           if (!state.sell) return err('Pick what you sell.');
-          qstep = 4; renderQuiz();
-        }, () => { qstep = 2; renderQuiz(); }));
+          qstep = 4; renderQuiz(1);
+        }, () => { qstep = 2; renderQuiz(-1); });
       }
 
       if (qstep === 4) {
-        stepLabel.textContent = 'Step 4 of 4';
-        h.textContent = 'What else do you have?';
-        qbody.append(stepLabel, h);
-        qbody.append(chipRow(EXTRAS, state.extras, (id, on) => {
+        head(view, 'Step 4 of 4', 'What else do you have?');
+        view.append(chipRow(EXTRAS, state.extras, (id, on) => {
           if (on) { if (!state.extras.includes(id)) state.extras.push(id); }
           else state.extras = state.extras.filter(x => x !== id);
         }));
-        qbody.append(nav(true, 'Continue \u2192', () => { qstep = 5; renderQuiz(); }, () => { qstep = 3; renderQuiz(); }));
+        nav(view, true, 'See my opportunities →', () => { qstep = 5; renderQuiz(1); }, () => { qstep = 3; renderQuiz(-1); });
       }
 
       if (qstep === 5) {
-        stepLabel.textContent = 'Last step';
-        h.textContent = 'Let\u2019s find out.';
-        qbody.append(stepLabel, h);
+        const est = estimate();
+        head(view, 'Your opportunities', est.any ? 'Here’s what’s already around you.' : 'Here’s where we’d look.');
+        state.sources.forEach(id => {
+          const src = SOURCES.find(x => x.id === id);
+          const n = parseSize(state.sizes[id]);
+          const r = document.createElement('div'); r.className = 'rrow';
+          r.innerHTML = ICONS[id]
+            + '<span class="rname">' + src.label + '</span>'
+            + (n ? '<span class="rsize">' + n.toLocaleString('en-US') + ' ' + src.unit + '</span>' : '')
+            + (n ? '<b>≈ ' + nice(n * src.rate[0]) + '–' + nice(n * src.rate[1]) + ' buyers</b>'
+                 : '<b>we’ll size it</b>');
+          view.append(r);
+        });
+        const sigs = state.extras.filter(x => x !== 'Not sure');
+        if (sigs.length) {
+          const x = document.createElement('p'); x.className = 'rextras';
+          x.textContent = 'Plus the signals: ' + sigs.join(', ') + '.';
+          view.append(x);
+        }
+        if (est.any) {
+          const t = document.createElement('div'); t.className = 'rtotal';
+          t.innerHTML = '<b id="rtotal-n">≈ 0</b><span>potential buyers already around you</span>';
+          view.append(t);
+          const note = document.createElement('p'); note.className = 'rnote';
+          note.textContent = 'Rough ranges, based on typical ICP-match rates. We refine them on your real data.';
+          view.append(note);
+          // the total counts up once the view lands
+          const b = t.querySelector('#rtotal-n');
+          const t0 = performance.now(), dur = 1200;
+          (function frame(now) {
+            const k = Math.min(((now || performance.now()) - t0) / dur, 1);
+            const eased = 1 - Math.pow(1 - k, 3);
+            b.textContent = '≈ ' + nice(est.lo * eased) + '–' + nice(est.hi * eased);
+            if (k < 1) requestAnimationFrame(frame);
+          })();
+        }
+        nav(view, true, 'Get my full mapping →', () => { qstep = 6; renderQuiz(1); }, () => { qstep = 4; renderQuiz(-1); });
+      }
+
+      if (qstep === 6) {
+        head(view, 'Last step', 'Where do we send it?');
         [['name', 'Name', 'text'], ['company', 'Company', 'text'],
          ['email', 'Work email', 'email'], ['website', 'Website / LinkedIn', 'text']].forEach(([id, label, type]) => {
           const f = document.createElement('div'); f.className = 'qfield';
@@ -1498,13 +1774,14 @@
           const inp = document.createElement('input'); inp.type = type;
           inp.value = state.contact[id] || '';
           inp.addEventListener('input', () => { state.contact[id] = inp.value; });
-          f.append(lab, inp); qbody.append(f);
+          f.append(lab, inp); view.append(f);
         });
-        const e = document.createElement('p'); e.className = 'qerr'; qbody.append(e);
-        qbody.append(nav(true, 'Find my opportunities \u2192', () => {
+        const e = document.createElement('p'); e.className = 'qerr'; view.append(e);
+        nav(view, true, 'Send →', () => {
           if (!state.contact.name || !state.contact.email || !/.+@.+\..+/.test(state.contact.email))
-            return err('Your name and a valid work email, and we\u2019re good.');
+            return err('Your name and a valid work email, and we’re good.');
           if (LEAD_ENDPOINT) {
+            const est = estimate();
             const reach = state.sources.map(id => {
               const src = SOURCES.find(x => x.id === id);
               return src.label + (state.sizes[id] ? ' (' + state.sizes[id] + ')' : '');
@@ -1521,26 +1798,31 @@
                 reach: reach,
                 sells: state.sell,
                 deal_value: state.value || '',
-                also_has: state.extras.join(', ')
+                also_has: state.extras.join(', '),
+                estimated_buyers: est.any ? nice(est.lo) + '-' + nice(est.hi) : ''
               }),
               keepalive: true
             }).catch(() => {});
           }
-          qstep = 6; renderQuiz();
-        }, () => { qstep = 4; renderQuiz(); }));
+          qstep = 7; renderQuiz(1);
+        }, () => { qstep = 5; renderQuiz(-1); });
       }
 
-      if (qstep === 6) {
+      if (qstep === 7) {
         const t = document.createElement('div'); t.className = 'qthanks';
-        const cal = CALENDLY + '?name=' + encodeURIComponent(state.contact.name || '')
+        const cal = CALENDLY + '?hide_gdpr_banner=1&embed_type=Inline&embed_domain=' + location.hostname
+                  + '&name=' + encodeURIComponent(state.contact.name || '')
                   + '&email=' + encodeURIComponent(state.contact.email || '');
-        t.innerHTML = '<div class="big">\ud83d\udc4b</div>'
-          + '<h3>Got it. We\u2019ll map your opportunities.</h3>'
-          + '<p>We\u2019ll come back to you at ' + (state.contact.email || 'your email')
-          + ' with what we\u2019d look at first. Want to skip the wait?</p>'
-          + '<a class="btn btn-primary" href="' + cal + '" target="_blank" rel="noopener">Book a 30 min call \u2192</a>';
-        qbody.append(t);
+        t.innerHTML = '<h3>Got it. Want to skip the wait?</h3>'
+          + '<p>The mapping lands at ' + (state.contact.email || 'your email')
+          + '. Grab a slot and we’ll walk through it together.</p>'
+          + '<iframe src="' + cal + '" loading="lazy" title="Book a call"></iframe>'
+          + '<p style="margin-top:12px;font-size:12.5px"><a href="' + CALENDLY
+          + '" target="_blank" rel="noopener" style="color:#2f6fe0;font-weight:600">Calendar not loading? Open it in a new tab &rarr;</a></p>';
+        view.append(t);
       }
+
+      mount(view, dir || 1);
     }
   </script>
 
