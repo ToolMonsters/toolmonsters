@@ -654,6 +654,45 @@
   .qback[hidden] { visibility: hidden; display: inline; }
   .qerr { font-size: 13px; color: #c0392b; margin-top: 12px; display: none; }
 
+  /* ---- the scan: we show the work before we show the number ---- */
+  .scanrow {
+    display: flex; align-items: center; gap: 11px; padding: 13px 0;
+    border-bottom: 1px solid rgba(22,49,77,.07);
+    opacity: 0; transform: translateY(9px);
+    transition: opacity .35s ease, transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .scanrow.in { opacity: 1; transform: none; }
+  .scanrow:last-of-type { border-bottom: none; }
+  .scanrow .cico { width: 22px; height: 22px; border-radius: 7px; }
+  .scanrow .sname { font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
+                    font-size: 14px; color: #16314d; }
+  .scanrow .swhat { font-size: 13px; color: #6a7689; }
+  .scanrow .stail { margin-left: auto; display: flex; align-items: center; padding-left: 10px; }
+  .spin {
+    width: 15px; height: 15px; border-radius: 50%;
+    border: 2px solid rgba(47,111,224,.22); border-top-color: #2f6fe0;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .sres {
+    display: none; align-items: center; gap: 6px; white-space: nowrap;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 13.5px; color: #2f6fe0;
+    animation: qtilein .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .sres.on { display: flex; }
+  .sres svg { color: #30a46c; }
+
+  /* the people materialising in the side panel */
+  .swarm {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 5px;
+    max-width: 236px; align-self: center; margin-top: 14px;
+  }
+  .swarm i {
+    width: 13px; height: 13px; border-radius: 50%; display: block;
+    transform: scale(0); transition: transform .32s cubic-bezier(.34,1.56,.64,1);
+  }
+  .swarm i.on { transform: scale(1); }
+
   /* the computed result: one hero number, one sentence, detail on demand */
   .rhero {
     padding: 26px 22px 24px; border-radius: 18px; text-align: center;
@@ -768,7 +807,8 @@
     .qtile { width: 34px; padding: 4px; border-radius: 9px; }
     .qtile b, .qtile i { display: none; }
     .qtiles-empty { font-size: 11px; padding-top: 0; }
-    .qwire, .qnode--conv { display: none; }
+    .qwire, .qnode--conv, .swarm { display: none; }
+    .scanrow .swhat { display: none; }
     .qnode { opacity: 1; transform: none; padding: 8px 13px; border-radius: 11px;
              flex: 0 0 auto; }
     .qnode b { font-size: 16px; }
@@ -1306,6 +1346,7 @@
       <aside class="qside" aria-hidden="true">
         <p class="qside-label">Your system</p>
         <div class="qtiles" id="qtiles"></div>
+        <div class="swarm" id="qswarm"></div>
         <div class="qwire" id="qwire1"></div>
         <div class="qnode" id="qnode">
           <b id="qcount">&ndash;</b>
@@ -1643,7 +1684,7 @@
     }
 
     function openQuiz(origin) {
-      qstep = 1;
+      qstep = 1; clearSwarm();
       track('quiz_open', { origin: origin || 'cta' });
       renderQuiz(1); veil.classList.add('open'); document.body.style.overflow = 'hidden';
     }
@@ -1739,6 +1780,21 @@
       const h = document.createElement('h3'); h.textContent = title;
       view.append(l, h);
     }
+
+    const SWARM_COLORS = ['linear-gradient(135deg,#79a8ff,#b9aaff)',
+                          'linear-gradient(135deg,#4fc3a1,#2f9e8f)',
+                          'linear-gradient(135deg,#ff9d76,#f2709c)'];
+    function fillSwarm(n, dur) {
+      const sw = document.getElementById('qswarm');
+      sw.innerHTML = '';
+      for (let i = 0; i < n; i++) {
+        const d = document.createElement('i');
+        d.style.background = SWARM_COLORS[i % SWARM_COLORS.length];
+        sw.appendChild(d);
+        setTimeout(() => d.classList.add('on'), Math.round((i / n) * dur));
+      }
+    }
+    function clearSwarm() { document.getElementById('qswarm').innerHTML = ''; }
 
     function renderQuiz(dir) {
       const view = document.createElement('div');
@@ -1845,68 +1901,53 @@
       }
 
       if (qstep === 5) {
+        /* the scan: every source is read on screen before the number lands */
+        head(view, 'Your opportunities', 'Reading what you already have\u2026');
         const est = estimate();
-        const pipe = pipeline();
-        const names = state.sources.map(id => SOURCES.find(x => x.id === id).label);
-        const listed = names.length > 1
-          ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1]
-          : (names[0] || 'what you have');
-        head(view, 'Your opportunities', est.any ? 'Here\u2019s what\u2019s already around you.' : 'Here\u2019s where we\u2019d look.');
-
-        /* one number owns this screen */
-        if (est.any) {
-          const hero = document.createElement('div'); hero.className = 'rhero';
-          hero.innerHTML = pipe.ok
-            ? '<b id="rhero-n">$0</b><span>in pipeline, if just 1% of them become customers</span>'
-            : '<b id="rhero-n">0</b><span>potential buyers already around you</span>';
-          view.append(hero);
-        }
-
-        /* one sentence of context */
-        const line = document.createElement('p'); line.className = 'rline';
-        line.innerHTML = est.any
-          ? 'From <b>\u2248' + nice(est.lo) + '\u2013' + nice(est.hi) + '</b> potential buyers across ' + listed + '.'
-          : 'We\u2019d start with ' + listed + ', then size it on your real data.';
-        view.append(line);
-
-        /* the per-source detail, only if they ask for it */
-        if (est.any) {
-          const rows = document.createElement('div'); rows.className = 'rrows';
-          state.sources.forEach(id => {
-            const src = SOURCES.find(x => x.id === id);
-            const n = parseSize(state.sizes[id]);
-            const r = document.createElement('div'); r.className = 'rrow';
-            r.innerHTML = ICONS[id] + '<span class="rname">' + src.label + '</span>'
-              + (n ? '<b>\u2248 ' + nice(n * src.rate[0]) + '\u2013' + nice(n * src.rate[1]) + ' buyers</b>'
-                   : '<b>we\u2019ll size it</b>');
-            rows.append(r);
+        const jobs = [];
+        state.sources.forEach(id => {
+          const src = SOURCES.find(x => x.id === id);
+          const n = parseSize(state.sizes[id]);
+          jobs.push({
+            icon: ICONS[id], name: src.label,
+            what: n ? 'reading ' + n.toLocaleString('en-US') + ' ' + src.unit : 'sizing it up',
+            res: n ? '\u2248 ' + nice(n * src.rate[0]) + '\u2013' + nice(n * src.rate[1]) + ' buyers' : 'on our list'
           });
-          const tog = document.createElement('button');
-          tog.type = 'button'; tog.className = 'rtoggle'; tog.textContent = 'See the breakdown \u2193';
-          tog.addEventListener('click', () => {
-            const open = rows.classList.toggle('on');
-            tog.textContent = open ? 'Hide the breakdown \u2191' : 'See the breakdown \u2193';
-          });
-          view.append(tog, rows);
+        });
+        const sigs = state.extras.filter(x => x !== 'Not sure yet');
+        if (sigs.length) jobs.push({
+          icon: '<span class="cico cico--line"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>',
+          name: 'Signals', what: 'watching ' + sigs.length + (sigs.length > 1 ? ' sources' : ' source'),
+          res: 'live'
+        });
 
-          const note = document.createElement('p'); note.className = 'rnote';
-          note.textContent = 'Rough ranges. We refine them on your real data.';
-          view.append(note);
+        const rows = jobs.map(j => {
+          const r = document.createElement('div'); r.className = 'scanrow';
+          r.innerHTML = j.icon + '<span class="sname">' + j.name + '</span>'
+            + '<span class="swhat">' + j.what + '</span>'
+            + '<span class="stail"><span class="spin"></span>'
+            + '<span class="sres"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+            + j.res + '</span></span>';
+          view.append(r);
+          return r;
+        });
 
-          /* the hero counts up once the view lands */
-          const b = view.querySelector('#rhero-n');
-          const t0 = performance.now(), dur = 1300;
-          (function frame(now) {
-            const k = Math.min(((now || performance.now()) - t0) / dur, 1);
-            const e = 1 - Math.pow(1 - k, 3);
-            b.textContent = pipe.ok
-              ? '\u2248 ' + fmtMoney(pipe.lo * e) + '\u2013' + fmtMoney(pipe.hi * e)
-              : '\u2248 ' + nice(est.lo * e) + '\u2013' + nice(est.hi * e);
-            if (k < 1) requestAnimationFrame(frame);
-          })();
-        }
+        /* people materialise in the side panel while the rows resolve */
+        const total = est.any ? Math.round((est.lo + est.hi) / 2) : 0;
+        const dots = Math.min(28, Math.max(8, Math.round(total / 200) || 12));
+        fillSwarm(dots, 260 + rows.length * 380);
 
-        nav(view, true, 'Get my full mapping \u2192', () => { qstep = 6; renderQuiz(1); }, () => { qstep = 4; renderQuiz(-1); });
+        const step = 380, settle = 700;
+        rows.forEach((r, i) => {
+          setTimeout(() => r.classList.add('in'), 60 + i * step);
+          setTimeout(() => {
+            const sp = r.querySelector('.spin'); if (sp) sp.remove();
+            const rs = r.querySelector('.sres'); if (rs) rs.classList.add('on');
+          }, 60 + i * step + settle);
+        });
+        setTimeout(() => {
+          if (veil.classList.contains('open') && qstep === 5) renderResult();
+        }, 60 + (rows.length - 1) * step + settle + 620);
       }
 
       if (qstep === 6) {
@@ -1979,6 +2020,76 @@
 
       mount(view, dir || 1);
       if ((dir || 1) > 0) track('quiz_step', { step: String(qstep) });
+    }
+
+    /* the payoff, mounted once the scan finishes */
+    function renderResult() {
+      const view = document.createElement('div');
+      const est = estimate();
+      const pipe = pipeline();
+      const names = state.sources.map(id => SOURCES.find(x => x.id === id).label);
+      const listed = names.length > 1
+        ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1]
+        : (names[0] || 'what you have');
+      head(view, 'Your opportunities', est.any ? 'Here\u2019s what\u2019s already around you.' : 'Here\u2019s where we\u2019d look.');
+
+      if (est.any) {
+        const hero = document.createElement('div'); hero.className = 'rhero';
+        hero.innerHTML = pipe.ok
+          ? '<b id="rhero-n">$0</b><span>in pipeline, if just 1% of them become customers</span>'
+          : '<b id="rhero-n">0</b><span>potential buyers already around you</span>';
+        view.append(hero);
+      }
+
+      const line = document.createElement('p'); line.className = 'rline';
+      line.innerHTML = est.any
+        ? 'From <b>\u2248' + nice(est.lo) + '\u2013' + nice(est.hi) + '</b> potential buyers across ' + listed + '.'
+        : 'We\u2019d start with ' + listed + ', then size it on your real data.';
+      view.append(line);
+
+      if (est.any) {
+        const rows = document.createElement('div'); rows.className = 'rrows';
+        state.sources.forEach(id => {
+          const src = SOURCES.find(x => x.id === id);
+          const n = parseSize(state.sizes[id]);
+          const r = document.createElement('div'); r.className = 'rrow';
+          r.innerHTML = ICONS[id] + '<span class="rname">' + src.label + '</span>'
+            + (n ? '<b>\u2248 ' + nice(n * src.rate[0]) + '\u2013' + nice(n * src.rate[1]) + ' buyers</b>'
+                 : '<b>we\u2019ll size it</b>');
+          rows.append(r);
+        });
+        const tog = document.createElement('button');
+        tog.type = 'button'; tog.className = 'rtoggle'; tog.textContent = 'See the breakdown \u2193';
+        tog.addEventListener('click', () => {
+          const open = rows.classList.toggle('on');
+          tog.textContent = open ? 'Hide the breakdown \u2191' : 'See the breakdown \u2193';
+        });
+        view.append(tog, rows);
+
+        const note = document.createElement('p'); note.className = 'rnote';
+        note.textContent = 'Rough ranges. We refine them on your real data.';
+        view.append(note);
+      }
+
+      nav(view, true, 'Get my full mapping \u2192',
+        () => { qstep = 6; renderQuiz(1); },
+        () => { clearSwarm(); qstep = 4; renderQuiz(-1); });
+
+      mount(view, 1);
+      track('quiz_result', { pipeline: pipe.ok ? fmtMoney(pipe.lo) + '-' + fmtMoney(pipe.hi) : '' });
+
+      if (est.any) {
+        const b = view.querySelector('#rhero-n');
+        const t0 = performance.now(), dur = 1300;
+        (function frame(now) {
+          const k = Math.min(((now || performance.now()) - t0) / dur, 1);
+          const e = 1 - Math.pow(1 - k, 3);
+          b.textContent = pipe.ok
+            ? '\u2248 ' + fmtMoney(pipe.lo * e) + '\u2013' + fmtMoney(pipe.hi * e)
+            : '\u2248 ' + nice(est.lo * e) + '\u2013' + nice(est.hi * e);
+          if (k < 1) requestAnimationFrame(frame);
+        })();
+      }
     }
   </script>
 
