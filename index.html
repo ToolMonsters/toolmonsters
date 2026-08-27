@@ -459,37 +459,22 @@
   @keyframes gfade { to { opacity: 1; } }
   @keyframes gpop { to { transform: scale(1); } }
   @keyframes gping { 0% { transform: scale(.55); opacity: .9; } 70%, 100% { transform: scale(2.4); opacity: 0; } }
-  /* a light pulse runs down each connector, level by level, then loops:
-     the line draws from the top, then retracts from the top, so it reads
-     as one charge sliding through the system */
+  /* one pass, no loop: the lines draw, then a single bead runs the system
+     once to show which way it flows, and the card settles for good */
   .gd {
-    stroke: #4f96ff; stroke-width: 3; stroke-linecap: round;
-    stroke-dasharray: 100 100; stroke-dashoffset: 100; opacity: 0;
-    filter: drop-shadow(0 0 4px rgba(47,111,224,.9));
+    stroke-width: 6; stroke-linecap: round;
+    stroke-dasharray: 0.01 100; stroke-dashoffset: 100; opacity: 0;
   }
-  .ex-card.in .gflow--l3 .gd {
-    animation: lvl3 2.7s cubic-bezier(.4,0,.5,1) infinite;
-    animation-delay: calc(1.1s + var(--i) * .9s);
+  .gd.ln-n { stroke: #5b7896; }
+  .ex-card.in .gd {
+    animation: bead .62s cubic-bezier(.45,0,.55,1) 1 both;
+    animation-delay: calc(1.15s + var(--i) * .5s);
   }
-  .ex-card.in .gflow--l4 .gd {
-    animation: lvl4 3.2s cubic-bezier(.4,0,.5,1) infinite;
-    animation-delay: calc(1.1s + var(--i) * .8s);
-  }
-  @keyframes lvl3 {
-    0%   { stroke-dashoffset: 100;  opacity: 0; }
-    2%   { opacity: 1; }
-    17%  { stroke-dashoffset: 0;    opacity: 1; }
-    31%  { stroke-dashoffset: -100; opacity: 1; }
-    33%  { stroke-dashoffset: -100; opacity: 0; }
-    100% { stroke-dashoffset: -100; opacity: 0; }
-  }
-  @keyframes lvl4 {
-    0%   { stroke-dashoffset: 100;  opacity: 0; }
-    2%   { opacity: 1; }
-    13%  { stroke-dashoffset: 0;    opacity: 1; }
-    23%  { stroke-dashoffset: -100; opacity: 1; }
-    25%  { stroke-dashoffset: -100; opacity: 0; }
-    100% { stroke-dashoffset: -100; opacity: 0; }
+  @keyframes bead {
+    0%   { stroke-dashoffset: 100; opacity: 0; }
+    12%  { opacity: 1; }
+    82%  { stroke-dashoffset: 0.5; opacity: 1; }
+    100% { stroke-dashoffset: 0.5; opacity: 0; }
   }
 
   .ex-copy {
@@ -1115,11 +1100,12 @@
             <text class="gt-termchip" x="215" y="470.5">with the right people</text>
           </g>
         
+        
           <g class="gdots">
-          <path class="gd" style="--i:0" pathLength="100" fill="none" d="M215 66 V96" />
-          <path class="gd" style="--i:1" pathLength="100" fill="none" d="M215 168 V198" />
-          <path class="gd" style="--i:2" pathLength="100" fill="none" d="M215 270 V300" />
-          <path class="gd" style="--i:3" pathLength="100" fill="none" d="M215 392 V420" />
+          <path class="gd ln-o" style="--i:0" pathLength="100" fill="none" d="M215 66 V96" />
+          <path class="gd ln-o" style="--i:1" pathLength="100" fill="none" d="M215 168 V198" />
+          <path class="gd ln-o" style="--i:2" pathLength="100" fill="none" d="M215 270 V300" />
+          <path class="gd ln-n" style="--i:3" pathLength="100" fill="none" d="M215 392 V420" />
           </g>
         </svg>
         <p class="ex-copy">Find the buyers already paying attention.</p>
@@ -1172,12 +1158,13 @@
             <text class="gt-termchip" x="215" y="394.5">warm, not cold</text>
           </g>
         
+        
           <g class="gdots">
-          <path class="gd" style="--i:0" pathLength="100" fill="none" d="M175 66 C175 88, 110 84, 110 112" />
-          <path class="gd" style="--i:0" pathLength="100" fill="none" d="M255 66 C255 88, 320 84, 320 112" />
-          <path class="gd" style="--i:1" pathLength="100" fill="none" d="M110 178 C110 204, 215 198, 215 224" />
-          <path class="gd" style="--i:1" pathLength="100" fill="none" d="M320 178 C320 204, 215 198, 215 224" />
-          <path class="gd" style="--i:2" pathLength="100" fill="none" d="M215 316 V344" />
+          <path class="gd ln-n" style="--i:0" pathLength="100" fill="none" d="M175 66 C175 88, 110 84, 110 112" />
+          <path class="gd ln-n" style="--i:0" pathLength="100" fill="none" d="M255 66 C255 88, 320 84, 320 112" />
+          <path class="gd ln-n" style="--i:1" pathLength="100" fill="none" d="M110 178 C110 204, 215 198, 215 224" />
+          <path class="gd ln-n" style="--i:1" pathLength="100" fill="none" d="M320 178 C320 204, 215 198, 215 224" />
+          <path class="gd ln-n" style="--i:2" pathLength="100" fill="none" d="M215 316 V344" />
           </g>
         </svg>
         <p class="ex-copy">Your inbox is full of old opportunities.</p>
@@ -1226,11 +1213,12 @@
             <text class="gt-termchip" x="215" y="452.5">with the right people</text>
           </g>
         
+        
           <g class="gdots">
-          <path class="gd" style="--i:0" pathLength="100" fill="none" d="M215 70 V98" />
-          <path class="gd" style="--i:1" pathLength="100" fill="none" d="M215 164 V192" />
-          <path class="gd" style="--i:2" pathLength="100" fill="none" d="M215 280 V308" />
-          <path class="gd" style="--i:3" pathLength="100" fill="none" d="M215 374 V402" />
+          <path class="gd ln-b" style="--i:0" pathLength="100" fill="none" d="M215 70 V98" />
+          <path class="gd ln-b" style="--i:1" pathLength="100" fill="none" d="M215 164 V192" />
+          <path class="gd ln-b" style="--i:2" pathLength="100" fill="none" d="M215 280 V308" />
+          <path class="gd ln-n" style="--i:3" pathLength="100" fill="none" d="M215 374 V402" />
           </g>
         </svg>
         <p class="ex-copy">Your competitors generate signals too.</p>
@@ -1294,14 +1282,15 @@
             <text class="gt-termchip" x="215" y="452.5">at exactly the right time</text>
           </g>
         
+        
           <g class="gdots">
-          <path class="gd" style="--i:0" pathLength="100" fill="none" d="M110 58 C110 80, 215 76, 215 100" />
-          <path class="gd" style="--i:0" pathLength="100" fill="none" d="M180 58 C180 82, 215 80, 215 100" />
-          <path class="gd" style="--i:0" pathLength="100" fill="none" d="M250 58 C250 82, 215 80, 215 100" />
-          <path class="gd" style="--i:0" pathLength="100" fill="none" d="M320 58 C320 80, 215 76, 215 100" />
-          <path class="gd" style="--i:1" pathLength="100" fill="none" d="M215 166 V196" />
-          <path class="gd" style="--i:2" pathLength="100" fill="none" d="M215 262 V292" />
-          <path class="gd" style="--i:3" pathLength="100" fill="none" d="M215 374 V402" />
+          <path class="gd ln-n" style="--i:0" pathLength="100" fill="none" d="M110 58 C110 80, 215 76, 215 100" />
+          <path class="gd ln-n" style="--i:0" pathLength="100" fill="none" d="M180 58 C180 82, 215 80, 215 100" />
+          <path class="gd ln-n" style="--i:0" pathLength="100" fill="none" d="M250 58 C250 82, 215 80, 215 100" />
+          <path class="gd ln-n" style="--i:0" pathLength="100" fill="none" d="M320 58 C320 80, 215 76, 215 100" />
+          <path class="gd ln-n" style="--i:1" pathLength="100" fill="none" d="M215 166 V196" />
+          <path class="gd ln-n" style="--i:2" pathLength="100" fill="none" d="M215 262 V292" />
+          <path class="gd ln-n" style="--i:3" pathLength="100" fill="none" d="M215 374 V402" />
           </g>
         </svg>
         <p class="ex-copy">Sometimes a job posting tells you exactly when to talk.</p>
@@ -1341,10 +1330,11 @@
             <text class="gt-termchip" x="215" y="368.5">already connected</text>
           </g>
         
+        
           <g class="gdots">
-          <path class="gd" style="--i:0" pathLength="100" fill="none" d="M215 66 V96" />
-          <path class="gd" style="--i:1" pathLength="100" fill="none" d="M215 168 V198" />
-          <path class="gd" style="--i:2" pathLength="100" fill="none" d="M215 290 V318" />
+          <path class="gd ln-b" style="--i:0" pathLength="100" fill="none" d="M215 66 V96" />
+          <path class="gd ln-b" style="--i:1" pathLength="100" fill="none" d="M215 168 V198" />
+          <path class="gd ln-n" style="--i:2" pathLength="100" fill="none" d="M215 290 V318" />
           </g>
         </svg>
         <p class="ex-copy">Your network is already a lead list.</p>
@@ -1393,11 +1383,12 @@
             <text class="gt-termchip" x="215" y="368.5">before the event</text>
           </g>
         
+        
           <g class="gdots">
-          <path class="gd" style="--i:0" pathLength="100" fill="none" d="M175 66 C175 86, 215 82, 215 96" />
-          <path class="gd" style="--i:0" pathLength="100" fill="none" d="M255 66 C255 86, 215 82, 215 96" />
-          <path class="gd" style="--i:1" pathLength="100" fill="none" d="M215 168 V198" />
-          <path class="gd" style="--i:2" pathLength="100" fill="none" d="M215 290 V318" />
+          <path class="gd ln-n" style="--i:0" pathLength="100" fill="none" d="M175 66 C175 86, 215 82, 215 96" />
+          <path class="gd ln-n" style="--i:0" pathLength="100" fill="none" d="M255 66 C255 86, 215 82, 215 96" />
+          <path class="gd ln-n" style="--i:1" pathLength="100" fill="none" d="M215 168 V198" />
+          <path class="gd ln-n" style="--i:2" pathLength="100" fill="none" d="M215 290 V318" />
           </g>
         </svg>
         <p class="ex-copy">Meet them before the booth does.</p>
