@@ -650,40 +650,39 @@
   .qback[hidden] { visibility: hidden; display: inline; }
   .qerr { font-size: 13px; color: #c0392b; margin-top: 12px; display: none; }
 
-  /* the computed result */
-  .rrow {
-    display: flex; align-items: center; gap: 11px; padding: 12px 0;
-    border-bottom: 1px solid rgba(22,49,77,.08); font-size: 14px; color: #33425a;
-  }
-  .rrow:last-of-type { border-bottom: none; }
-  .rrow .cico { width: 22px; height: 22px; border-radius: 7px; }
-  .rrow .rname { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; color: #16314d; }
-  .rrow .rsize { font-size: 12.5px; color: #6a7689; }
-  .rrow b { margin-left: auto; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
-            font-size: 14.5px; color: #2f6fe0; white-space: nowrap; padding-left: 10px; }
-  .rextras { margin-top: 14px; font-size: 13px; color: #6a7689; line-height: 1.5; }
-  .rtotal {
-    margin-top: 20px; padding: 15px 22px; border-radius: 16px; text-align: center;
-    background: linear-gradient(135deg, #2f3358 0%, #1c1e36 100%); color: #fff;
-    box-shadow: 0 20px 40px -22px rgba(20,22,45,.7);
-  }
-  .rtotal b {
-    display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800;
-    font-size: clamp(21px, 2.6vw, 26px); letter-spacing: -.02em;
-  }
-  .rtotal span { display: block; margin-top: 4px; font-size: 12.5px; color: rgba(255,255,255,.78); }
-  /* the money box, the number that makes them sit up */
-  .rmoney {
-    margin-top: 12px; padding: 20px 22px; border-radius: 16px; text-align: center;
+  /* the computed result: one hero number, one sentence, detail on demand */
+  .rhero {
+    padding: 26px 22px 24px; border-radius: 18px; text-align: center;
     background: linear-gradient(135deg, #3a7bed 0%, #2f6fe0 45%, #245bce 100%); color: #fff;
     box-shadow: 0 24px 48px -22px rgba(47,111,224,.75);
   }
-  .rmoney b {
+  .rhero b {
     display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800;
-    font-size: clamp(28px, 3.6vw, 36px); letter-spacing: -.02em; line-height: 1.05;
+    font-size: clamp(32px, 4.4vw, 44px); letter-spacing: -.025em; line-height: 1.02;
   }
-  .rmoney span { display: block; margin-top: 5px; font-size: 12.5px; color: rgba(255,255,255,.88); }
-  .rnote { margin-top: 10px; font-size: 11.5px; color: #8fa3b8; text-align: center; }
+  .rhero span { display: block; margin-top: 7px; font-size: 13px; color: rgba(255,255,255,.88); }
+  .rline {
+    margin-top: 18px; text-align: center; font-size: 15px; line-height: 1.55; color: #33425a;
+  }
+  .rline b { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; color: #16314d; }
+  .rtoggle {
+    display: block; margin: 14px auto 0; border: none; background: none; cursor: pointer;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 13.5px;
+    color: #2f6fe0; padding: 4px;
+  }
+  .rtoggle:hover { text-decoration: underline; }
+  .rrows { display: none; margin-top: 6px; }
+  .rrows.on { display: block; }
+  .rrow {
+    display: flex; align-items: center; gap: 11px; padding: 10px 0;
+    border-bottom: 1px solid rgba(22,49,77,.07); font-size: 13.5px; color: #33425a;
+  }
+  .rrow:last-of-type { border-bottom: none; }
+  .rrow .cico { width: 20px; height: 20px; border-radius: 6px; }
+  .rrow .rname { font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; color: #16314d; }
+  .rrow b { margin-left: auto; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
+            font-size: 13.5px; color: #2f6fe0; white-space: nowrap; padding-left: 10px; }
+  .rnote { margin-top: 12px; font-size: 11.5px; color: #8fa3b8; text-align: center; }
 
   .qthanks { text-align: center; padding: 4px 0 0; }
   .qthanks p { font-size: 14.5px; color: #5a6a80; line-height: 1.6; margin: 10px 0 18px; }
@@ -1629,7 +1628,8 @@
       else { shownCount = 0; qcount.textContent = '?'; }
       const pipe = pipeline();
       const qm = document.getElementById('qmoney');
-      qm.classList.toggle('on', pipe.ok);
+      /* from the result on, the big number lives on the right instead */
+      qm.classList.toggle('on', pipe.ok && qstep < 5);
       if (pipe.ok) qm.textContent = '≈ ' + fmtMoney(pipe.lo) + '–' + fmtMoney(pipe.hi) + ' pipeline';
       const conv = qstep >= 5;
       qwire2.classList.toggle('on', conv && on);
@@ -1840,50 +1840,67 @@
 
       if (qstep === 5) {
         const est = estimate();
-        head(view, 'Your opportunities', est.any ? 'Here’s what’s already around you.' : 'Here’s where we’d look.');
-        state.sources.forEach(id => {
-          const src = SOURCES.find(x => x.id === id);
-          const n = parseSize(state.sizes[id]);
-          const r = document.createElement('div'); r.className = 'rrow';
-          r.innerHTML = ICONS[id]
-            + '<span class="rname">' + src.label + '</span>'
-            + (n ? '<span class="rsize">' + n.toLocaleString('en-US') + ' ' + src.unit + '</span>' : '')
-            + (n ? '<b>≈ ' + nice(n * src.rate[0]) + '–' + nice(n * src.rate[1]) + ' buyers</b>'
-                 : '<b>we’ll size it</b>');
-          view.append(r);
-        });
-        const sigs = state.extras.filter(x => x !== 'Not sure yet');
-        if (sigs.length) {
-          const x = document.createElement('p'); x.className = 'rextras';
-          x.textContent = 'Plus the signals: ' + sigs.join(', ') + '.';
-          view.append(x);
-        }
+        const pipe = pipeline();
+        const names = state.sources.map(id => SOURCES.find(x => x.id === id).label);
+        const listed = names.length > 1
+          ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1]
+          : (names[0] || 'what you have');
+        head(view, 'Your opportunities', est.any ? 'Here\u2019s what\u2019s already around you.' : 'Here\u2019s where we\u2019d look.');
+
+        /* one number owns this screen */
         if (est.any) {
-          const t = document.createElement('div'); t.className = 'rtotal';
-          t.innerHTML = '<b id="rtotal-n">≈ 0</b><span>potential buyers already around you</span>';
-          view.append(t);
-          const pipe = pipeline();
-          if (pipe.ok) {
-            const m = document.createElement('div'); m.className = 'rmoney';
-            m.innerHTML = '<b id="rmoney-n">$0</b><span>in pipeline, if just 1% of them become customers</span>';
-            view.append(m);
-          }
+          const hero = document.createElement('div'); hero.className = 'rhero';
+          hero.innerHTML = pipe.ok
+            ? '<b id="rhero-n">$0</b><span>in pipeline, if just 1% of them become customers</span>'
+            : '<b id="rhero-n">0</b><span>potential buyers already around you</span>';
+          view.append(hero);
+        }
+
+        /* one sentence of context */
+        const line = document.createElement('p'); line.className = 'rline';
+        line.innerHTML = est.any
+          ? 'From <b>\u2248' + nice(est.lo) + '\u2013' + nice(est.hi) + '</b> potential buyers across ' + listed + '.'
+          : 'We\u2019d start with ' + listed + ', then size it on your real data.';
+        view.append(line);
+
+        /* the per-source detail, only if they ask for it */
+        if (est.any) {
+          const rows = document.createElement('div'); rows.className = 'rrows';
+          state.sources.forEach(id => {
+            const src = SOURCES.find(x => x.id === id);
+            const n = parseSize(state.sizes[id]);
+            const r = document.createElement('div'); r.className = 'rrow';
+            r.innerHTML = ICONS[id] + '<span class="rname">' + src.label + '</span>'
+              + (n ? '<b>\u2248 ' + nice(n * src.rate[0]) + '\u2013' + nice(n * src.rate[1]) + ' buyers</b>'
+                   : '<b>we\u2019ll size it</b>');
+            rows.append(r);
+          });
+          const tog = document.createElement('button');
+          tog.type = 'button'; tog.className = 'rtoggle'; tog.textContent = 'See the breakdown \u2193';
+          tog.addEventListener('click', () => {
+            const open = rows.classList.toggle('on');
+            tog.textContent = open ? 'Hide the breakdown \u2191' : 'See the breakdown \u2193';
+          });
+          view.append(tog, rows);
+
           const note = document.createElement('p'); note.className = 'rnote';
-          note.textContent = 'Rough ranges, based on typical ICP-match rates. We refine them on your real data.';
+          note.textContent = 'Rough ranges. We refine them on your real data.';
           view.append(note);
-          // both totals count up once the view lands
-          const b = t.querySelector('#rtotal-n');
-          const mb = view.querySelector('#rmoney-n');
+
+          /* the hero counts up once the view lands */
+          const b = view.querySelector('#rhero-n');
           const t0 = performance.now(), dur = 1300;
           (function frame(now) {
             const k = Math.min(((now || performance.now()) - t0) / dur, 1);
-            const eased = 1 - Math.pow(1 - k, 3);
-            b.textContent = '≈ ' + nice(est.lo * eased) + '–' + nice(est.hi * eased);
-            if (mb && pipe.ok) mb.textContent = '≈ ' + fmtMoney(pipe.lo * eased) + '–' + fmtMoney(pipe.hi * eased);
+            const e = 1 - Math.pow(1 - k, 3);
+            b.textContent = pipe.ok
+              ? '\u2248 ' + fmtMoney(pipe.lo * e) + '\u2013' + fmtMoney(pipe.hi * e)
+              : '\u2248 ' + nice(est.lo * e) + '\u2013' + nice(est.hi * e);
             if (k < 1) requestAnimationFrame(frame);
           })();
         }
-        nav(view, true, 'Get my full mapping →', () => { qstep = 6; renderQuiz(1); }, () => { qstep = 4; renderQuiz(-1); });
+
+        nav(view, true, 'Get my full mapping \u2192', () => { qstep = 6; renderQuiz(1); }, () => { qstep = 4; renderQuiz(-1); });
       }
 
       if (qstep === 6) {
