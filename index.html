@@ -622,6 +622,7 @@
     font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 15px;
     color: #16314d; margin: 22px 0 12px;
   }
+  .qhint { font-size: 13.5px; color: #6a7689; line-height: 1.55; margin: -12px 0 18px; }
   .qnav { display: flex; align-items: center; justify-content: space-between; margin-top: 28px; }
   .qback { border: none; background: none; cursor: pointer; font-family: "Bricolage Grotesque", sans-serif;
            font-weight: 600; font-size: 14.5px; color: #6a7689; padding: 8px 4px; }
@@ -1490,7 +1491,8 @@
       { id: 'community',  label: 'Community',   unit: 'members',     rate: [0.03, 0.06] },
       { id: 'other',      label: 'Other',       unit: 'people',      rate: [0.01, 0.03] }
     ];
-    const EXTRAS = ['Competitors', 'Email history', 'Past leads', 'Hiring signals', 'Events', 'Not sure'];
+    const EXTRAS = ['Competitors to monitor', 'Old email threads', 'Past leads / lost deals',
+                    'Job postings in my market', 'Events / conferences', 'Not sure yet'];
     const SELLS = ['Consulting / Services', 'Agency', 'SaaS', 'Recruiting', 'Other'];
     const VALUES = ['< $10K', '$10–25K', '$25–50K', '$50–100K', '$100K+'];
 
@@ -1540,16 +1542,26 @@
       countRaf = requestAnimationFrame(frame);
     }
 
+    let tilesKey = null;
     function updateDiagram() {
-      if (!state.sources.length) {
-        qtiles.innerHTML = '<p class="qtiles-empty">Pick your sources and watch your system build itself.</p>';
-      } else {
-        qtiles.innerHTML = state.sources.map(id => {
-          const src = SOURCES.find(x => x.id === id);
-          const n = parseSize(state.sizes[id]);
-          return '<div class="qtile">' + (ICONS[id] || '') + '<b>' + src.label + '</b><i>' + (n ? fmtK(n) : '') + '</i></div>';
-        }).join('');
+      /* only rebuild the tiles when the source set changes, otherwise the
+         pop animation replays on every keystroke */
+      const key = state.sources.join(',');
+      if (key !== tilesKey) {
+        tilesKey = key;
+        if (!state.sources.length) {
+          qtiles.innerHTML = '<p class="qtiles-empty">Pick your sources and watch your system build itself.</p>';
+        } else {
+          qtiles.innerHTML = state.sources.map(id => {
+            const src = SOURCES.find(x => x.id === id);
+            return '<div class="qtile" data-tile="' + id + '">' + (ICONS[id] || '') + '<b>' + src.label + '</b><i></i></div>';
+          }).join('');
+        }
       }
+      qtiles.querySelectorAll('.qtile').forEach(t => {
+        const n = parseSize(state.sizes[t.dataset.tile]);
+        t.querySelector('i').textContent = n ? fmtK(n) : '';
+      });
       const on = state.sources.length > 0;
       qwire1.classList.toggle('on', on);
       qnodeEl.classList.toggle('on', on);
@@ -1567,12 +1579,12 @@
 
     // each workflow card opens the modal with its source already selected
     const CARD_PRESETS = [
-      { sources: ['newsletter'] },                                        // 01 newsletter
-      { sources: ['emailcrm'], extras: ['Email history', 'Past leads'] }, // 02 dormant relationships
-      { sources: ['linkedin'], extras: ['Competitors'] },                 // 03 competitor monitoring
-      { extras: ['Hiring signals'] },                                     // 04 hiring signals
-      { sources: ['linkedin'] },                                          // 05 linkedin export
-      { extras: ['Events'] }                                              // 06 conferences
+      { sources: ['newsletter'] },                                                          // 01 newsletter
+      { sources: ['emailcrm'], extras: ['Old email threads', 'Past leads / lost deals'] },  // 02 dormant relationships
+      { sources: ['linkedin'], extras: ['Competitors to monitor'] },                        // 03 competitor monitoring
+      { extras: ['Job postings in my market'] },                                            // 04 hiring signals
+      { sources: ['linkedin'] },                                                            // 05 linkedin export
+      { extras: ['Events / conferences'] }                                                  // 06 conferences
     ];
     document.querySelectorAll('.ex-card').forEach((card, i) => {
       card.style.cursor = 'pointer';
@@ -1717,7 +1729,10 @@
       }
 
       if (qstep === 4) {
-        head(view, 'Step 4 of 4', 'What else do you have?');
+        head(view, 'Step 4 of 4', 'What else could point to buyers?');
+        const hint = document.createElement('p'); hint.className = 'qhint';
+        hint.textContent = 'Beyond your reach, buying signals hide in these. Pick what we should watch for you.';
+        view.append(hint);
         view.append(chipRow(EXTRAS, state.extras, (id, on) => {
           if (on) { if (!state.extras.includes(id)) state.extras.push(id); }
           else state.extras = state.extras.filter(x => x !== id);
@@ -1739,7 +1754,7 @@
                  : '<b>we’ll size it</b>');
           view.append(r);
         });
-        const sigs = state.extras.filter(x => x !== 'Not sure');
+        const sigs = state.extras.filter(x => x !== 'Not sure yet');
         if (sigs.length) {
           const x = document.createElement('p'); x.className = 'rextras';
           x.textContent = 'Plus the signals: ' + sigs.join(', ') + '.';
