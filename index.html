@@ -459,22 +459,24 @@
   @keyframes gfade { to { opacity: 1; } }
   @keyframes gpop { to { transform: scale(1); } }
   @keyframes gping { 0% { transform: scale(.55); opacity: .9; } 70%, 100% { transform: scale(2.4); opacity: 0; } }
-  /* one pass, no loop: the lines draw, then a single bead runs the system
-     once to show which way it flows, and the card settles for good */
+  /* the lines draw, then a single bead runs the system top to bottom.
+     It repeats on a 16s cycle, so the pass lasts about half a second and
+     the diagram sits still for roughly fifteen seconds in between. */
   .gd {
     stroke-width: 6; stroke-linecap: round;
     stroke-dasharray: 0.01 100; stroke-dashoffset: 100; opacity: 0;
   }
   .gd.ln-n { stroke: #5b7896; }
   .ex-card.in .gd {
-    animation: bead .62s cubic-bezier(.45,0,.55,1) 1 both;
+    animation: bead 16s linear infinite backwards;
     animation-delay: calc(1.15s + var(--i) * .5s);
   }
   @keyframes bead {
-    0%   { stroke-dashoffset: 100; opacity: 0; }
-    12%  { opacity: 1; }
-    82%  { stroke-dashoffset: 0.5; opacity: 1; }
-    100% { stroke-dashoffset: 0.5; opacity: 0; }
+    0%    { stroke-dashoffset: 100; opacity: 0; }
+    0.4%  { opacity: 1; }
+    3.4%  { stroke-dashoffset: 0.5; opacity: 1; }
+    3.9%  { stroke-dashoffset: 0.5; opacity: 0; }
+    100%  { stroke-dashoffset: 0.5; opacity: 0; }
   }
 
   .ex-copy {
