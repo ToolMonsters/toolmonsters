@@ -452,17 +452,9 @@
   }
   .ex-card.in .ex-copy { opacity: 1; }
 
-  /* ===================== Bottom area (uses end.avif as background) ===================== */
-  .bottom {
-    position: relative; z-index: 5; margin-top: 90px;
-    background: url("end.avif") center top / cover no-repeat,
-                linear-gradient(180deg, #bfe0f5 0%, #a6d2ef 100%);
-  }
-
-  /* ===================== Footer ===================== */
-  .footer-cta { position: relative; z-index: 1; background: transparent; padding: 170px 24px 0; }
+  /* ===================== Footer, right under the workflows ===================== */
   .foot-bar {
-    max-width: 1040px; margin: 0 auto; padding: 22px 0 26px; border-top: 1px solid rgba(22,49,77,.18);
+    max-width: 1040px; margin: 64px auto 0; padding: 22px 0 26px; border-top: 1px solid rgba(22,49,77,.18);
     display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
     color: #16314d; font-weight: 600; font-size: 14px;
   }
@@ -1124,18 +1116,12 @@
       </div>
 
     </div>
+
+    <div class="foot-bar">
+      <span class="foot-brand"><img src="fav.png" alt="" />&copy; 2026 Tool Monsters</span>
+      <span><a href="mailto:hello@toolmonsters.com">hello@toolmonsters.com</a></span>
+    </div>
   </section>
-
-
-  <!-- ===================== Bottom (end.avif) : final CTA + footer ===================== -->
-  <div class="bottom">
-    <section class="footer-cta">
-      <div class="foot-bar">
-        <span class="foot-brand"><img src="fav.png" alt="" />&copy; 2026 Tool Monsters</span>
-        <span><a href="mailto:hello@toolmonsters.com">hello@toolmonsters.com</a></span>
-      </div>
-    </section>
-  </div>
 
   <!-- ===================== "Find my opportunities" modal ===================== -->
   <div class="veil" id="veil" role="dialog" aria-modal="true" aria-label="Find my opportunities">
