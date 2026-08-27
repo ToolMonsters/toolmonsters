@@ -26,6 +26,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Caveat:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<!-- Plausible: pageviews + custom events (quiz funnel). The stub queues events fired before the script loads. -->
+<script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };</script>
+<script defer data-domain="toolmonsters.com" src="https://plausible.io/js/script.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -1523,6 +1526,14 @@
     const state = { sources: [], sizes: {}, sell: '', value: '', extras: [], contact: {} };
     let qstep = 1;
 
+    /* one funnel event per meaningful action; lands in Plausible (and GA4 if present) */
+    function track(name, props) {
+      try {
+        if (window.plausible) window.plausible(name, props ? { props } : undefined);
+        if (window.gtag) window.gtag('event', name, props || {});
+      } catch (e) {}
+    }
+
     const veil = document.getElementById('veil');
     const qbody = document.getElementById('qbody');
     const qbar = document.getElementById('qbar');
@@ -1613,9 +1624,14 @@
       qconv.classList.toggle('on', conv && on);
     }
 
-    function openQuiz() { qstep = 1; renderQuiz(1); veil.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function openQuiz(origin) {
+      qstep = 1;
+      track('quiz_open', { origin: origin || 'cta' });
+      renderQuiz(1); veil.classList.add('open'); document.body.style.overflow = 'hidden';
+    }
     function closeQuiz() { veil.classList.remove('open'); document.body.style.overflow = ''; }
-    document.querySelectorAll('[data-open-quiz]').forEach(b => b.addEventListener('click', () => openQuiz()));
+    document.querySelectorAll('[data-open-quiz]').forEach((b, i) =>
+      b.addEventListener('click', () => openQuiz(i === 0 ? 'hero' : 'corner')));
 
     // each workflow card opens the modal with its source already selected
     const CARD_PRESETS = [
@@ -1633,7 +1649,7 @@
         state.sources = [...(preset.sources || [])];
         state.extras = [...(preset.extras || [])];
         state.sizes = {};
-        openQuiz();
+        openQuiz('card_' + String(i + 1).padStart(2, '0'));
       });
     });
 
@@ -1846,8 +1862,8 @@
         nav(view, true, 'Send →', () => {
           if (!state.contact.name || !state.contact.email || !/.+@.+\..+/.test(state.contact.email))
             return err('Your name and a valid work email, and we’re good.');
+          const est = estimate();
           if (LEAD_ENDPOINT) {
-            const est = estimate();
             const reach = state.sources.map(id => {
               const src = SOURCES.find(x => x.id === id);
               return src.label + (state.sizes[id] ? ' (' + state.sizes[id] + ')' : '');
@@ -1872,6 +1888,10 @@
               keepalive: true
             }).catch(() => {});
           }
+          track('quiz_submit', {
+            sells: state.sell, deal_value: state.value || '',
+            buyers: est.any ? nice(est.lo) + '-' + nice(est.hi) : ''
+          });
           qstep = 7; renderQuiz(1);
         }, () => { qstep = 5; renderQuiz(-1); });
       }
@@ -1891,6 +1911,7 @@
       }
 
       mount(view, dir || 1);
+      if ((dir || 1) > 0) track('quiz_step', { step: String(qstep) });
     }
   </script>
 
