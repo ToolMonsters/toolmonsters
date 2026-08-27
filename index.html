@@ -487,12 +487,13 @@
     position: fixed; inset: 0; z-index: 50;
     background: rgba(16,32,50,.5);
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-    display: none; align-items: flex-start; justify-content: center;
-    padding: 4vh 16px 16px; overflow-y: auto;
+    display: none; padding: 20px 16px; overflow-y: auto;
   }
   .veil.open { display: flex; }
   .qcard {
-    width: min(880px, 100%); background: #fff; border-radius: 24px;
+    /* auto margins center it in the viewport and still allow scroll when tall */
+    margin: auto;
+    width: min(1040px, 100%); background: #fff; border-radius: 26px;
     display: flex; overflow: hidden; position: relative;
     box-shadow: 0 60px 120px -40px rgba(10,20,40,.6);
     animation: qin .3s cubic-bezier(.2,.8,.2,1);
@@ -507,18 +508,19 @@
 
   /* ---- left: the visitor's own system, built live as they answer ---- */
   .qside {
-    width: 272px; flex: 0 0 auto; padding: 26px 24px 24px;
+    width: 320px; flex: 0 0 auto; padding: 30px 26px 28px;
     background: linear-gradient(180deg, #e9f4fd 0%, #d8ebfa 100%);
-    display: flex; flex-direction: column;
+    display: flex; flex-direction: column; justify-content: center;
   }
   .qside-label {
     font-family: "Bricolage Grotesque", sans-serif; font-weight: 600;
     font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #2f6fe0;
-    margin-bottom: 16px;
+    margin-bottom: 16px; text-align: center;
   }
-  .qtiles { display: flex; flex-wrap: wrap; gap: 9px; min-height: 44px; }
+  /* centered so the tiles, the wire and the node share one axis */
+  .qtiles { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px; min-height: 44px; }
   .qtile {
-    width: 66px; background: #fff; border: 1px solid rgba(22,49,77,.08); border-radius: 12px;
+    width: 68px; background: #fff; border: 1px solid rgba(22,49,77,.08); border-radius: 12px;
     padding: 9px 4px 7px; display: flex; flex-direction: column; align-items: center; gap: 4px;
     box-shadow: 0 10px 20px -14px rgba(22,49,77,.5);
     animation: qtilein .35s cubic-bezier(.34,1.56,.64,1);
@@ -530,9 +532,10 @@
     color: #16314d; letter-spacing: 0;
   }
   .qtile i { font-style: normal; font-size: 9.5px; font-weight: 600; color: #2f6fe0; min-height: 12px; }
-  .qtiles-empty { font-size: 12px; color: #6a8cad; line-height: 1.5; padding-top: 4px; }
+  .qtiles-empty { font-size: 12.5px; color: #6a8cad; line-height: 1.5; padding-top: 4px; text-align: center; }
   .qwire {
-    width: 2px; height: 26px; background: #2f6fe0; border-radius: 2px; margin: 12px auto;
+    width: 2px; height: 26px; background: #2f6fe0; border-radius: 2px;
+    align-self: center; margin: 12px 0;
     transform: scaleY(0); transform-origin: top; transition: transform .4s ease;
   }
   .qwire.on { transform: none; }
@@ -562,7 +565,8 @@
   }
 
   /* ---- right: the questions ---- */
-  .qmain { flex: 1; min-width: 0; padding: 36px 40px 30px; position: relative; }
+  .qmain { flex: 1; min-width: 0; padding: 42px 46px 34px; position: relative;
+           display: flex; flex-direction: column; justify-content: center; }
   .qprogress { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: rgba(22,49,77,.07); }
   .qprogress i { display: block; height: 100%; width: 0; background: #2f6fe0; transition: width .4s ease; }
   .qview { will-change: opacity, transform; }
@@ -785,6 +789,8 @@
   @media (min-width: 641px) {
     .src-stage, .chips6, .people3, .conv-stage, .chats { display: contents; }
     .layer--map { display: block; }
+    /* the modal keeps one steady height so steps don't jump around */
+    .qcard { min-height: min(560px, 82vh); }
   }
 
   @media (hover: none) {
