@@ -5,7 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Tool Monsters</title>
 <meta name="theme-color" content="#bfe0f5" />
-<meta name="description" content="Your next customers are already around you. We build GTM systems that find buyers across your audience, network and market signals, and turn them into sales conversations." />
+<meta name="description" content="Your next customers are already around you. We build GTM systems that turn your audience, network and market signals into sales conversations." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Tool Monsters" />
+<meta property="og:title" content="Your next customers are already around you." />
+<meta property="og:description" content="We build GTM systems that turn your audience, network and market signals into sales conversations." />
+<meta property="og:url" content="https://toolmonsters.com/" />
+<meta property="og:image" content="https://toolmonsters.com/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Your next customers are already around you." />
+<meta name="twitter:description" content="We build GTM systems that turn your audience, network and market signals into sales conversations." />
+<meta name="twitter:image" content="https://toolmonsters.com/og.png" />
+<link rel="preload" as="image" href="back.webp" />
+<link rel="preload" as="image" href="front.webp" media="(min-width: 641px)" />
+<link rel="preload" as="image" href="Mobile.webp" media="(max-width: 640px)" />
 <link rel="icon" type="image/png" href="fav.png" />
 <link rel="apple-touch-icon" href="fav.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,7 +30,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-    background: url("back.png") center top / cover fixed no-repeat, #bfe0f5;
+    background: url("back.webp") center top / cover fixed no-repeat, #bfe0f5;
   }
 
   /* The intro is much taller than the viewport; the stage pins while we scroll
@@ -33,7 +48,7 @@
   /* Sky (back.png) */
   .sky {
     position: absolute; inset: 0;
-    background: url("back.png") center / cover no-repeat;
+    background: url("back.webp") center / cover no-repeat;
     transform: scale(var(--sky-scale, 1));
     transform-origin: center 35%;
     will-change: transform;
@@ -681,8 +696,8 @@
       </div>
 
       <!-- mountains (desktop art + a dedicated mobile crop) -->
-      <img class="hills hills--desk" src="front.png" alt="" />
-      <img class="hills hills--mob" src="Mobile.png" alt="" />
+      <img class="hills hills--desk" src="front.webp" alt="" />
+      <img class="hills hills--mob" src="Mobile.webp" alt="" />
 
       <div class="title">
         <h1>Your next customers are already around you.</h1>
@@ -1317,8 +1332,8 @@
     document.querySelectorAll('.rise').forEach(el => riseObserver.observe(el));
 
     /* ===================== qualification modal ===================== */
-    // drop a webhook / Formspree URL here to receive the answers as JSON
-    const LEAD_ENDPOINT = '';
+    // answers land in hello@toolmonsters.com via FormSubmit (swap for any webhook URL)
+    const LEAD_ENDPOINT = 'https://formsubmit.co/ajax/hello@toolmonsters.com';
     const CALENDLY = 'https://calendly.com/hello-toolmonsters/30min';
 
     const ICONS = {
@@ -1348,6 +1363,26 @@
     function openQuiz() { qstep = 1; renderQuiz(); veil.classList.add('open'); document.body.style.overflow = 'hidden'; }
     function closeQuiz() { veil.classList.remove('open'); document.body.style.overflow = ''; }
     document.querySelectorAll('[data-open-quiz]').forEach(b => b.addEventListener('click', openQuiz));
+
+    // each workflow card opens the modal with its source already selected
+    const CARD_PRESETS = [
+      { sources: ['newsletter'] },                                   // 01 newsletter
+      { sources: ['emailcrm'], extras: ['Email history', 'Past leads'] }, // 02 dormant relationships
+      { sources: ['linkedin'], extras: ['Competitors'] },            // 03 competitor monitoring
+      { extras: ['Hiring signals'] },                                // 04 hiring signals
+      { sources: ['linkedin'] },                                     // 05 linkedin export
+      { extras: ['Events'] }                                         // 06 conferences
+    ];
+    document.querySelectorAll('.ex-card').forEach((card, i) => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', () => {
+        const preset = CARD_PRESETS[i] || {};
+        state.sources = [...(preset.sources || [])];
+        state.extras = [...(preset.extras || [])];
+        state.sizes = {};
+        openQuiz();
+      });
+    });
     document.getElementById('qclose').addEventListener('click', closeQuiz);
     veil.addEventListener('click', (e) => { if (e.target === veil) closeQuiz(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && veil.classList.contains('open')) closeQuiz(); });
@@ -1470,8 +1505,26 @@
           if (!state.contact.name || !state.contact.email || !/.+@.+\..+/.test(state.contact.email))
             return err('Your name and a valid work email, and we\u2019re good.');
           if (LEAD_ENDPOINT) {
-            fetch(LEAD_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(state), keepalive: true }).catch(() => {});
+            const reach = state.sources.map(id => {
+              const src = SOURCES.find(x => x.id === id);
+              return src.label + (state.sizes[id] ? ' (' + state.sizes[id] + ')' : '');
+            }).join(', ');
+            fetch(LEAD_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify({
+                _subject: 'New lead: ' + state.contact.name + (state.contact.company ? ' (' + state.contact.company + ')' : ''),
+                name: state.contact.name,
+                company: state.contact.company || '',
+                email: state.contact.email,
+                website: state.contact.website || '',
+                reach: reach,
+                sells: state.sell,
+                deal_value: state.value || '',
+                also_has: state.extras.join(', ')
+              }),
+              keepalive: true
+            }).catch(() => {});
           }
           qstep = 6; renderQuiz();
         }, () => { qstep = 4; renderQuiz(); }));
