@@ -370,15 +370,13 @@
     font-size: clamp(28px, 4vw, 40px); letter-spacing: -.02em; color: #16314d; margin: 0 auto 52px; max-width: 22ch;
   }
 
-  /* ---- four tiny workflow diagrams, right after the story ---- */
+  /* ---- four workflows in the GPC diagram language, right after the story ---- */
   .examples { position: relative; z-index: 5; padding: 80px 24px 40px; background: transparent; }
-  .ex-grid { max-width: 1060px; margin: 0 auto; display: grid;
-    grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: start; }
-  @media (max-width: 1000px) { .ex-grid { grid-template-columns: repeat(2, 1fr); max-width: 560px; } }
-  @media (max-width: 560px) { .ex-grid { grid-template-columns: 1fr; max-width: 320px; } }
+  .ex-grid { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  @media (max-width: 880px) { .ex-grid { grid-template-columns: 1fr; max-width: 520px; } }
   .ex-card {
-    background: #fff; border: 1px solid rgba(22,49,77,.06); border-radius: 22px;
-    padding: 22px 20px 20px; display: flex; flex-direction: column; align-items: center;
+    background: #fff; border: 1px solid rgba(22,49,77,.06); border-radius: 24px;
+    padding: 30px 30px 26px; display: flex; flex-direction: column; align-items: center;
     box-shadow: 0 44px 80px -44px rgba(22,49,77,.55);
     transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
   }
@@ -387,17 +385,17 @@
     box-shadow: 0 60px 100px -48px rgba(22,49,77,.65);
   }
   .ex-head {
-    align-self: flex-start; display: flex; align-items: baseline; gap: 8px; margin-bottom: 18px;
+    align-self: flex-start; display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px;
     font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
   }
-  .ex-head .num { font-size: 12px; color: #2f6fe0; opacity: .7; }
-  .ex-head .name { font-size: 12.5px; letter-spacing: .13em; text-transform: uppercase; color: #16314d; }
+  .ex-head .num { font-size: 13px; color: #2f6fe0; opacity: .7; }
+  .ex-head .name { font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: #16314d; }
 
   /* ---- GPC-flow diagram language, one mini system per card ----
      logo tiles as sources, colored lanes with arrow tips, white step cards
      with a title + a quiet sub-line, dark terminal node. Lines draw, nodes
      rise, all staggered via --d, exactly like the reference. */
-  .gflow { width: 100%; max-width: 240px; height: auto; display: block; overflow: visible; margin: 0 auto; }
+  .gflow { width: 100%; max-width: 430px; height: auto; display: block; overflow: visible; margin: 0 auto; }
   .gcard { fill: #fff; stroke: rgba(22,49,77,.12);
     filter: drop-shadow(0 2px 3px rgba(11,18,32,.05)) drop-shadow(0 12px 20px rgba(11,18,32,.08)); }
   .gtile { fill: #fff;
@@ -411,10 +409,19 @@
   .ln-o { stroke: #FF6719; }        /* the Substack lane */
   .ln-b { stroke: #0A66C2; }        /* the LinkedIn lane */
   .ln-n { stroke: #93a8c0; }        /* neutral lane */
-  .gt-title { font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 13.5px;
+  .gt-title { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 14.5px;
     letter-spacing: -.01em; fill: #16314d; text-anchor: middle; }
-  .gt-term { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 14px;
+  .gt-sub { font-family: "Inter", sans-serif; font-size: 11.5px; fill: #6a7689; text-anchor: middle; }
+  .gt-badge { font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 9.5px;
+    letter-spacing: .12em; fill: #fff; text-anchor: middle; }
+  .gbadge { fill: #16191F; }
+  .gt-term { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 16px;
     letter-spacing: -.01em; fill: #fff; text-anchor: middle; }
+  .gt-termchip { font-family: "Inter", sans-serif; font-size: 9.5px; fill: rgba(255,255,255,.78); text-anchor: middle; }
+  .gtermchip { fill: rgba(255,255,255,.12); }
+  .gt-more { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 14px;
+    fill: #16314d; text-anchor: middle; }
+  .gt-more-sub { font-family: "Inter", sans-serif; font-size: 7px; letter-spacing: .02em; fill: #6a7689; text-anchor: middle; }
   .gav { stroke: #fff; stroke-width: 2;
     transform: scale(0); transform-box: fill-box; transform-origin: center; }
   .gav--1 { fill: #79a8ff; } .gav--2 { fill: #4fc3a1; } .gav--3 { fill: #ff9d76; }
@@ -437,6 +444,13 @@
   /* one glowing dot rides the last lane into the terminal, once the diagram is built */
   .ex-card .gd { animation: none; opacity: 0; }
   .ex-card.in .gd { animation: seg3 3s linear 1.9s infinite; }
+
+  .ex-copy {
+    margin-top: 22px; text-align: center;
+    font-family: "Caveat", cursive; font-weight: 700; font-size: 24px; color: #16314d;
+    opacity: 0; transition: opacity .6s ease 1.2s;
+  }
+  .ex-card.in .ex-copy { opacity: 1; }
 
   /* ===================== Bottom area (uses end.avif as background) ===================== */
   .bottom {
@@ -832,148 +846,211 @@
 
       <div class="ex-card">
         <div class="ex-head"><span class="num">01</span><span class="name">Newsletter</span></div>
-        <svg class="gflow" viewBox="0 0 240 250" role="img" aria-label="Newsletter: 100K subscribers become potential buyers, then conversations">
+        <svg class="gflow" viewBox="0 0 430 486" role="img" aria-label="Newsletter workflow: 100K subscribers, identify people, ICP matches, conversations">
           <g class="gnode" style="--d:0s">
-            <rect class="gtile" x="100" y="0" width="40" height="40" rx="12" />
-            <path fill="#FF6719" d="M110 11.5h20v2.6h-20zM110 16h20v2.6h-20zM110 20.5h20v8.2l-10-4.6-10 4.6z"/>
-            <rect class="gring" x="100" y="0" width="40" height="40" rx="12" />
+            <rect class="gtile" x="187" y="4" width="56" height="56" rx="16" />
+            <path fill="#FF6719" d="M201 19h28v3.6h-28zM201 25.4h28V29h-28zM201 31.8h28v11.4l-14-6.4-14 6.4z"/>
+            <rect class="gring" x="187" y="4" width="56" height="56" rx="16" />
           </g>
-          <path class="gline ln-o" pathLength="1" style="--d:.12s" d="M120 44 V64" />
-          <path class="gtip ln-o" style="--d:.26s" d="M116 60 L120 64 L124 60" />
-          <g class="gnode" style="--d:.24s">
-            <rect class="gcard" x="20" y="68" width="200" height="36" rx="12" />
-            <text class="gt-title" x="120" y="91" data-count="100" data-suffix="K subscribers">100K subscribers</text>
+          <path class="gline ln-o" pathLength="1" style="--d:.15s" d="M215 66 V96" />
+          <path class="gtip ln-o" style="--d:.32s" d="M210 91 L215 96 L220 91" />
+          <g class="gnode" style="--d:.3s">
+            <rect class="gcard" x="95" y="104" width="240" height="60" rx="14" />
+            <text class="gt-title" x="215" y="130" data-count="100" data-suffix="K subscribers">100K subscribers</text>
+            <text class="gt-sub" x="215" y="149">the audience you already own</text>
           </g>
-          <path class="gline ln-o" pathLength="1" style="--d:.42s" d="M120 104 V124" />
-          <path class="gtip ln-o" style="--d:.56s" d="M116 120 L120 124 L124 120" />
-          <g class="gnode" style="--d:.54s">
-            <rect class="gcard" x="20" y="128" width="200" height="50" rx="12" />
-            <text class="gt-title" x="120" y="149">Potential buyers</text>
-            <circle class="gav gav--1" cx="106" cy="163" r="7" style="--d:1.15s" />
-            <circle class="gav gav--2" cx="120" cy="163" r="7" style="--d:1.28s" />
-            <circle class="gav gav--3" cx="134" cy="163" r="7" style="--d:1.41s" />
+          <path class="gline ln-o" pathLength="1" style="--d:.5s" d="M215 168 V198" />
+          <path class="gtip ln-o" style="--d:.67s" d="M210 193 L215 198 L220 193" />
+          <g class="gnode" style="--d:.65s">
+            <rect class="gcard" x="95" y="206" width="240" height="60" rx="14" />
+            <text class="gt-title" x="215" y="232">Identify people</text>
+            <text class="gt-sub" x="215" y="251">readers become named leads</text>
           </g>
-          <path class="gline ln-n" pathLength="1" style="--d:.72s" d="M120 178 V198" />
-          <path class="lpath--dot gd" pathLength="100" fill="none" d="M120 178 V198" />
-          <path class="gtip ln-n" style="--d:.86s" d="M116 194 L120 198 L124 194" />
-          <g class="gnode" style="--d:.84s">
-            <rect class="gdark" x="45" y="202" width="150" height="44" rx="14" />
-            <text class="gt-term" x="120" y="229">Conversations</text>
+          <path class="gline ln-o" pathLength="1" style="--d:.85s" d="M215 270 V300" />
+          <path class="gtip ln-o" style="--d:1.02s" d="M210 295 L215 300 L220 295" />
+          <g class="gnode" style="--d:1s">
+            <rect class="gcard" x="95" y="308" width="240" height="80" rx="14" />
+            <text class="gt-title" x="215" y="334">ICP matches</text>
+            <text class="gt-sub" x="215" y="353">the ones who fit what you sell</text>
+            <circle class="gav gav--1" cx="201" cy="369" r="8" style="--d:1.35s" />
+            <circle class="gav gav--2" cx="215" cy="369" r="8" style="--d:1.48s" />
+            <circle class="gav gav--3" cx="229" cy="369" r="8" style="--d:1.61s" />
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:1.2s" d="M215 392 V420" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 392 V420" />
+          <path class="gtip ln-n" style="--d:1.37s" d="M210 415 L215 420 L220 415" />
+          <g class="gnode" style="--d:1.35s">
+            <rect class="gdark" x="110" y="428" width="210" height="54" rx="16" />
+            <text class="gt-term" x="215" y="452">Conversations</text>
+            <rect class="gtermchip" x="157" y="460" width="116" height="15" rx="7.5" />
+            <text class="gt-termchip" x="215" y="470.5">with the right people</text>
           </g>
         </svg>
+        <p class="ex-copy">Find the buyers already paying attention.</p>
       </div>
 
       <div class="ex-card">
-        <div class="ex-head"><span class="num">02</span><span class="name">LinkedIn</span></div>
-        <svg class="gflow" viewBox="0 0 240 250" role="img" aria-label="LinkedIn: your network becomes buyers, then conversations">
+        <div class="ex-head"><span class="num">02</span><span class="name">Dormant relationships</span></div>
+        <svg class="gflow" viewBox="0 0 430 400" role="img" aria-label="Dormant relationships workflow: email history and sales calls merge into a relationship graph, then conversations">
           <g class="gnode" style="--d:0s">
-            <clipPath id="c2li"><rect x="100" y="0" width="40" height="40" rx="12" /></clipPath>
-            <image href="logos/sq-linkedin.png" x="100" y="0" width="40" height="40" clip-path="url(#c2li)" />
-            <rect class="gring" x="100" y="0" width="40" height="40" rx="12" />
+            <rect class="gtile" x="147" y="4" width="56" height="56" rx="16" />
+            <image href="logos/sq-gmail.svg" x="160" y="17" width="30" height="30" />
+            <rect class="gring" x="147" y="4" width="56" height="56" rx="16" />
           </g>
-          <path class="gline ln-b" pathLength="1" style="--d:.12s" d="M120 44 V64" />
-          <path class="gtip ln-b" style="--d:.26s" d="M116 60 L120 64 L124 60" />
-          <g class="gnode" style="--d:.24s">
-            <rect class="gcard" x="20" y="68" width="200" height="36" rx="12" />
-            <text class="gt-title" x="120" y="91">Your network</text>
+          <g class="gnode" style="--d:.1s">
+            <rect class="gtile" x="227" y="4" width="56" height="56" rx="16" />
+            <image href="logos/fathom.png" x="240" y="17" width="30" height="30" />
+            <rect class="gring" x="227" y="4" width="56" height="56" rx="16" />
           </g>
-          <path class="gline ln-b" pathLength="1" style="--d:.42s" d="M120 104 V124" />
-          <path class="gtip ln-b" style="--d:.56s" d="M116 120 L120 124 L124 120" />
-          <g class="gnode" style="--d:.54s">
-            <rect class="gcard" x="20" y="128" width="200" height="50" rx="12" />
-            <text class="gt-title" x="120" y="149">Buyers</text>
-            <circle class="gav gav--1" cx="106" cy="163" r="7" style="--d:1.15s" />
-            <circle class="gav gav--2" cx="120" cy="163" r="7" style="--d:1.28s" />
-            <circle class="gav gav--3" cx="134" cy="163" r="7" style="--d:1.41s" />
+          <path class="gline ln-n" pathLength="1" style="--d:.2s" d="M175 66 C175 88, 110 84, 110 112" />
+          <path class="gline ln-n" pathLength="1" style="--d:.2s" d="M255 66 C255 88, 320 84, 320 112" />
+          <path class="gtip ln-n" style="--d:.38s" d="M105 107 L110 112 L115 107" />
+          <path class="gtip ln-n" style="--d:.38s" d="M315 107 L320 112 L325 107" />
+          <g class="gnode" style="--d:.36s">
+            <rect class="gcard" x="15" y="120" width="190" height="58" rx="14" />
+            <text class="gt-title" x="110" y="145">Email history</text>
+            <text class="gt-sub" x="110" y="164">threads, intros, old deals</text>
           </g>
-          <path class="gline ln-n" pathLength="1" style="--d:.72s" d="M120 178 V198" />
-          <path class="lpath--dot gd" pathLength="100" fill="none" d="M120 178 V198" />
-          <path class="gtip ln-n" style="--d:.86s" d="M116 194 L120 198 L124 194" />
-          <g class="gnode" style="--d:.84s">
-            <rect class="gdark" x="45" y="202" width="150" height="44" rx="14" />
-            <text class="gt-term" x="120" y="229">Conversations</text>
+          <g class="gnode" style="--d:.46s">
+            <rect class="gcard" x="225" y="120" width="190" height="58" rx="14" />
+            <text class="gt-title" x="320" y="145">Sales calls</text>
+            <text class="gt-sub" x="320" y="164">transcripts and notes</text>
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:.66s" d="M110 178 C110 204, 215 198, 215 224" />
+          <path class="gline ln-n" pathLength="1" style="--d:.66s" d="M320 178 C320 204, 215 198, 215 224" />
+          <path class="gtip ln-n" style="--d:.84s" d="M210 219 L215 224 L220 219" />
+          <g class="gnode" style="--d:.82s">
+            <rect class="gcard" x="95" y="232" width="240" height="80" rx="14" />
+            <text class="gt-title" x="215" y="258">Relationship graph</text>
+            <text class="gt-sub" x="215" y="277">everyone you already know</text>
+            <circle class="gav gav--1" cx="201" cy="293" r="8" style="--d:1.35s" />
+            <circle class="gav gav--2" cx="215" cy="293" r="8" style="--d:1.48s" />
+            <circle class="gav gav--3" cx="229" cy="293" r="8" style="--d:1.61s" />
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:1.02s" d="M215 316 V344" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 316 V344" />
+          <path class="gtip ln-n" style="--d:1.19s" d="M210 339 L215 344 L220 339" />
+          <g class="gnode" style="--d:1.17s">
+            <rect class="gdark" x="110" y="352" width="210" height="54" rx="16" />
+            <text class="gt-term" x="215" y="376">Conversations</text>
+            <rect class="gtermchip" x="167" y="384" width="96" height="15" rx="7.5" />
+            <text class="gt-termchip" x="215" y="394.5">warm, not cold</text>
           </g>
         </svg>
+        <p class="ex-copy">Your inbox is full of old opportunities.</p>
       </div>
 
       <div class="ex-card">
-        <div class="ex-head"><span class="num">03</span><span class="name">Competitors</span></div>
-        <svg class="gflow" viewBox="0 0 240 310" role="img" aria-label="Competitors: a competitor post reveals relevant engagers, buyers, then conversations">
+        <div class="ex-head"><span class="num">03</span><span class="name">Competitor monitoring</span></div>
+        <svg class="gflow" viewBox="0 0 430 470" role="img" aria-label="Competitor monitoring workflow: a monitored LinkedIn profile posts, relevant engagers become ICP matches, then conversations">
           <g class="gnode" style="--d:0s">
-            <clipPath id="c3li"><rect x="100" y="0" width="40" height="40" rx="12" /></clipPath>
-            <image href="logos/sq-linkedin.png" x="100" y="0" width="40" height="40" clip-path="url(#c3li)" />
-            <rect class="gring" x="100" y="0" width="40" height="40" rx="12" />
-            <circle cx="140" cy="2" r="4.5" fill="#e5484d" stroke="#fff" stroke-width="2" />
-            <circle class="gping" cx="140" cy="2" r="4.5" />
+            <clipPath id="c3li"><rect x="187" y="8" width="56" height="56" rx="16" /></clipPath>
+            <image href="logos/sq-linkedin.png" x="187" y="8" width="56" height="56" clip-path="url(#c3li)" />
+            <rect class="gring" x="187" y="8" width="56" height="56" rx="16" />
+            <circle cx="243" cy="10" r="5" fill="#e5484d" stroke="#fff" stroke-width="2" />
+            <circle class="gping" cx="243" cy="10" r="5" />
           </g>
-          <path class="gline ln-b" pathLength="1" style="--d:.12s" d="M120 44 V64" />
-          <path class="gtip ln-b" style="--d:.26s" d="M116 60 L120 64 L124 60" />
-          <g class="gnode" style="--d:.24s">
-            <rect class="gcard" x="20" y="68" width="200" height="36" rx="12" />
-            <text class="gt-title" x="120" y="91">Competitor post</text>
+          <g class="gnode" style="--d:.12s">
+            <rect class="gbadge" x="257" y="26" width="92" height="20" rx="10" />
+            <text class="gt-badge" x="303" y="39.5">MONITORED</text>
           </g>
-          <path class="gline ln-b" pathLength="1" style="--d:.42s" d="M120 104 V124" />
-          <path class="gtip ln-b" style="--d:.56s" d="M116 120 L120 124 L124 120" />
-          <g class="gnode" style="--d:.54s">
-            <rect class="gcard" x="20" y="128" width="200" height="36" rx="12" />
-            <text class="gt-title" x="120" y="151">Relevant engagers</text>
+          <path class="gline ln-b" pathLength="1" style="--d:.2s" d="M215 70 V98" />
+          <path class="gtip ln-b" style="--d:.37s" d="M210 93 L215 98 L220 93" />
+          <g class="gnode" style="--d:.35s">
+            <rect class="gcard" x="95" y="106" width="240" height="58" rx="14" />
+            <text class="gt-title" x="215" y="131">New post</text>
+            <text class="gt-sub" x="215" y="150">every morning, the last 24 h</text>
           </g>
-          <path class="gline ln-b" pathLength="1" style="--d:.72s" d="M120 164 V184" />
-          <path class="gtip ln-b" style="--d:.86s" d="M116 180 L120 184 L124 180" />
-          <g class="gnode" style="--d:.84s">
-            <rect class="gcard" x="20" y="188" width="200" height="50" rx="12" />
-            <text class="gt-title" x="120" y="209">Buyers</text>
-            <circle class="gav gav--1" cx="106" cy="223" r="7" style="--d:1.45s" />
-            <circle class="gav gav--2" cx="120" cy="223" r="7" style="--d:1.58s" />
-            <circle class="gav gav--3" cx="134" cy="223" r="7" style="--d:1.71s" />
+          <path class="gline ln-b" pathLength="1" style="--d:.55s" d="M215 164 V192" />
+          <path class="gtip ln-b" style="--d:.72s" d="M210 187 L215 192 L220 187" />
+          <g class="gnode" style="--d:.7s">
+            <rect class="gcard" x="95" y="200" width="240" height="80" rx="14" />
+            <text class="gt-title" x="215" y="226">Relevant engagers</text>
+            <text class="gt-sub" x="215" y="245">who liked, who commented</text>
+            <circle class="gav gav--1" cx="201" cy="261" r="8" style="--d:1.4s" />
+            <circle class="gav gav--2" cx="215" cy="261" r="8" style="--d:1.53s" />
+            <circle class="gav gav--3" cx="229" cy="261" r="8" style="--d:1.66s" />
           </g>
-          <path class="gline ln-n" pathLength="1" style="--d:1.02s" d="M120 238 V258" />
-          <path class="lpath--dot gd" pathLength="100" fill="none" d="M120 238 V258" />
-          <path class="gtip ln-n" style="--d:1.16s" d="M116 254 L120 258 L124 254" />
-          <g class="gnode" style="--d:1.14s">
-            <rect class="gdark" x="45" y="262" width="150" height="44" rx="14" />
-            <text class="gt-term" x="120" y="289">Conversations</text>
+          <path class="gline ln-b" pathLength="1" style="--d:.9s" d="M215 280 V308" />
+          <path class="gtip ln-b" style="--d:1.07s" d="M210 303 L215 308 L220 303" />
+          <g class="gnode" style="--d:1.05s">
+            <rect class="gcard" x="95" y="316" width="240" height="58" rx="14" />
+            <text class="gt-title" x="215" y="341">ICP matches</text>
+            <text class="gt-sub" x="215" y="360">size, role, market fit</text>
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:1.25s" d="M215 374 V402" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 374 V402" />
+          <path class="gtip ln-n" style="--d:1.42s" d="M210 397 L215 402 L220 397" />
+          <g class="gnode" style="--d:1.4s">
+            <rect class="gdark" x="110" y="410" width="210" height="54" rx="16" />
+            <text class="gt-term" x="215" y="434">Conversations</text>
+            <rect class="gtermchip" x="157" y="442" width="116" height="15" rx="7.5" />
+            <text class="gt-termchip" x="215" y="452.5">with the right people</text>
           </g>
         </svg>
+        <p class="ex-copy">Your competitors generate signals too.</p>
       </div>
 
       <div class="ex-card">
-        <div class="ex-head"><span class="num">04</span><span class="name">Hiring</span></div>
-        <svg class="gflow" viewBox="0 0 240 310" role="img" aria-label="Hiring: a new job posting points to the relevant company and its decision maker, then a conversation">
+        <div class="ex-head"><span class="num">04</span><span class="name">Hiring signals</span></div>
+        <svg class="gflow" viewBox="0 0 430 470" role="img" aria-label="Hiring signals workflow: nine job boards feed job posting signals, the decision-maker is identified, then a conversation">
           <g class="gnode" style="--d:0s">
-            <rect class="gtile" x="100" y="0" width="40" height="40" rx="12" style="fill:url(#gdgrad)" />
-            <g fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="110" y="13" width="20" height="15" rx="2.2" />
-              <path d="M116 13 V10.2 a2.2 2.2 0 0 1 2.2 -2.2 h3.6 a2.2 2.2 0 0 1 2.2 2.2 V13" />
-            </g>
+            <clipPath id="c4li"><rect x="86" y="6" width="48" height="48" rx="14" /></clipPath>
+            <image href="logos/sq-linkedin.png" x="86" y="6" width="48" height="48" clip-path="url(#c4li)" />
+            <rect class="gring" x="86" y="6" width="48" height="48" rx="14" />
           </g>
-          <path class="gline ln-n" pathLength="1" style="--d:.12s" d="M120 44 V64" />
-          <path class="gtip ln-n" style="--d:.26s" d="M116 60 L120 64 L124 60" />
+          <g class="gnode" style="--d:.08s">
+            <rect class="gtile" x="156" y="6" width="48" height="48" rx="14" />
+            <g transform="translate(166,16) scale(1.1667)"><path fill="#003A9B" d="M11.566 21.5633v-8.762c.2553.0231.5009.0346.758.0346 1.2225 0 2.3739-.3206 3.3506-.8928v9.6182c0 .8219-.1957 1.4287-.5757 1.8338-.378.4033-.8808.6049-1.491.6049-.6007 0-1.0766-.2016-1.468-.6183-.3781-.4032-.5739-1.01-.5739-1.8184zM11.589.5659c2.5447-.8929 5.4424-.8449 7.6186.987.405.3687.8673.8334 1.0515 1.3806.2207.6913-.7695-.073-.9057-.167-.71-.4532-1.4182-.8334-2.2127-1.0946C12.8614.3873 8.8122 2.709 6.2945 6.315c-1.0516 1.5939-1.7367 3.2721-2.299 5.1174-.0614.2017-.1094.4647-.2207.6413-.1113.2036-.048-.5453-.048-.5702.0845-.7623.2438-1.4997.4414-2.237C5.3292 5.3375 7.897 2.0655 11.5891.5658zm4.9281 7.0587c0 1.6686-1.353 3.0224-3.0205 3.0224-1.6677 0-3.0186-1.3538-3.0186-3.0224 0-1.6687 1.351-3.0224 3.0186-3.0224 1.6676 0 3.0205 1.3518 3.0205 3.0224Z"/></g>
+            <rect class="gring" x="156" y="6" width="48" height="48" rx="14" />
+          </g>
+          <g class="gnode" style="--d:.16s">
+            <rect class="gtile" x="226" y="6" width="48" height="48" rx="14" />
+            <g transform="translate(238,18) scale(1)"><path fill="#00A162" d="M14.1093.0006c-.0749-.0074-.1348.0522-.1348.127v3.451c0 .0673.0537.1194.121.127 2.619.172 4.6092.9501 4.6092 3.6814H13.086a.1343.1343 0 0 0-.1348.1347v8.9644c0 .0748.06.1347.1348.1347h10.0034c.0748 0 .1347-.0599.1347-.1347V7.342c0-2.2374-.7996-4.0558-2.4159-5.3279C19.3191.8469 17.0874.1428 14.1093.0006ZM.9107 7.387a.1342.1342 0 0 0-.1347.1347v8.9566c0 .0748.06.1347.1347.1347h5.6189c0 2.7313-1.9902 3.5094-4.6091 3.6815-.0674.0075-.1192.0596-.1192.127v3.451c0 .0747.06.1343.1348.1269 2.9781-.1422 5.2078-.8463 6.6969-2.0136 1.6163-1.272 2.4159-3.0905 2.4159-5.3278V7.5217a.1343.1343 0 0 0-.1348-.1347z"/></g>
+            <rect class="gring" x="226" y="6" width="48" height="48" rx="14" />
+          </g>
           <g class="gnode" style="--d:.24s">
-            <rect class="gcard" x="20" y="68" width="200" height="36" rx="12" />
-            <text class="gt-title" x="120" y="91">New job posting</text>
+            <rect class="gtile" x="296" y="6" width="48" height="48" rx="14" />
+            <rect class="gring" x="296" y="6" width="48" height="48" rx="14" />
+            <text class="gt-more" x="320" y="30">+6</text>
+            <text class="gt-more-sub" x="320" y="43">JOB BOARDS</text>
           </g>
-          <path class="gline ln-n" pathLength="1" style="--d:.42s" d="M120 104 V124" />
-          <path class="gtip ln-n" style="--d:.56s" d="M116 120 L120 124 L124 120" />
-          <g class="gnode" style="--d:.54s">
-            <rect class="gcard" x="20" y="128" width="200" height="36" rx="12" />
-            <text class="gt-title" x="120" y="151">Relevant company</text>
+          <path class="gline ln-n" pathLength="1" style="--d:.36s" d="M110 58 C110 80, 215 76, 215 100" />
+          <path class="gline ln-n" pathLength="1" style="--d:.36s" d="M180 58 C180 82, 215 80, 215 100" />
+          <path class="gline ln-n" pathLength="1" style="--d:.36s" d="M250 58 C250 82, 215 80, 215 100" />
+          <path class="gline ln-n" pathLength="1" style="--d:.36s" d="M320 58 C320 80, 215 76, 215 100" />
+          <path class="gtip ln-n" style="--d:.54s" d="M210 95 L215 100 L220 95" />
+          <g class="gnode" style="--d:.52s">
+            <rect class="gcard" x="95" y="108" width="240" height="58" rx="14" />
+            <text class="gt-title" x="215" y="133">Job posting signals</text>
+            <text class="gt-sub" x="215" y="152">every morning, jobs posted in the last 24 h</text>
           </g>
-          <path class="gline ln-n" pathLength="1" style="--d:.72s" d="M120 164 V184" />
-          <path class="gtip ln-n" style="--d:.86s" d="M116 180 L120 184 L124 180" />
-          <g class="gnode" style="--d:.84s">
-            <rect class="gcard" x="20" y="188" width="200" height="50" rx="12" />
-            <text class="gt-title" x="120" y="209">Decision maker</text>
-            <circle class="gav gav--1" cx="120" cy="223" r="7" style="--d:1.45s" />
+          <path class="gline ln-n" pathLength="1" style="--d:.72s" d="M215 166 V196" />
+          <path class="gtip ln-n" style="--d:.89s" d="M210 191 L215 196 L220 191" />
+          <g class="gnode" style="--d:.86s">
+            <rect class="gcard" x="95" y="204" width="240" height="58" rx="14" />
+            <text class="gt-title" x="215" y="229">Relevant company</text>
+            <text class="gt-sub" x="215" y="248">the ones worth your time</text>
           </g>
-          <path class="gline ln-n" pathLength="1" style="--d:1.02s" d="M120 238 V258" />
-          <path class="lpath--dot gd" pathLength="100" fill="none" d="M120 238 V258" />
-          <path class="gtip ln-n" style="--d:1.16s" d="M116 254 L120 258 L124 254" />
-          <g class="gnode" style="--d:1.14s">
-            <rect class="gdark" x="45" y="262" width="150" height="44" rx="14" />
-            <text class="gt-term" x="120" y="289">Conversation</text>
+          <path class="gline ln-n" pathLength="1" style="--d:1.06s" d="M215 262 V292" />
+          <path class="gtip ln-n" style="--d:1.23s" d="M210 287 L215 292 L220 287" />
+          <g class="gnode" style="--d:1.2s">
+            <rect class="gcard" x="95" y="300" width="240" height="74" rx="14" />
+            <text class="gt-title" x="215" y="326">Decision-maker</text>
+            <text class="gt-sub" x="215" y="345">the person who signs</text>
+            <circle class="gav gav--1" cx="215" cy="359" r="8" style="--d:1.65s" />
+          </g>
+          <path class="gline ln-n" pathLength="1" style="--d:1.4s" d="M215 374 V402" />
+          <path class="lpath--dot gd" pathLength="100" fill="none" d="M215 374 V402" />
+          <path class="gtip ln-n" style="--d:1.57s" d="M210 397 L215 402 L220 397" />
+          <g class="gnode" style="--d:1.55s">
+            <rect class="gdark" x="110" y="410" width="210" height="54" rx="16" />
+            <text class="gt-term" x="215" y="434">Conversation</text>
+            <rect class="gtermchip" x="152" y="442" width="126" height="15" rx="7.5" />
+            <text class="gt-termchip" x="215" y="452.5">at exactly the right time</text>
           </g>
         </svg>
+        <p class="ex-copy">Sometimes a job posting tells you exactly when to talk.</p>
       </div>
 
     </div>
