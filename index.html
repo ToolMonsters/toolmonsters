@@ -82,11 +82,13 @@
   }
   .title h1 {
     font-family: "Bricolage Grotesque", sans-serif;
-    font-weight: 700; font-size: clamp(28px, 5vw, 56px);
-    line-height: 1.08; letter-spacing: -0.02em; color: #16314d;
+    font-weight: 800; font-size: clamp(30px, 6.1vw, 72px);
+    line-height: 1.04; letter-spacing: -0.035em; color: #16314d;
     text-wrap: balance;            /* even, predictable line breaks */
   }
-  .title p { margin-top: 18px; font-size: clamp(15px, 2.2vw, 21px); color: #2c4a66; line-height: 1.5; }
+  /* the payoff half of the headline carries the brand blue so it lands first */
+  .title h1 em { font-style: normal; color: #2f6fe0; }
+  .title p { margin-top: 20px; font-size: clamp(16px, 2.3vw, 22px); color: #2c4a66; line-height: 1.5; }
   .title.gone { pointer-events: none; }
 
   .btns { margin-top: 36px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
@@ -184,15 +186,16 @@
   .phrase {
     position: absolute; top: 7%; left: 50%; transform: translateX(-50%);
     z-index: 4; width: min(92vw, 900px); text-align: center;
-    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
-    font-size: clamp(22px, 3.4vw, 38px); letter-spacing: -.02em; color: #16314d;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 800;
+    font-size: clamp(28px, 5.2vw, 60px); letter-spacing: -.035em; color: #16314d;
+    line-height: 1.05;
     opacity: 0; will-change: opacity; pointer-events: none;
     text-wrap: balance;
   }
   .phrase--sub {
-    top: calc(7% + clamp(38px, 5vw, 58px));
+    top: calc(7% + clamp(40px, 6.4vw, 76px));
     font-family: "Inter", sans-serif; font-weight: 400;
-    font-size: clamp(14px, 1.6vw, 17px); letter-spacing: 0; color: #2c4a66;
+    font-size: clamp(15px, 1.8vw, 19px); letter-spacing: 0; color: #2c4a66;
   }
 
   /* elements the scroll driver fades in / out */
@@ -402,12 +405,17 @@
     transform: translateY(-5px);
     box-shadow: 0 60px 100px -48px rgba(22,49,77,.65);
   }
+  /* the card's subject is the loudest thing on it: people scan titles, not captions */
   .ex-head {
-    align-self: flex-start; display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px;
-    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
+    align-self: stretch; display: flex; flex-direction: column; align-items: flex-start;
+    gap: 3px; margin-bottom: 22px;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 800;
   }
-  .ex-head .num { font-size: 13px; color: #2f6fe0; opacity: .7; }
-  .ex-head .name { font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: #16314d; }
+  .ex-head .num { font-size: 12px; letter-spacing: .16em; color: #2f6fe0; opacity: .85; }
+  .ex-head .name {
+    font-size: clamp(21px, 2.1vw, 27px); letter-spacing: -.03em; line-height: 1.05;
+    text-transform: none; color: #16314d;
+  }
 
   /* ---- GPC-flow diagram language, one mini system per card ----
      logo tiles as sources, colored lanes with arrow tips, white step cards
@@ -484,10 +492,10 @@
     border-top: 1px solid rgba(22,49,77,.07);
     /* a fixed two-line box, text centred inside, so one-liners and
        two-liners still land on the same baseline across a row */
-    min-height: 70px; display: flex; align-items: center; justify-content: center;
+    min-height: 62px; display: flex; align-items: center; justify-content: center;
     text-align: center;
-    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 16.5px;
-    line-height: 1.4; letter-spacing: -.011em; color: #16314d; text-wrap: balance;
+    font-family: "Inter", sans-serif; font-weight: 400; font-size: 14px;
+    line-height: 1.45; color: #6a7689; text-wrap: balance;
     opacity: 0; transition: opacity .6s ease 1.2s;
   }
   .ex-card.in .ex-copy { opacity: 1; }
@@ -759,9 +767,11 @@
     /* background-attachment: fixed is janky / scales badly on iOS Safari */
     body { background-attachment: scroll; }
 
-    .title { top: 19%; width: 100vw; padding: 0 12px; }
+    /* the bigger headline is a taller block, so its centre sits lower and
+       clears the floating brand mark */
+    .title { top: 28%; width: 100vw; padding: 0 12px; }
     /* as large as it can be while still wrapping to 2 lines, not 3 */
-    .title h1 { font-size: clamp(19px, 6.4vw, 30px); line-height: 1.13; }
+    .title h1 { font-size: clamp(22px, 7.6vw, 34px); line-height: 1.08; }
     .title p { margin-top: 13px; }
     .btns { margin-top: 24px; gap: 10px; }
     .btn { padding: 13px 22px; }
@@ -778,8 +788,8 @@
 
     /* the story flows vertically on phones: no big wires, compact stacks */
     .story-inner { width: 100%; height: 100%; transform: none; }
-    .phrase { top: max(9%, calc(env(safe-area-inset-top) + 46px)); font-size: clamp(21px, 6.4vw, 27px); padding: 0 18px; }
-    .phrase--sub { top: calc(max(9%, calc(env(safe-area-inset-top) + 46px)) + 40px); font-size: 13.5px; }
+    .phrase { top: max(9%, calc(env(safe-area-inset-top) + 46px)); font-size: clamp(25px, 7.8vw, 34px); padding: 0 18px; }
+    .phrase--sub { top: calc(max(9%, calc(env(safe-area-inset-top) + 46px)) + 46px); font-size: 14px; }
     .wires { display: none; }
 
     /* on phones only the monster mark floats, the wordmark would collide with content */
@@ -921,7 +931,7 @@
       <img class="hills hills--mob" src="Mobile.webp" alt="" />
 
       <div class="title">
-        <h1>Your next customers are already around you.</h1>
+        <h1>Your next customers <em>are already around you.</em></h1>
         <p>We build GTM systems that turn your audience, network and market signals into sales conversations.</p>
         <div class="btns">
           <button class="btn btn-primary" data-open-quiz>Find my opportunities &rarr;</button>
