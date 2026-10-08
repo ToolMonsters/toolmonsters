@@ -766,11 +766,12 @@
     .hills--desk { display: none; }
     .hills--mob { display: block; width: 100%; bottom: 0; }
 
-    /* "worked with" sits higher, logos a bit smaller, tighter spacing, faster scroll */
-    .worked { top: 49%; width: 94vw; gap: 10px; }
-    .worked .marquee { transform: scale(.84); }
+    /* "worked with" sits higher and stays inside the valley, so the logos never
+       slide behind the monsters standing on the hilltops */
+    .worked { top: 48%; width: 58vw; gap: 10px; }
+    .worked .marquee { zoom: .78; }
     .worked .logo { margin-right: 38px; }
-    .track { animation-duration: 16s; }
+    .track { animation-duration: 18s; }
 
     /* the story flows vertically on phones: no big wires, compact stacks */
     .story-inner { width: 100%; height: 100%; transform: none; }
@@ -790,10 +791,10 @@
     .src-stage { display: flex; flex-direction: column; align-items: center; padding-top: 12vh; }
     .chips6 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(92vw, 372px); }
     .srcbox { position: static; width: auto; padding: 11px 13px 10px; border-radius: 13px; }
-    .srcbox strong { font-size: 10px; margin-bottom: 7px; }
-    .srcbox em { font-size: 10px; margin-top: 7px; }
+    .srcbox strong { font-size: 11px; margin-bottom: 8px; }
+    .srcbox em { font-size: 12px; line-height: 1.3; margin-top: 8px; }
     .ltiles { gap: 5px; }
-    .lt { width: 23px; height: 23px; border-radius: 7px; }
+    .lt { width: 25px; height: 25px; border-radius: 7px; }
     .lt--fit { padding: 3px; }
     .lt--word { font-size: 11px; }
     .people3 { display: flex; flex-direction: column; gap: 11px; margin-top: 22px; }
@@ -812,9 +813,20 @@
     .pipe-pos { position: static; margin-top: 20px; }
     .dbox--pipeline { font-size: 20px; padding: 17px 36px; }
 
-    /* swap the wide CTA for a round back-to-top arrow */
-    .corner-cta { display: none; }
-    .to-top { display: inline-flex; }
+    /* the main CTA stays on screen through the whole story, centred under the
+       thumb (the floating brand mark already scrolls back to the top) */
+    .corner-cta { left: 50%; right: auto; translate: -50% 0; white-space: nowrap;
+                  bottom: calc(18px + env(safe-area-inset-bottom)); padding: 14px 24px; font-size: 15.5px; }
+    .to-top { display: none; }
+
+    /* workflow cards: thinner frames so the diagrams get the width; JS crops
+       each diagram to its content so the labels stay readable */
+    .examples { padding-left: 14px; padding-right: 14px; }
+    .ex-card { padding: 24px 12px 22px; border-radius: 22px; }
+    .ex-head { margin-bottom: 14px; }
+    .ex-head .name { font-size: 24px; }
+    .gflow--wide .gt-title { font-size: 16px; }
+    .gflow--wide .gt-sub { font-size: 13px; }
 
     /* the modal stacks: a slim live-system strip on top, questions below */
     .qcard { flex-direction: column; border-radius: 20px; }
@@ -841,6 +853,8 @@
     /* one thumb-sized primary action per step */
     .qnav .btn-primary { flex: 1; margin-left: 16px; justify-content: center; }
     .examples { padding-top: 64px; }
+    .foot-bar { flex-direction: column; justify-content: center; text-align: center; gap: 8px;
+                padding-bottom: calc(26px + env(safe-area-inset-bottom)); }
   }
 
   /* desktop keeps the absolute one-wide-diagram layout */
@@ -1110,7 +1124,7 @@
 
       <div class="ex-card">
         <div class="ex-head"><span class="name">Dormant relationships</span></div>
-        <svg class="gflow gflow--l3" viewBox="0 0 430 400" role="img" aria-label="Dormant relationships workflow: email history and sales calls merge into a relationship graph, then conversations">
+        <svg class="gflow gflow--l3 gflow--wide" viewBox="0 0 430 400" role="img" aria-label="Dormant relationships workflow: email history and sales calls merge into a relationship graph, then conversations">
           <g class="gnode" style="--d:0s">
             <rect class="gtile" x="147" y="4" width="56" height="56" rx="16" />
             <image href="logos/sq-gmail.svg" x="160" y="17" width="30" height="30" />
@@ -1448,6 +1462,7 @@
     const chatCards = [...document.querySelectorAll('[data-ch]')];
     const chatBubs = chatCards.map(c => [...c.querySelectorAll('.bub')]);
     const pipeBox = document.getElementById('pipe-box');
+    const cornerCta = document.querySelector('.corner-cta');
 
     function fade(el, o, y) {
       el.style.opacity = o.toFixed(3);
@@ -1459,11 +1474,13 @@
     let heroScroll = 0, L1 = 0, L2 = 0, L3 = 0, L4 = 0, holdScroll = 0, totalScroll = 0;
     function measure() {
       const vh = window.innerHeight;
+      // phones flick fast and the stacked story has less to reveal: shorter beats
+      const k = window.innerWidth <= 640 ? 0.75 : 1;
       heroScroll = Math.round(vh * 0.9);
-      L1 = Math.round(vh * 0.85);
-      L2 = Math.round(vh * 0.95);
-      L3 = Math.round(vh * 0.95);
-      L4 = Math.round(vh * 1.0);
+      L1 = Math.round(vh * 0.85 * k);
+      L2 = Math.round(vh * 0.95 * k);
+      L3 = Math.round(vh * 0.95 * k);
+      L4 = Math.round(vh * 1.0 * k);
       holdScroll = Math.round(vh * 0.4);
       totalScroll = heroScroll + L1 + L2 + L3 + L4 + holdScroll;
       intro.style.height = (totalScroll + vh) + 'px';
@@ -1494,6 +1511,7 @@
 
       /* --- story reveal, right as the mountains vanish --- */
       stage.style.setProperty('--story-o', clamp((heroP - 0.55) / 0.35, 0, 1).toFixed(4));
+      cornerCta.style.pointerEvents = heroP > 0.75 ? '' : 'none';
 
       const t = s - heroScroll;
       const p1 = clamp(t / L1, 0, 1);
@@ -1600,6 +1618,23 @@
       });
     }, { threshold: 0.35 });
     document.querySelectorAll('.ex-card').forEach(c => exObserver.observe(c));
+
+    /* phones: crop each workflow diagram to its own content width, so a
+       240-wide column fills the card instead of shrinking to 8px labels */
+    function fitDiagrams() {
+      document.querySelectorAll('.gflow').forEach(svg => {
+        if (!svg.dataset.vb) svg.dataset.vb = svg.getAttribute('viewBox');
+        const [, , w, h] = svg.dataset.vb.split(' ').map(Number);
+        if (window.innerWidth > 640) { svg.setAttribute('viewBox', svg.dataset.vb); svg.style.maxWidth = ''; return; }
+        const b = svg.getBBox(), pad = 14;
+        const x = Math.max(0, b.x - pad), r = Math.min(w, b.x + b.width + pad);
+        svg.setAttribute('viewBox', x.toFixed(1) + ' 0 ' + (r - x).toFixed(1) + ' ' + h);
+        // never blow past natural size, or every card turns into a full screen
+        svg.style.maxWidth = Math.round((r - x) * 1.08) + 'px';
+      });
+    }
+    fitDiagrams();
+    window.addEventListener('resize', fitDiagrams);
 
     const riseObserver = new IntersectionObserver((entries) => {
       entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); riseObserver.unobserve(en.target); } });
