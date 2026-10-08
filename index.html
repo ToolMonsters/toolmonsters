@@ -766,55 +766,39 @@
     .hills--desk { display: none; }
     .hills--mob { display: block; width: 100%; bottom: 0; }
 
-    /* "worked with" sits higher, logos a bit smaller, tighter spacing, faster scroll */
-    .worked { top: 49%; width: 94vw; gap: 10px; }
-    .worked .marquee { transform: scale(.84); }
+    /* "worked with" sits higher and stays inside the valley, so the logos never
+       slide behind the monsters standing on the hilltops */
+    .worked { top: 48%; width: 58vw; gap: 10px; }
+    .worked .marquee { zoom: .78; }
     .worked .logo { margin-right: 38px; }
-    .track { animation-duration: 16s; }
+    .track { animation-duration: 18s; }
 
-    /* the story flows vertically on phones: no big wires, compact stacks */
-    .story-inner { width: 100%; height: 100%; transform: none; }
+    /* phones keep the one wide diagram and its wires: the camera pans
+       sideways column by column (sources -> buyers -> chats -> pipeline),
+       and the page only scrolls down again at the workflows */
+    .story-inner { transform: translateY(var(--story-dy, 0px)) scale(var(--story-scale, 1)); }
     .phrase { top: max(9%, calc(env(safe-area-inset-top) + 46px)); font-size: clamp(25px, 7.8vw, 34px); padding: 0 18px; }
     .phrase--sub { top: calc(max(9%, calc(env(safe-area-inset-top) + 46px)) + 46px); font-size: 14px; }
-    .wires { display: none; }
 
     /* on phones only the monster mark floats, the wordmark would collide with content */
     .brand { top: 14px; left: 14px; }
     .brand img { width: 32px; height: 32px; border-radius: 10px; }
     .brand span { display: none; }
 
-    /* the flow goes vertical on phones: chips + buyers first, then the
-       conversations + pipeline take over the same screen */
-    .layer--map { display: flex; align-items: center; justify-content: center; }
-    .map-track { position: static; width: auto; height: auto; }
-    .src-stage { display: flex; flex-direction: column; align-items: center; padding-top: 12vh; }
-    .chips6 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(92vw, 372px); }
-    .srcbox { position: static; width: auto; padding: 11px 13px 10px; border-radius: 13px; }
-    .srcbox strong { font-size: 10px; margin-bottom: 7px; }
-    .srcbox em { font-size: 10px; margin-top: 7px; }
-    .ltiles { gap: 5px; }
-    .lt { width: 23px; height: 23px; border-radius: 7px; }
-    .lt--fit { padding: 3px; }
-    .lt--word { font-size: 11px; }
-    .people3 { display: flex; flex-direction: column; gap: 11px; margin-top: 22px; }
-    .person { position: static; width: min(90vw, 320px); padding: 12px 16px; gap: 12px;
-              border-radius: 15px; }
-    .person .avatar { width: 38px; height: 38px; border-radius: 11px; }
-    .person b { font-size: 15px; }
+    /* the main CTA stays on screen through the whole story, centred under the
+       thumb (the floating brand mark already scrolls back to the top) */
+    .corner-cta { left: 50%; right: auto; translate: -50% 0; white-space: nowrap;
+                  bottom: calc(18px + env(safe-area-inset-bottom)); padding: 14px 24px; font-size: 15.5px; }
+    .to-top { display: none; }
 
-    .conv-stage { position: absolute; inset: 0; display: flex; flex-direction: column;
-                  align-items: center; justify-content: center; padding-top: 9vh; }
-    .chats { display: flex; flex-direction: column; gap: 10px; }
-    .chat { position: static; width: min(88vw, 300px); padding: 11px 13px 11px; border-radius: 15px; }
-    .chat-head { font-size: 12.5px; padding-bottom: 8px; margin-bottom: 9px; }
-    .cav { width: 22px; height: 22px; border-radius: 7px; font-size: 9.5px; }
-    .bub { font-size: 11.5px; padding: 7px 11px; }
-    .pipe-pos { position: static; margin-top: 20px; }
-    .dbox--pipeline { font-size: 20px; padding: 17px 36px; }
-
-    /* swap the wide CTA for a round back-to-top arrow */
-    .corner-cta { display: none; }
-    .to-top { display: inline-flex; }
+    /* workflow cards: thinner frames so the diagrams get the width; JS crops
+       each diagram to its content so the labels stay readable */
+    .examples { padding-left: 14px; padding-right: 14px; }
+    .ex-card { padding: 24px 12px 22px; border-radius: 22px; }
+    .ex-head { margin-bottom: 14px; }
+    .ex-head .name { font-size: 24px; }
+    .gflow--wide .gt-title { font-size: 16px; }
+    .gflow--wide .gt-sub { font-size: 13px; }
 
     /* the modal stacks: a slim live-system strip on top, questions below */
     .qcard { flex-direction: column; border-radius: 20px; }
@@ -841,12 +825,14 @@
     /* one thumb-sized primary action per step */
     .qnav .btn-primary { flex: 1; margin-left: 16px; justify-content: center; }
     .examples { padding-top: 64px; }
+    .foot-bar { flex-direction: column; justify-content: center; text-align: center; gap: 8px;
+                padding-bottom: calc(26px + env(safe-area-inset-bottom)); }
   }
 
-  /* desktop keeps the absolute one-wide-diagram layout */
+  /* the story groups are layout-free wrappers: every card is placed on the one wide diagram */
+  .src-stage, .chips6, .people3, .conv-stage, .chats { display: contents; }
+
   @media (min-width: 641px) {
-    .src-stage, .chips6, .people3, .conv-stage, .chats { display: contents; }
-    .layer--map { display: block; }
     /* the modal keeps one steady height so steps don't jump around */
     .qcard { min-height: min(560px, 82vh); }
   }
@@ -1110,7 +1096,7 @@
 
       <div class="ex-card">
         <div class="ex-head"><span class="name">Dormant relationships</span></div>
-        <svg class="gflow gflow--l3" viewBox="0 0 430 400" role="img" aria-label="Dormant relationships workflow: email history and sales calls merge into a relationship graph, then conversations">
+        <svg class="gflow gflow--l3 gflow--wide" viewBox="0 0 430 400" role="img" aria-label="Dormant relationships workflow: email history and sales calls merge into a relationship graph, then conversations">
           <g class="gnode" style="--d:0s">
             <rect class="gtile" x="147" y="4" width="56" height="56" rx="16" />
             <image href="logos/sq-gmail.svg" x="160" y="17" width="30" height="30" />
@@ -1442,12 +1428,11 @@
     const wiresB = [...document.querySelectorAll('.wb')];
     const wiresC = [...document.querySelectorAll('.wc')];
     const mapTrack = document.getElementById('map-track');
-    const srcStage = document.getElementById('src-stage');
-    const convStage = document.getElementById('conv-stage');
     const personCards = [...document.querySelectorAll('[data-p]')];
     const chatCards = [...document.querySelectorAll('[data-ch]')];
     const chatBubs = chatCards.map(c => [...c.querySelectorAll('.bub')]);
     const pipeBox = document.getElementById('pipe-box');
+    const cornerCta = document.querySelector('.corner-cta');
 
     function fade(el, o, y) {
       el.style.opacity = o.toFixed(3);
@@ -1456,14 +1441,17 @@
 
     /* ---------- scene lengths (recomputed on resize) ----------
        hero zoom, then four beats of one left-to-right flow, then a short hold. */
+    let colX = [252, 750, 1305, 1830];
     let heroScroll = 0, L1 = 0, L2 = 0, L3 = 0, L4 = 0, holdScroll = 0, totalScroll = 0;
     function measure() {
       const vh = window.innerHeight;
+      // phones flick fast and the stacked story has less to reveal: shorter beats
+      const k = window.innerWidth <= 640 ? 0.75 : 1;
       heroScroll = Math.round(vh * 0.9);
-      L1 = Math.round(vh * 0.85);
-      L2 = Math.round(vh * 0.95);
-      L3 = Math.round(vh * 0.95);
-      L4 = Math.round(vh * 1.0);
+      L1 = Math.round(vh * 0.85 * k);
+      L2 = Math.round(vh * 0.95 * k);
+      L3 = Math.round(vh * 0.95 * k);
+      L4 = Math.round(vh * 1.0 * k);
       holdScroll = Math.round(vh * 0.4);
       totalScroll = heroScroll + L1 + L2 + L3 + L4 + holdScroll;
       intro.style.height = (totalScroll + vh) + 'px';
@@ -1472,8 +1460,17 @@
         const s = Math.min((window.innerWidth * 0.92) / 980, (vh * 0.82) / 620, 1);
         storyInner.style.setProperty('--story-scale', clamp(s, 0.3, 1).toFixed(3));
       } else {
-        storyInner.style.removeProperty('--story-scale');
+        // phones: native size when it fits; the cards span y 60..560 of the
+        // 620 diagram, and need ~150px of phrase above and ~80px of CTA below
+        const s = Math.min(1, (vh - 230) / 510);
+        storyInner.style.setProperty('--story-scale', clamp(s, 0.6, 1).toFixed(3));
+        storyInner.style.setProperty('--story-dy', '35px');
       }
+      // where each column's centre sits on the diagram, for the phone camera
+      colX = ['.srcbox--1', '.person--1', '.chat--1', '.pipe-pos'].map(q => {
+        const el = document.querySelector(q);
+        return el.offsetLeft + el.offsetWidth / 2;
+      });
     }
 
     let target = 0, curr = 0, rafId = null;
@@ -1494,6 +1491,7 @@
 
       /* --- story reveal, right as the mountains vanish --- */
       stage.style.setProperty('--story-o', clamp((heroP - 0.55) / 0.35, 0, 1).toFixed(4));
+      cornerCta.style.pointerEvents = heroP > 0.75 ? '' : 'none';
 
       const t = s - heroScroll;
       const p1 = clamp(t / L1, 0, 1);
@@ -1512,36 +1510,44 @@
           - 540 * ease(sub(p3, 0, 0.42))    // buyers -> conversations
           - 610 * ease(sub(p4, 0, 0.45));   // conversations -> pipeline
         mapTrack.style.transform = 'translateX(' + tx.toFixed(1) + 'px)';
-        srcStage.style.opacity = ''; srcStage.style.visibility = '';
-        convStage.style.opacity = ''; convStage.style.visibility = '';
       } else {
-        /* phones: no pan, the conversations take over the same screen */
-        mapTrack.style.transform = '';
-        srcStage.style.opacity = (1 - sub(p3, 0, 0.25)).toFixed(3);
-        srcStage.style.visibility = p3 >= 0.25 ? 'hidden' : 'visible';
-        convStage.style.opacity = sub(p3, 0.15, 0.35).toFixed(3);
-        convStage.style.visibility = p3 < 0.15 ? 'hidden' : 'visible';
+        /* phones: one column per screen, the camera slides sideways and
+           follows each set of wires as they draw (490 = the diagram's centre) */
+        const tx = 490 - colX[0]
+          - (colX[1] - colX[0]) * ease(sub(p2, 0.08, 0.5))
+          - (colX[2] - colX[1]) * ease(sub(p3, 0.1, 0.5))
+          - (colX[3] - colX[2]) * ease(sub(p4, 0.15, 0.55));
+        mapTrack.style.transform = 'translateX(' + tx.toFixed(1) + 'px)';
       }
+
+      /* phones see one column at a time, so each column is already drawn
+         before the camera slides it in: no empty screen mid-pan */
+      const m = window.innerWidth <= 640;
 
       /* beat 2: wires fan out of the sources, the buyers appear */
       wiresA.forEach((w, i) => {
-        w.style.strokeDashoffset = (100 * (1 - sub(p2, 0.12 + i * 0.05, 0.48 + i * 0.05))).toFixed(1);
+        const k = m ? sub(p2, 0.05 + i * 0.03, 0.45 + i * 0.03) : sub(p2, 0.12 + i * 0.05, 0.48 + i * 0.05);
+        w.style.strokeDashoffset = (100 * (1 - k)).toFixed(1);
       });
-      personCards.forEach((el, i) => fade(el, sub(p2, 0.45 + i * 0.12, 0.68 + i * 0.12), 20));
+      personCards.forEach((el, i) => fade(el, m ? sub(p2, i * 0.04, 0.12 + i * 0.04)
+                                                : sub(p2, 0.45 + i * 0.12, 0.68 + i * 0.12), 20));
 
       /* beat 3: wires continue right, the chats open, messages land like real replies */
       wiresB.forEach((w, i) => {
-        w.style.strokeDashoffset = (100 * (1 - sub(p3, 0.16 + i * 0.06, 0.46 + i * 0.06))).toFixed(1);
+        const k = m ? sub(p3, 0.05 + i * 0.03, 0.45 + i * 0.03) : sub(p3, 0.16 + i * 0.06, 0.46 + i * 0.06);
+        w.style.strokeDashoffset = (100 * (1 - k)).toFixed(1);
       });
-      chatCards.forEach((el, i) => fade(el, sub(p3, 0.36 + i * 0.07, 0.52 + i * 0.07), 16));
+      chatCards.forEach((el, i) => fade(el, m ? sub(p3, i * 0.04, 0.12 + i * 0.04)
+                                              : sub(p3, 0.36 + i * 0.07, 0.52 + i * 0.07), 16));
       chatBubs.forEach((arr, i) => arr.forEach((b, j) =>
         fade(b, sub(p3, 0.52 + i * 0.05 + j * 0.15, 0.62 + i * 0.05 + j * 0.15), 8)));
 
       /* beat 4: the three conversations wire into one pipeline */
       wiresC.forEach((w, i) => {
-        w.style.strokeDashoffset = (100 * (1 - sub(p4, 0.2 + i * 0.06, 0.5 + i * 0.06))).toFixed(1);
+        const k = m ? sub(p4, 0.08 + i * 0.03, 0.5 + i * 0.03) : sub(p4, 0.2 + i * 0.06, 0.5 + i * 0.06);
+        w.style.strokeDashoffset = (100 * (1 - k)).toFixed(1);
       });
-      const pipe = sub(p4, 0.52, 0.7);
+      const pipe = m ? sub(p4, 0.05, 0.2) : sub(p4, 0.52, 0.7);
       pipeBox.style.opacity = pipe.toFixed(3);
       pipeBox.style.transform = 'scale(' + (0.9 + pipe * 0.1).toFixed(3) + ')';
       pipeBox.classList.toggle('lit', pipe >= 0.99);
@@ -1600,6 +1606,23 @@
       });
     }, { threshold: 0.35 });
     document.querySelectorAll('.ex-card').forEach(c => exObserver.observe(c));
+
+    /* phones: crop each workflow diagram to its own content width, so a
+       240-wide column fills the card instead of shrinking to 8px labels */
+    function fitDiagrams() {
+      document.querySelectorAll('.gflow').forEach(svg => {
+        if (!svg.dataset.vb) svg.dataset.vb = svg.getAttribute('viewBox');
+        const [, , w, h] = svg.dataset.vb.split(' ').map(Number);
+        if (window.innerWidth > 640) { svg.setAttribute('viewBox', svg.dataset.vb); svg.style.maxWidth = ''; return; }
+        const b = svg.getBBox(), pad = 14;
+        const x = Math.max(0, b.x - pad), r = Math.min(w, b.x + b.width + pad);
+        svg.setAttribute('viewBox', x.toFixed(1) + ' 0 ' + (r - x).toFixed(1) + ' ' + h);
+        // never blow past natural size, or every card turns into a full screen
+        svg.style.maxWidth = Math.round((r - x) * 1.08) + 'px';
+      });
+    }
+    fitDiagrams();
+    window.addEventListener('resize', fitDiagrams);
 
     const riseObserver = new IntersectionObserver((entries) => {
       entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); riseObserver.unobserve(en.target); } });
