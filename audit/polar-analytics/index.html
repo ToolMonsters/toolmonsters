@@ -109,41 +109,70 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 @media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
 .reqs,.steps,.ba,.offer .grid{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid var(--line)}.fx{grid-template-columns:1fr;gap:6px}.tag{display:none}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
 .blur{filter:blur(5px);user-select:none;pointer-events:none}
 .lock{display:inline-flex;align-items:center;gap:8px;margin-top:10px;color:var(--orange)}
+.bars{margin-top:36px;border:1px solid var(--line-strong);background:var(--card);padding:10px 20px}
+.bar{display:grid;grid-template-columns:170px minmax(0,1fr) 56px;gap:14px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line)}
+.bar:last-child{border-bottom:0}
+.bar .n{display:flex;align-items:center;gap:10px;font-weight:500;white-space:nowrap;overflow:hidden}
+.bar .t{height:14px;background:var(--paper-2)}
+.bar .t i{display:block;height:100%;background:var(--ink-3)}
+.bar.me .t i{background:var(--orange)}
+.bar.me .n{color:var(--orange);font-weight:600}
+.bar .v{font-family:var(--fm);font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+.hidden-tools{margin-top:16px;border:1px dashed var(--orange);padding:16px 18px;display:grid;gap:8px}
+.hidden-tools code{font-family:var(--fm);font-size:12.5px}
+@media (max-width:760px){.bar{grid-template-columns:120px minmax(0,1fr) 44px}}
 </style>
 </head>
 <body>
-<div class="rules" aria-hidden="true"><div class="wrap"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-<header class="head"><div class="wrap">
+<div class="rules" aria-hidden="true"><div class="wrap"><i></i><i></i><i></i><i></i><i></i><i></i></div></div><header class="head"><div class="wrap">
 <a class="brand" href="https://www.toolmonsters.com/"><span class="sprite" data-sprite="brand"></span><span>Tool Monsters<i>.</i></span></a>
 <span class="tag mono">claude audit · polar analytics</span>
 </div></header>
 <main>
 <section><div class="wrap">
-<div class="eyebrow mono"><b>01</b><span>prepared for david dokes · oct 28, 2026</span></div>
-<h1>Shopify brands ask Claude for Polar's job. Claude hands it to <span class="o">Windsor.ai</span>.</h1>
-<p class="lede">We ran Polar's core use cases through Claude the way a Shopify brand would, without naming any vendor, and looked at which connectors Claude suggests and why.</p>
+<div class="eyebrow mono"><b>01</b><span>prepared for david dokes · oct 2026</span></div>
+<h1>Claude suggests <span class="o">Supermetrics</span> twice as often as Polar.</h1>
+<p class="lede">60 real requests from Shopify founders, growth marketers, finance leads and agencies, never naming a vendor, run on 2 clean Claude accounts. We recorded every connector card Claude showed.</p>
 <div class="stats">
-<div class="stat"><b class="o">0/4</b><span>buyer requests where Claude suggests Polar</span></div>
-<div class="stat"><b>4/4</b><span>where it suggests Windsor.ai</span></div>
-<div class="stat"><b class="o">1/25</b><span>buyer search terms that find Polar</span></div>
-<div class="stat"><b>#474</b><span>Polar in Claude's directory. Windsor.ai #37, Supermetrics #48</span></div>
+<div class="stat"><b>120</b><span>tests · 60 requests × 2 clean accounts</span></div>
+<div class="stat"><b class="o">18%</b><span>of tests where Claude suggests Polar</span></div>
+<div class="stat"><b>41%</b><span>where it suggests Supermetrics. Windsor.ai 39%</span></div>
+<div class="stat"><b class="o">1/120</b><span>tests where Polar is the first connector Claude names</span></div>
 </div>
 </div></section>
 
 <section><div class="wrap">
-<div class="eyebrow mono"><b>02</b><span>what a shopify brand sees</span></div>
-<h2>4 requests, 4 cards, <span class="o">no Polar</span>.</h2>
-<div class="reqs"><article class="req"><div class="req-h mono"><span>request 01</span><span class="dim">claude.ai · oct 28</span></div>
-<p class="q">“Compare my ad spend and ROAS across Google, Meta and TikTok for my Shopify store last month.”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="shopify.png" alt="" width="26" height="26"><span>Shopify</span></li><li><img class="lg " src="windsor.png" alt="" width="26" height="26"><span>Windsor.ai</span></li><li><img class="lg " src="supermetrics.png" alt="" width="26" height="26"><span>Supermetrics</span></li><li class="miss"><img class="lg g" src="polar.png" alt="" width="26" height="26"><span>Polar</span></li></ul></article><article class="req"><div class="req-h mono"><span>request 02</span><span class="dim">claude.ai · oct 28</span></div>
-<p class="q">“Did our Black Friday discount actually make money once you account for ad spend, COGS, and shipping?”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="shopify.png" alt="" width="26" height="26"><span>Shopify</span></li><li><img class="lg " src="windsor.png" alt="" width="26" height="26"><span>Windsor.ai</span></li><li class="miss"><img class="lg g" src="polar.png" alt="" width="26" height="26"><span>Polar</span></li></ul></article><article class="req"><div class="req-h mono"><span>request 03</span><span class="dim">claude.ai · oct 28</span></div>
-<p class="q">“What was our net profit after COGS, shipping, payment fees, and ad spend for each month this fiscal year?”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="shopify.png" alt="" width="26" height="26"><span>Shopify</span></li><li><img class="lg " src="windsor.png" alt="" width="26" height="26"><span>Windsor.ai</span></li><li class="miss"><img class="lg g" src="polar.png" alt="" width="26" height="26"><span>Polar</span></li></ul></article><article class="req"><div class="req-h mono"><span>request 04</span><span class="dim">claude.ai · oct 28</span></div>
-<p class="q">“I need a client-ready monthly report showing spend, revenue, MER, and new customers by channel for September with a link I can send them.”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="shopify.png" alt="" width="26" height="26"><span>Shopify</span></li><li><img class="lg " src="windsor.png" alt="" width="26" height="26"><span>Windsor.ai</span></li><li><img class="lg " src="supermetrics.png" alt="" width="26" height="26"><span>Supermetrics</span></li><li class="miss"><img class="lg g" src="polar.png" alt="" width="26" height="26"><span>Polar</span></li></ul></article></div>
+<div class="eyebrow mono"><b>02</b><span>who claude suggests · share of 120 tests</span></div>
+<h2>Polar shows up, but <span class="o">behind three others</span>.</h2>
+<div class="bars"><div class="bar"><span class="n"><img class="lg " src="shopify.png" alt="" width="26" height="26">Shopify</span><span class="t"><i style="width:100.0%"></i></span><span class="v">72%</span></div><div class="bar"><span class="n"><img class="lg " src="supermetrics.png" alt="" width="26" height="26">Supermetrics</span><span class="t"><i style="width:57.0%"></i></span><span class="v">41%</span></div><div class="bar"><span class="n"><img class="lg " src="windsor.png" alt="" width="26" height="26">Windsor.ai</span><span class="t"><i style="width:54.7%"></i></span><span class="v">39%</span></div><div class="bar me"><span class="n"><img class="lg " src="polar.png" alt="" width="26" height="26">Polar</span><span class="t"><i style="width:24.4%"></i></span><span class="v">18%</span></div><div class="bar"><span class="n"><img class="lg " src="stripe.png" alt="" width="26" height="26">Stripe</span><span class="t"><i style="width:22.1%"></i></span><span class="v">16%</span></div><div class="bar"><span class="n"><img class="lg " src="quickbooks.png" alt="" width="26" height="26">QuickBooks</span><span class="t"><i style="width:10.5%"></i></span><span class="v">8%</span></div><div class="bar"><span class="n"><img class="lg " src="funnel.png" alt="" width="26" height="26">Funnel</span><span class="t"><i style="width:8.1%"></i></span><span class="v">6%</span></div><div class="bar"><span class="n"><img class="lg " src="klaviyo.png" alt="" width="26" height="26">Klaviyo</span><span class="t"><i style="width:8.1%"></i></span><span class="v">6%</span></div></div>
+<p class="note">When Polar does appear, it is usually 3rd in the card. Shopify is named first in 72 of 120 tests, Supermetrics in 22, Polar in 1.</p>
 </div></section>
 
 <section><div class="wrap">
-<div class="eyebrow mono"><b>03</b><span>how claude picks a connector</span></div>
+<div class="eyebrow mono"><b>03</b><span>by buyer · 30 tests each</span></div>
+<h2>Founders: close race. <span class="o">Marketers and agencies: lost.</span></h2>
+<div class="tbl"><table>
+<tr><th>Buyer</th><th>Polar</th><th>Supermetrics</th><th>Windsor.ai</th></tr>
+<tr class="me"><td class="n" style="font-weight:500">Shopify founders</td><td class="r">8/30</td><td class="r">9/30</td><td class="r">10/30</td></tr><tr class="me"><td class="n" style="font-weight:500">Growth marketers</td><td class="r">5/30</td><td class="r">20/30</td><td class="r">18/30</td></tr><tr><td class="n" style="font-weight:500">Finance &amp; ops</td><td class="r">4/30</td><td class="r">0/30</td><td class="r">2/30</td></tr><tr class="me"><td class="n" style="font-weight:500">Agencies</td><td class="r">4/30</td><td class="r">20/30</td><td class="r">17/30</td></tr>
+</table></div>
+<p class="note">Agencies and growth marketers run paid media for Shopify brands, exactly Polar's use case. Claude sends them to Supermetrics and Windsor.ai 4 to 5 times more often.</p>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>04</b><span>agency requests polar can answer, and loses</span></div>
+<h2>Same card on both accounts. <span class="o">No Polar.</span></h2>
+<div class="reqs"><article class="req"><div class="req-h mono"><span>lost request 01</span><span class="dim">same card on both accounts</span></div>
+<p class="q">“For my client in skincare, what was blended ROAS and new-customer CAC last month across all paid channels?”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="supermetrics.png" alt="" width="26" height="26"><span>Supermetrics</span></li><li><img class="lg " src="windsor.png" alt="" width="26" height="26"><span>Windsor.ai</span></li><li><img class="lg " src="funnel.png" alt="" width="26" height="26"><span>Funnel</span></li><li><img class="lg " src="shopify.png" alt="" width="26" height="26"><span>Shopify</span></li><li class="miss"><img class="lg g" src="polar.png" alt="" width="26" height="26"><span>Polar</span></li></ul></article><article class="req"><div class="req-h mono"><span>lost request 02</span><span class="dim">same card on both accounts</span></div>
+<p class="q">“Give me cost per purchase by country for the client&#x27;s paid social campaigns so we can cut the worst-performing regions.”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="supermetrics.png" alt="" width="26" height="26"><span>Supermetrics</span></li><li><img class="lg " src="windsor.png" alt="" width="26" height="26"><span>Windsor.ai</span></li><li><img class="lg " src="funnel.png" alt="" width="26" height="26"><span>Funnel</span></li><li class="miss"><img class="lg g" src="polar.png" alt="" width="26" height="26"><span>Polar</span></li></ul></article><article class="req"><div class="req-h mono"><span>lost request 03</span><span class="dim">same card on both accounts</span></div>
+<p class="q">“Which of our client&#x27;s paid social campaigns are profitable on a contribution margin basis, not just ROAS?”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="supermetrics.png" alt="" width="26" height="26"><span>Supermetrics</span></li><li><img class="lg " src="windsor.png" alt="" width="26" height="26"><span>Windsor.ai</span></li><li><img class="lg " src="shopify.png" alt="" width="26" height="26"><span>Shopify</span></li><li class="miss"><img class="lg g" src="polar.png" alt="" width="26" height="26"><span>Polar</span></li></ul></article><article class="req"><div class="req-h mono"><span>lost request 04</span><span class="dim">same card on both accounts</span></div>
+<p class="q">“Show me the top 5 ad sets by new-customer revenue for the client last week and the top 5 wasting the most budget.”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="supermetrics.png" alt="" width="26" height="26"><span>Supermetrics</span></li><li><img class="lg " src="windsor.png" alt="" width="26" height="26"><span>Windsor.ai</span></li><li><img class="lg " src="adspirer.png" alt="" width="26" height="26"><span>Adspirer</span></li><li class="miss"><img class="lg g" src="polar.png" alt="" width="26" height="26"><span>Polar</span></li></ul></article></div>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>05</b><span>how claude picks a connector</span></div>
 <h2>Three steps. The listing decides all three.</h2>
 <div class="steps">
 <div class="step"><span class="mono">step 1</span><b>Claude searches</b><p>It turns the request into a few keywords and searches the connector directory.</p></div>
@@ -153,20 +182,20 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 </div></section>
 
 <section><div class="wrap">
-<div class="eyebrow mono"><b>04</b><span>what claude reads when it chooses</span></div>
-<h2>Polar's one-liner never says <span class="o">Shopify, ROAS or ads</span>.</h2>
+<div class="eyebrow mono"><b>06</b><span>what claude reads when it chooses</span></div>
+<h2>Polar's one-liner never says <span class="o">Shopify, ads or ROAS</span>.</h2>
 <div class="tbl"><table>
 <tr><th>Connector</th><th>One-liner Claude reads</th><th>Directory rank</th></tr>
 <tr class="me"><td class="n"><img class="lg " src="polar.png" alt="" width="26" height="26">Polar</td><td>Bring all your data in one place &amp; connect it to Claude</td><td class="r">#474</td></tr>
-<tr><td class="n"><img class="lg " src="windsor.png" alt="" width="26" height="26">Windsor.ai</td><td>Connect Meta Ads, Google Ads, TikTok Ads, LinkedIn Ads + 320 more</td><td class="r">#37</td></tr>
 <tr><td class="n"><img class="lg " src="supermetrics.png" alt="" width="26" height="26">Supermetrics</td><td>Google Ads, Facebook Ads, Google Analytics, TikTok, LinkedIn, Instagram, YouTube &amp; 200+ sources</td><td class="r">#48</td></tr>
+<tr><td class="n"><img class="lg " src="windsor.png" alt="" width="26" height="26">Windsor.ai</td><td>Connect Meta Ads, Google Ads, TikTok Ads, LinkedIn Ads + 320 more</td><td class="r">#37</td></tr>
 <tr><td class="n"><img class="lg " src="shopify.png" alt="" width="26" height="26">Shopify</td><td>Build, manage, and analyze your Shopify store</td><td class="r">#19</td></tr>
 </table></div>
 <p class="note">Polar's long description does mention ROAS, CAC and margins. Claude does not see the description when it chooses.</p>
 </div></section>
 
 <section><div class="wrap">
-<div class="eyebrow mono"><b>05</b><span>directory search · 25 buyer terms</span></div>
+<div class="eyebrow mono"><b>07</b><span>directory search · 25 buyer terms</span></div>
 <h2>17 terms return no connector at all. <span class="o">Free ground.</span></h2>
 <div class="legend mono"><span><i style="background:var(--green-soft)"></i>finds polar</span><span><i style="background:var(--card);border:1px solid var(--line-strong)"></i>finds someone else</span><span><i style="border:1px dashed var(--orange)"></i>finds nobody</span></div>
 <div class="chips"><div class="chip win"><b>ecommerce analytics</b><span class="mono">polar #2</span></div><div class="chip oth"><b>blended ROAS</b><span class="mono">biorender</span></div><div class="chip open"><b>store profit tracking</b><span class="mono">nobody</span></div><div class="chip open"><b>marketing attribution</b><span class="mono">nobody</span></div><div class="chip oth"><b>customer acquisition cost</b><span class="mono">customer.io</span></div><div class="chip open"><b>ad spend reporting</b><span class="mono">nobody</span></div><div class="chip open"><b>SKU profitability</b><span class="mono">nobody</span></div><div class="chip open"><b>ecommerce dashboard</b><span class="mono">nobody</span></div><div class="chip open"><b>customer lifetime value</b><span class="mono">nobody</span></div><div class="chip open"><b>multi-store reporting</b><span class="mono">nobody</span></div><div class="chip open"><b>contribution margin</b><span class="mono">nobody</span></div><div class="chip oth"><b>MER tracking</b><span class="mono">merchkit +1</span></div><div class="chip oth"><b>DTC metrics</b><span class="mono">isometric</span></div><div class="chip oth"><b>paid media reporting</b><span class="mono">adspirer social ads</span></div><div class="chip oth"><b>cohort analysis</b><span class="mono">tana</span></div><div class="chip open"><b>product margin analysis</b><span class="mono">nobody</span></div><div class="chip open"><b>marketing data warehouse</b><span class="mono">nobody</span></div><div class="chip open"><b>unified ecommerce data</b><span class="mono">nobody</span></div><div class="chip open"><b>return rate analysis</b><span class="mono">nobody</span></div><div class="chip open"><b>client performance report</b><span class="mono">nobody</span></div><div class="chip open"><b>new customer revenue</b><span class="mono">nobody</span></div><div class="chip oth"><b>campaign ROAS</b><span class="mono">activecampaign +1</span></div><div class="chip open"><b>net revenue reporting</b><span class="mono">nobody</span></div><div class="chip open"><b>email revenue attribution</b><span class="mono">nobody</span></div><div class="chip open"><b>ecommerce BI</b><span class="mono">nobody</span></div></div>
@@ -174,26 +203,25 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 </div></section>
 
 <section><div class="wrap">
-<div class="eyebrow mono"><b>06</b><span>the fix</span></div>
+<div class="eyebrow mono"><b>08</b><span>the fix</span></div>
 <h2>Same product. <span class="o">Buyer words.</span></h2>
 <div class="fix">
 <div class="fx"><span class="mono">name</span><div><p class="old">Polar Analytics</p><p class="nw blur" aria-hidden="true">Stpps Gfsrfdpke: Ctbnpfasc Bbghaplpu gsh Lracpio</p></div></div>
 <div class="fx"><span class="mono">one-liner</span><div><p class="old">Bring all your data in one place &amp; connect it to Claude</p><p class="nw blur" aria-hidden="true">Tismenamr iphtaepmf lgb Gcslnca bshcop: doetltf BFCP, RTT, PAC, gimmnkdihlmm susfan obs ahobngdt hfciboir mbspm glkprr Hfpt, Nfghai, MfhAsb hdm Ealidhs.</p></div></div>
-<div class="fx"><span class="mono">categories</span><div><p class="old">Data analytics</p><p class="nw">Data analytics · Sales &amp; marketing · Commerce &amp; shopping</p></div></div>
+<div class="fx"><span class="mono">categories</span><div><p class="old">Data analytics</p><p class="nw blur" aria-hidden="true">Dshi ikcpkpnnd, Khlmi mse ftifacdla, Cignnupd</p></div></div>
 <div class="fx"><span class="mono">first tools</span><div><p class="old">get_context, list_dashboards, get_dashboard_details…</p><p class="nw code blur" aria-hidden="true">ikfhehfe_ctgkao, eai_ecipoei, mhrt_uomoldmipt, epptfkgf_smi_mpiine_urth…</p></div></div>
-<div class="fx"><span class="mono">description</span><div><p class="nw">Rewritten around the 25 buyer terms Shopify brands actually search.</p><span class="lock mono">■ full rewrite delivered with the optimization</span></div></div>
+<div class="fx"><span class="mono">description</span><div><p class="nw">Rewritten around the words agencies, marketers and founders actually use.</p><span class="lock mono">■ full rewrite delivered with the optimization</span></div></div>
 </div>
-<div class="ba"><div><span class="mono dim">buyer terms that find polar today</span><b>1/25</b></div><div><span class="mono">with the new listing (estimate)</span><b>25/25</b></div></div>
-<p class="note">The new listing contains each term, and the directory returns connectors whose listing contains the words (rule measured on 25 real searches). That covers being found. Claude's final choice and popularity still apply, so we prove it on the same requests after you publish.</p>
+<div class="ba"><div><span class="mono dim">today</span><b>18%</b><span class="note" style="margin:0">of 120 tests suggest Polar</span></div><div><span class="mono">after you publish</span><b>?</b><span class="note" style="margin:0">the same 120 tests, plus your own Claude dashboard numbers</span></div></div>
 </div></section>
 
 <section class="offer"><div class="wrap">
-<div class="eyebrow mono"><b>07</b><span style="color:var(--on-night-2)">listing optimization</span></div>
+<div class="eyebrow mono"><b>09</b><span style="color:var(--on-night-2)">listing optimization</span></div>
 <div class="grid">
 <div><h2>We write it. You publish it. <span class="o">We prove it.</span></h2>
 <ul>
 <li><span class="mono">01</span><span>New name, one-liner, description, categories and tool order</span></li>
-<li><span class="mono">02</span><span>Before and after on the same buyer requests and search terms</span></li>
+<li><span class="mono">02</span><span>The same 120 tests before and after, plus your connector dashboard (accounts using a tool, rank)</span></li>
 <li><span class="mono">03</span><span>No gain on the re-test: we rework it for free</span></li>
 </ul></div>
 <div><div class="price">$5,000<small class="mono">flat · founding client price</small></div>
@@ -201,7 +229,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 </div>
 </div></section>
 </main>
-<footer><div class="wrap mono"><span>tool monsters · claude connector audits</span><span>tests run on claude.ai, oct 28, 2026</span></div></footer>
+<footer><div class="wrap mono"><span>tool monsters · claude connector audits</span><span>120 tests on claude.ai, oct 2026</span></div></footer>
 <script>
   const HEAD = [
     'XX.......XX',
