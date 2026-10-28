@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crustdata in Claude · Tool Monsters audit</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/fav.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:light;--paper:#F1F0EE;--paper-2:#E4E2DB;--card:#FBFAF8;--ink:#1D1D1C;--ink-2:#5F5E59;--ink-3:#9A9891;--line:rgba(29,29,28,.13);--line-strong:rgba(29,29,28,.26);
+--orange:#F2551D;--orange-soft:#FCDCCD;--green:#2E7D4F;--green-soft:#DCEFE2;--night:#1E1E1D;--on-night:#EEEDE9;--on-night-2:#9D9B95;
+--f:"Geist","Helvetica Neue",Arial,sans-serif;--fm:"Geist Mono",ui-monospace,Menlo,monospace;--g:clamp(16px,2.2vw,32px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--paper)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.mono{font-family:var(--fm);text-transform:uppercase;letter-spacing:.045em;font-size:12px;line-height:1.5}
+.dim{color:var(--ink-3)}
+.wrap{max-width:1120px;margin-inline:auto;padding-left:max(var(--g),env(safe-area-inset-left,0px));padding-right:max(var(--g),env(safe-area-inset-right,0px))}
+.rules{position:fixed;inset:0;pointer-events:none;z-index:0}
+.rules .wrap{height:100%;display:grid;grid-template-columns:repeat(6,1fr)}
+.rules i{background:linear-gradient(var(--line) 55%,transparent 0) left top/1px 7px repeat-y}
+.rules i:first-child{background:linear-gradient(var(--line),var(--line)) left top/1px 100% no-repeat}
+.rules i:nth-child(3){background:linear-gradient(var(--orange) 55%,transparent 0) left top/1px 7px repeat-y;opacity:.5}
+.rules i:last-child{background:linear-gradient(var(--line) 55%,transparent 0) left top/1px 7px repeat-y,linear-gradient(var(--line),var(--line)) right top/1px 100% no-repeat}
+main,header,footer{position:relative;z-index:1}
+.head{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.head .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-weight:600;font-size:21px;letter-spacing:-.035em}
+.brand i{font-style:normal;color:var(--orange)}
+.sprite{display:inline-block;width:34px;height:30px;line-height:0}
+.tag{border:1px solid var(--line-strong);padding:8px 14px;white-space:nowrap}
+section{padding-block:clamp(48px,7vw,96px);border-bottom:1px solid var(--line)}
+.eyebrow{display:flex;gap:14px;align-items:center;margin-bottom:22px}
+.eyebrow b{color:var(--orange);font-weight:500}
+h1,h2{margin:0;font-weight:500;letter-spacing:-.045em;text-wrap:balance}
+h1{font-size:clamp(38px,5.6vw,80px);line-height:.95;max-width:16ch}
+h2{font-size:clamp(28px,3.6vw,48px);line-height:1}
+h1 .o,h2 .o{color:var(--orange)}
+.lede{margin:26px 0 0;max-width:56ch;color:var(--ink-2)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:28px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line-strong);background:var(--card);margin-top:44px}
+.stat{padding:22px;display:grid;gap:10px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat b{font-size:clamp(34px,4vw,52px);font-weight:500;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.stat b.o{color:var(--orange)}
+.stat span{font-size:13px;color:var(--ink-2)}
+.reqs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:36px}
+.req{background:var(--card);border:1px solid var(--line-strong);padding:18px;display:grid;gap:12px;align-content:start;box-shadow:0 30px 70px -46px rgba(29,29,28,.45);min-width:0}
+.req-h{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line-strong);padding-bottom:10px}
+.q{margin:0;font-size:17px;font-weight:500;letter-spacing:-.01em}
+.cap{margin:4px 0 0;font-size:11px}
+.faces{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.faces li{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-strong);background:var(--paper);padding:4px 12px 4px 4px;font-weight:500;font-size:14px}
+.faces li.miss{border:1px dashed var(--orange);background:transparent;color:var(--orange);text-decoration:line-through}
+.lg{background:#fff;display:block}
+.lg.g{opacity:.45;filter:grayscale(1)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line-strong);margin-top:36px;background:var(--card)}
+.step{padding:22px;display:grid;gap:8px;border-right:1px solid var(--line);align-content:start}
+.step:last-child{border-right:0}
+.step .mono{color:var(--orange)}
+.step b{font-size:21px;font-weight:500;letter-spacing:-.03em}
+.step p{margin:0;color:var(--ink-2);font-size:14px}
+.tbl{overflow-x:auto;margin-top:36px;border:1px solid var(--line-strong);background:var(--card)}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+th{font-family:var(--fm);font-weight:500;text-transform:uppercase;letter-spacing:.045em;font-size:11.5px;color:var(--ink-3)}
+td.n{display:flex;align-items:center;gap:10px;font-weight:600;white-space:nowrap}
+td.r{font-family:var(--fm);font-size:13px;white-space:nowrap}
+tr.me td{background:var(--orange-soft)}
+.note{margin:16px 0 0;font-size:13px;color:var(--ink-2);max-width:72ch}
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:28px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:12px;height:12px;display:inline-block}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-top:16px}
+.chip{padding:10px 12px;display:grid;gap:3px;border:1px solid var(--line-strong);background:var(--card);min-width:0}
+.chip b{font-weight:500;font-size:14px}
+.chip span{font-size:11px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip.win{background:var(--green-soft);border-color:transparent}.chip.win span{color:var(--green)}
+.chip.open{border:1px dashed var(--orange);background:transparent}.chip.open span{color:var(--orange)}
+.fix{margin-top:36px;border:1px solid var(--line-strong);background:var(--card)}
+.fx{display:grid;grid-template-columns:180px minmax(0,1fr);gap:20px;padding:18px 20px;border-bottom:1px solid var(--line)}
+.fx:last-child{border-bottom:0}
+.fx>.mono{color:var(--ink-3);padding-top:3px}
+.old{margin:0 0 6px;color:var(--ink-3);text-decoration:line-through}
+.nw{margin:0;font-size:17px;font-weight:500;letter-spacing:-.01em}
+.nw.code{font-family:var(--fm);font-size:13px}
+.ba{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.ba div{padding:22px;display:grid;gap:8px;border:1px solid var(--line-strong);background:var(--card)}
+.ba div:last-child{background:var(--green-soft);border-color:transparent}
+.ba b{font-size:52px;font-weight:500;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.ba div:last-child b{color:var(--green)}
+.offer{background:var(--night);color:var(--on-night);border-bottom:0}
+.offer .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:end}
+.offer h2{max-width:14ch}
+.price{font-size:clamp(56px,7vw,96px);font-weight:500;letter-spacing:-.06em;line-height:.9}
+.price small{display:block;margin-top:12px;color:var(--on-night-2)}
+.offer ul{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0;border-top:1px solid rgba(238,237,233,.13)}
+.offer li{padding:14px 0;border-bottom:1px solid rgba(238,237,233,.13);display:flex;gap:14px}
+.offer li .mono{color:var(--orange);padding-top:2px}
+.cta{display:inline-flex;align-items:center;gap:10px;height:56px;padding:0 26px;background:var(--orange);color:var(--ink);text-decoration:none;margin-top:30px}
+.cta:hover{background:var(--on-night)}
+footer{padding-block:28px;background:var(--night);color:var(--on-night-2)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+.reqs,.steps,.ba,.offer .grid{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid var(--line)}.fx{grid-template-columns:1fr;gap:6px}.tag{display:none}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+.blur{filter:blur(5px);user-select:none;pointer-events:none}
+.lock{display:inline-flex;align-items:center;gap:8px;margin-top:10px;color:var(--orange)}
+.bars{margin-top:36px;border:1px solid var(--line-strong);background:var(--card);padding:10px 20px}
+.bar{display:grid;grid-template-columns:170px minmax(0,1fr) 56px;gap:14px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line)}
+.bar:last-child{border-bottom:0}
+.bar .n{display:flex;align-items:center;gap:10px;font-weight:500;white-space:nowrap;overflow:hidden}
+.bar .t{height:14px;background:var(--paper-2)}
+.bar .t i{display:block;height:100%;background:var(--ink-3)}
+.bar.me .t i{background:var(--orange)}
+.bar.me .n{color:var(--orange);font-weight:600}
+.bar .v{font-family:var(--fm);font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+.hidden-tools{margin-top:16px;border:1px dashed var(--orange);padding:16px 18px;display:grid;gap:8px}
+.hidden-tools code{font-family:var(--fm);font-size:12.5px}
+@media (max-width:760px){.bar{grid-template-columns:120px minmax(0,1fr) 44px}}
+</style>
+</head>
+<body>
+<div class="rules" aria-hidden="true"><div class="wrap"><i></i><i></i><i></i><i></i><i></i><i></i></div></div><header class="head"><div class="wrap">
+<a class="brand" href="https://www.toolmonsters.com/"><span class="sprite" data-sprite="brand"></span><span>Tool Monsters<i>.</i></span></a>
+<span class="tag mono">claude audit · crustdata</span>
+</div></header>
+<main>
+<section><div class="wrap">
+<div class="eyebrow mono"><b>01</b><span>prepared for chris · crustdata · oct 2026</span></div>
+<h1>Buyers ask Claude for B2B data. Claude suggests <span class="o">Apollo</span> twice as often.</h1>
+<p class="lede">60 real buyer requests, never naming a vendor, run on 2 clean Claude accounts. We recorded every connector card Claude showed, then traced the directory searches behind them.</p>
+<div class="stats">
+<div class="stat"><b>120</b><span>tests · 60 requests × 2 clean accounts</span></div>
+<div class="stat"><b class="o">17%</b><span>of tests where Claude suggests Crustdata</span></div>
+<div class="stat"><b>38%</b><span>where it suggests Apollo.io</span></div>
+<div class="stat"><b>#313</b><span>Crustdata in Claude's directory. Apollo #36, ZoomInfo #53</span></div>
+</div>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>02</b><span>who claude suggests · share of 120 tests</span></div>
+<h2>Crustdata is 4th, behind <span class="o">Apollo, Vibe Prospecting and ZoomInfo</span>.</h2>
+<div class="bars"><div class="bar"><span class="n"><img class="lg " src="apollo.png" alt="" width="26" height="26">Apollo.io</span><span class="t"><i style="width:100.0%"></i></span><span class="v">38%</span></div><div class="bar"><span class="n"><img class="lg " src="vibe.png" alt="" width="26" height="26">Vibe Prospecting</span><span class="t"><i style="width:84.4%"></i></span><span class="v">32%</span></div><div class="bar"><span class="n"><img class="lg " src="zoominfo.png" alt="" width="26" height="26">ZoomInfo</span><span class="t"><i style="width:51.1%"></i></span><span class="v">19%</span></div><div class="bar me"><span class="n"><img class="lg " src="crustdata.png" alt="" width="26" height="26">Crustdata</span><span class="t"><i style="width:44.4%"></i></span><span class="v">17%</span></div><div class="bar"><span class="n"><img class="lg " src="hubspot.png" alt="" width="26" height="26">HubSpot</span><span class="t"><i style="width:35.6%"></i></span><span class="v">13%</span></div><div class="bar"><span class="n"><img class="lg " src="salesforce.png" alt="" width="26" height="26">Salesforce</span><span class="t"><i style="width:33.3%"></i></span><span class="v">12%</span></div><div class="bar"><span class="n"><img class="lg " src="crunchbase.png" alt="" width="26" height="26">Crunchbase</span><span class="t"><i style="width:31.1%"></i></span><span class="v">12%</span></div><div class="bar"><span class="n"><img class="lg " src="clay.png" alt="" width="26" height="26">Clay</span><span class="t"><i style="width:20.0%"></i></span><span class="v">8%</span></div><div class="bar"><span class="n"><img class="lg " src="lusha.png" alt="" width="26" height="26">Lusha</span><span class="t"><i style="width:13.3%"></i></span><span class="v">5%</span></div><div class="bar"><span class="n"><img class="lg " src="similarweb.png" alt="" width="26" height="26">Similarweb</span><span class="t"><i style="width:13.3%"></i></span><span class="v">5%</span></div></div>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>03</b><span>requests crustdata can answer, and loses</span></div>
+<h2>23 requests showed a card. <span class="o">Without Crustdata.</span></h2>
+<div class="reqs"><article class="req"><div class="req-h mono"><span>lost request 01</span><span class="dim">claude.ai · clean account</span></div>
+<p class="q">“Tell me when any of my customers&#x27; champions change jobs and move to a new company.”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="hubspot.png" alt="" width="26" height="26"><span>HubSpot</span></li><li><img class="lg " src="salesforce.png" alt="" width="26" height="26"><span>Salesforce</span></li><li><img class="lg " src="apollo.png" alt="" width="26" height="26"><span>Apollo.io</span></li><li><img class="lg " src="zoominfo.png" alt="" width="26" height="26"><span>ZoomInfo</span></li><li class="miss"><img class="lg g" src="crustdata.png" alt="" width="26" height="26"><span>Crustdata</span></li></ul></article><article class="req"><div class="req-h mono"><span>lost request 02</span><span class="dim">claude.ai · clean account</span></div>
+<p class="q">“Which companies in my target account list are hiring sales reps right now?”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="hubspot.png" alt="" width="26" height="26"><span>HubSpot</span></li><li><img class="lg " src="salesforce.png" alt="" width="26" height="26"><span>Salesforce</span></li><li><img class="lg " src="vibe.png" alt="" width="26" height="26"><span>Vibe Prospecting</span></li><li class="miss"><img class="lg g" src="crustdata.png" alt="" width="26" height="26"><span>Crustdata</span></li></ul></article><article class="req"><div class="req-h mono"><span>lost request 03</span><span class="dim">claude.ai · clean account</span></div>
+<p class="q">“Get the verified work email and full work history for a list of 50 prospects.”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="zoominfo.png" alt="" width="26" height="26"><span>ZoomInfo</span></li><li><img class="lg " src="apollo.png" alt="" width="26" height="26"><span>Apollo.io</span></li><li><img class="lg " src="clay.png" alt="" width="26" height="26"><span>Clay</span></li><li><img class="lg " src="vibe.png" alt="" width="26" height="26"><span>Vibe Prospecting</span></li><li class="miss"><img class="lg g" src="crustdata.png" alt="" width="26" height="26"><span>Crustdata</span></li></ul></article><article class="req"><div class="req-h mono"><span>lost request 04</span><span class="dim">claude.ai · clean account</span></div>
+<p class="q">“Build a TAM list of all US fintech companies with 50 to 500 employees.”</p><p class="mono dim cap">connectors that could help</p><ul class="faces"><li><img class="lg " src="crunchbase.png" alt="" width="26" height="26"><span>Crunchbase</span></li><li><img class="lg " src="apollo.png" alt="" width="26" height="26"><span>Apollo.io</span></li><li><img class="lg " src="zoominfo.png" alt="" width="26" height="26"><span>ZoomInfo</span></li><li><img class="lg " src="vibe.png" alt="" width="26" height="26"><span>Vibe Prospecting</span></li><li class="miss"><img class="lg g" src="crustdata.png" alt="" width="26" height="26"><span>Crustdata</span></li></ul></article></div>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>04</b><span>how claude picks a connector</span></div>
+<h2>Three steps. The listing decides all three.</h2>
+<div class="steps">
+<div class="step"><span class="mono">step 1</span><b>Claude searches</b><p>It turns the request into a few keywords and searches the connector directory.</p></div>
+<div class="step"><span class="mono">step 2</span><b>The directory answers</b><p>Up to 10 connectors whose name, one-liner, tools or description match. Popularity breaks ties.</p></div>
+<div class="step"><span class="mono">step 3</span><b>Claude chooses</b><p>Reading only the name, the one-liner and the first 8 tool names.</p></div>
+</div>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>05</b><span>what claude reads when it chooses</span></div>
+<h2>Competitors say <span class="o">leads, signals, prospecting</span>. Crustdata says “data”.</h2>
+<div class="tbl"><table>
+<tr><th>Connector</th><th>One-liner Claude reads</th><th>Directory rank</th></tr>
+<tr class="me"><td class="n"><img class="lg " src="crustdata.png" alt="" width="26" height="26">Crustdata</td><td>Search and enrich B2B company and people data</td><td class="r">#313</td></tr>
+<tr><td class="n"><img class="lg " src="apollo.png" alt="" width="26" height="26">Apollo.io</td><td>Find leads by hiring and funding signals, enrich contacts, and manage outreach sequences</td><td class="r">#36</td></tr>
+<tr><td class="n"><img class="lg " src="zoominfo.png" alt="" width="26" height="26">ZoomInfo</td><td>Find prospects. Research accounts. Enrich buyers with verified B2B data. Act on intent signals.</td><td class="r">#53</td></tr>
+<tr><td class="n"><img class="lg " src="vibe.png" alt="" width="26" height="26">Vibe Prospecting</td><td>Find and enrich company and contact data in Claude for prospecting, lead generation, recruiting, and CRM enrichment</td><td class="r">#95</td></tr>
+</table></div>
+<div class="hidden-tools"><span class="mono" style="color:var(--orange)">hidden behind “+15 more”</span>
+<span>Claude sees 8 of Crustdata's 23 tools, all company and job tools. The ones that answer the lost requests never show: <code>people_search</code>, <code>people_enrich</code>, <code>watcher_create</code> (job-change alerts).</span></div>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>06</b><span>directory search · 25 buyer terms</span></div>
+<h2>Found on 6 terms. <span class="o">Missed on 17.</span></h2>
+<div class="legend mono"><span><i style="background:var(--green-soft)"></i>finds crustdata</span><span><i style="background:var(--card);border:1px solid var(--line-strong)"></i>finds someone else</span><span><i style="border:1px dashed var(--orange)"></i>finds nobody</span></div>
+<div class="chips"><div class="chip win"><b>people search</b><span class="mono">crustdata #1</span></div><div class="chip oth"><b>data</b><span class="mono">other tools</span></div><div class="chip oth"><b>company data</b><span class="mono">apollo.io +3</span></div><div class="chip oth"><b>sales</b><span class="mono">other tools</span></div><div class="chip open"><b>contact enrichment</b><span class="mono">nobody</span></div><div class="chip oth"><b>crm</b><span class="mono">vibe prospecting</span></div><div class="chip oth"><b>work email</b><span class="mono">apollo.io +1</span></div><div class="chip oth"><b>search</b><span class="mono">other tools</span></div><div class="chip oth"><b>hiring signals</b><span class="mono">vibe prospecting</span></div><div class="chip oth"><b>analytics</b><span class="mono">other tools</span></div><div class="chip win"><b>job postings</b><span class="mono">crustdata #3</span></div><div class="chip oth"><b>email</b><span class="mono">other tools</span></div><div class="chip open"><b>job change alerts</b><span class="mono">nobody</span></div><div class="chip oth"><b>marketing</b><span class="mono">other tools</span></div><div class="chip oth"><b>target accounts</b><span class="mono">clay</span></div><div class="chip win"><b>enrich</b><span class="mono">crustdata #5</span></div><div class="chip oth"><b>lead generation</b><span class="mono">zoominfo +1</span></div><div class="chip oth"><b>firmographics</b><span class="mono">zoominfo +1</span></div><div class="chip oth"><b>funding data</b><span class="mono">other tools</span></div><div class="chip oth"><b>headcount growth</b><span class="mono">apollo.io</span></div><div class="chip win"><b>web traffic</b><span class="mono">crustdata #2</span></div><div class="chip win"><b>linkedin posts</b><span class="mono">crustdata #1</span></div><div class="chip oth"><b>recruiting candidates</b><span class="mono">other tools</span></div><div class="chip oth"><b>b2b data api</b><span class="mono">other tools</span></div><div class="chip win"><b>crustdata</b><span class="mono">crustdata #1</span></div></div>
+<p class="note">“Job change alerts” and “contact enrichment” return no connector at all. Crustdata does both.</p>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>07</b><span>the fix</span></div>
+<h2>Same product. <span class="o">Buyer words.</span></h2>
+<div class="fix">
+<div class="fx"><span class="mono">one-liner</span><div><p class="old">Search and enrich B2B company and people data</p><p class="nw blur" aria-hidden="true">Menb ctd mubsgb C2R ochctob udhu buu nbhbteko, etdu ktfd uugmdt, cubgrto lpup mkh fhcuks rlpkcds ofl erobc tullmrupcci rc Bkupkn.</p></div></div>
+<div class="fx"><span class="mono">first 8 tools</span><div><p class="old">crustdata_company_identify, crustdata_company_enrich, crustdata_company_search_db, crustdata_company_search…</p><p class="nw code blur" aria-hidden="true">hutemruca_rithgrt_trnehe, snacfubka_irnonu_pemdbe, rgiokosnu_mtuouhl_aifltu, udguikdcr_rcmcoe_akoodb…</p></div></div>
+<div class="fx"><span class="mono">description</span><div><p class="nw blur" aria-hidden="true">Kmsaphbfd mrhntd H2A goifnfc epee aag gffklg tgfg nkam Rfeicl kua lckmk, rlfrrfbiam nat omnuap bfgdhpms. Nsipd umkboc glsmelit, CLM, kfcekrfb ctn bhmipoebb rlgeu eodf 150+ omebok epfsprl rikr ne dnt frlfc, ristsmcm, ubkmtirik lfu artilip. Lsmmim omfpml ses fgm…</p><span class="lock mono">■ full rewrite delivered with the optimization</span></div></div>
+</div>
+<div class="ba"><div><span class="mono dim">held-out search terms that find crustdata today</span><b>2/12</b></div><div><span class="mono">with the new listing (estimate)</span><b>7/12</b></div></div>
+<p class="note">Held-out terms were never shown to the rewrite, so the estimate is honest. It covers being found by the search; Claude's final choice and popularity still apply, so we prove it on the same 120 tests after you publish.</p>
+</div></section>
+
+<section class="offer"><div class="wrap">
+<div class="eyebrow mono"><b>08</b><span style="color:var(--on-night-2)">listing optimization</span></div>
+<div class="grid">
+<div><h2>We write it. You publish it. <span class="o">We prove it.</span></h2>
+<ul>
+<li><span class="mono">01</span><span>New one-liner, description, categories and tool order</span></li>
+<li><span class="mono">02</span><span>The same 120 tests before and after you publish</span></li>
+<li><span class="mono">03</span><span>No gain on the re-test: we rework it for free</span></li>
+</ul></div>
+<div><div class="price">$5,000<small class="mono">flat · founding client price</small></div>
+<a class="cta mono" href="https://www.linkedin.com/in/yonathan-cohen/" data-track="crustdata_cta">reply to yonathan <span>→</span></a></div>
+</div>
+</div></section>
+</main>
+<footer><div class="wrap mono"><span>tool monsters · claude connector audits</span><span>120 tests on claude.ai, oct 2026</span></div></footer>
+<script>
+  const HEAD = [
+    'XX.......XX',
+    'XXX.....XXX',
+    'XXXXXXXXXXX',
+    'XXXXXXXXXXX',
+    'XXOOXXXOOXX',
+    'XXOOXXXOOXX',
+    'XXXXXXXXXXX',
+    'XXXXXXXXXXX',
+    '.XXXXXXXXX.'
+  ];
+  function voxel(rows, depth) {
+    const MAT = { X: ['#F2551D', '#FF8B4E', '#B9390B'], O: ['#1D1D1C', '#4E4C48', '#0A0A09'] };
+    const H = rows.length, cubes = new Set(), list = [];
+    rows.forEach((row, r) => [...row].forEach((v, x) => {
+      if (v === '.') return;
+      for (let z = 1 - depth; z < 1; z++) { cubes.add(`${x},${H - 1 - r},${z}`); list.push({ x, y: H - 1 - r, z, v }); }
+    }));
+    const has = (x, y, z) => cubes.has(`${x},${y},${z}`);
+    const P = (x, y, z) => [x * .94 + z * .46, x * .16 - z * .34 - y];
+    list.sort((a, b) => b.z - a.z || a.x - b.x || a.y - b.y);
+    let out = '', x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+    const poly = (pts, fill) => {
+      const p = pts.map(q => P(...q));
+      p.forEach(([a, b]) => { x0 = Math.min(x0, a); x1 = Math.max(x1, a); y0 = Math.min(y0, b); y1 = Math.max(y1, b); });
+      out += `<polygon points="${p.map(q => q[0].toFixed(3) + ',' + q[1].toFixed(3)).join(' ')}" fill="${fill}" stroke="${fill}" stroke-width=".02"/>`;
+    };
+    list.forEach(({ x, y, z, v }) => {
+      const [front, top, side] = MAT[v];
+      if (!has(x, y + 1, z)) poly([[x, y + 1, z], [x + 1, y + 1, z], [x + 1, y + 1, z + 1], [x, y + 1, z + 1]], top);
+      if (!has(x + 1, y, z)) poly([[x + 1, y, z], [x + 1, y, z + 1], [x + 1, y + 1, z + 1], [x + 1, y + 1, z]], side);
+      if (!has(x, y, z - 1)) poly([[x, y, z], [x + 1, y, z], [x + 1, y + 1, z], [x, y + 1, z]], front);
+    });
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${(x0 - .2).toFixed(2)} ${(y0 - .2).toFixed(2)} ${(x1 - x0 + .4).toFixed(2)} ${(y1 - y0 + .4).toFixed(2)}" width="100%" height="100%" aria-hidden="true">${out}</svg>`;
+  }
+  const LOGO = voxel(HEAD, 3);
+  
+  document.querySelectorAll('[data-sprite]').forEach(el => { el.innerHTML = LOGO; });
+  const s = document.createElement('script'); s.defer = true; s.src = 'https://cloud.umami.is/script.js'; s.dataset.websiteId = '1949fc13-9951-4808-a70f-1265fba55273'; document.head.appendChild(s);
+  document.querySelectorAll('[data-track]').forEach(a => a.addEventListener('click', () => { try { window.umami && umami.track(a.dataset.track); } catch (e) {} }));
+</script>
+</body>
+</html>
