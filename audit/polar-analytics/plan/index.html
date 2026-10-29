@@ -175,6 +175,19 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .big3 b{font-size:21px;font-weight:500;letter-spacing:-.02em}
 .big3 p{margin:0;color:var(--ink-2);font-size:14.5px}
 @media (max-width:760px){.big3{grid-template-columns:1fr}}
+.trace{margin-top:36px;border:1px solid var(--line-strong);background:var(--card);display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.trace>div{padding:22px;display:grid;gap:12px;align-content:start;border-right:1px solid var(--line);min-width:0}
+.trace>div:last-child{border-right:0}
+.trace .q{font-size:16px}
+.trace .arrow{color:var(--orange)}
+.mini{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:13.5px}
+.mini li{display:flex;align-items:center;gap:8px}
+.mini img{width:18px;height:18px;background:#fff}
+.mini li.no{color:var(--orange);text-decoration:line-through}
+.sources{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:18px}
+.sources span{display:inline-flex;gap:8px;align-items:baseline}
+.sources b{font-size:22px;font-weight:500;letter-spacing:-.03em}
+@media (max-width:760px){.trace{grid-template-columns:1fr}.trace>div{border-right:0;border-bottom:1px solid var(--line)}}
 </style>
 </head>
 <body>
@@ -190,7 +203,18 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 </div></section>
 
 <section><div class="wrap">
-<div class="eyebrow mono"><b>02</b><span>the words claude actually typed</span></div>
+<div class="eyebrow mono"><b>02</b><span>how we know what to write</span></div>
+<h2>We asked Claude to <span class="o">show us its own search</span>.</h2>
+<div class="trace">
+<div><span class="mono dim">1 · an agency asks claude</span><p class="q">“For my client in skincare, what was blended ROAS and new-customer CAC last month across all paid channels?”</p></div>
+<div><span class="mono dim">2 · claude searches its connectors for</span><div class="kw"><span>meta ads</span><span>google ads</span><span>tiktok ads</span><span>shopify</span><span>ad spend</span><span>ROAS</span><span>marketing analytics</span></div></div>
+<div><span class="mono dim">3 · the 10 it gets back</span><ul class="mini"><li><img src=supermetrics.png alt="">Supermetrics</li><li><img src=shopify.png alt="">Shopify</li><li><img src=shop.png alt="">Shop</li><li><img src=adspirer.png alt="">Adspirer Social Ads</li><li><img src=windsor.png alt="">Windsor.ai</li><li><img src=adspirer.png alt="">Adspirer Ads Agent</li><li><img src=adspirer.png alt="">Adspirer Search Ads</li><li><img src=funnel.png alt="">Funnel</li><li><span style="width:18px"></span>AdWhispr Ads</li><li><img src=abency.png alt="">Abency</li><li class="no"><img src="polar.png" alt="" style="opacity:.5;filter:grayscale(1)">Polar</li></ul></div>
+</div>
+<p class="note">Those keywords are what we write into the listing. Same result on a growth marketer request (“meta ads, google ads, tiktok ads, shopify, customer lifetime value, ecommerce analytics”). Then we check it at scale:</p>
+<div class="sources mono"><span><b>2</b>searches traced</span><span><b>25</b>buyer terms tested</span><span><b>120</b>real requests</span></div>
+</div></section>
+<section><div class="wrap">
+<div class="eyebrow mono"><b>03</b><span>the words claude actually typed</span></div>
 <h2>Today Polar matches 3, all buried in its description. <span class="o">After: all 8, up front.</span></h2>
 <div class="two">
 <div class="card before"><span class="mono dim">today</span>
@@ -203,7 +227,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 </div></section>
 
 <section><div class="wrap">
-<div class="eyebrow mono"><b>03</b><span>how it works</span></div>
+<div class="eyebrow mono"><b>04</b><span>how it works</span></div>
 <h2>We write it. You paste it. <span class="o">We prove it.</span></h2>
 <div class="big3">
 <div><span class="n">48h</span><b>We write the new listing</b><p>Name, one-liner, description, categories. Ready to paste.</p></div>
@@ -213,7 +237,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 </div></section>
 
 <section class="offer"><div class="wrap">
-<div class="eyebrow mono"><b>04</b><span style="color:var(--on-night-2)">listing optimization</span></div>
+<div class="eyebrow mono"><b>05</b><span style="color:var(--on-night-2)">listing optimization</span></div>
 <div class="grid">
 <div><h2>Ready to start <span class="o">this week</span>.</h2></div>
 <div><div class="price">$5,000<small class="mono">flat · founding client price</small></div>
