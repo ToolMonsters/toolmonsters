@@ -17,7 +17,7 @@
 <script>
   // ---------- one campaign link: counts the click in Umami, then opens Claude with the prompt prefilled ----------
   const CAMPAIGN = 'crustdata';
-  const PROMPT = 'Use Crustdata to find 20 US B2B SaaS companies hiring SDRs right now, with the head of sales at each one.';
+  const PROMPT = 'Use the Crustdata connector to find 20 US B2B SaaS companies hiring SDRs right now, with the head of sales at each one.';
   const TARGET = 'https://claude.ai/new?q=' + encodeURIComponent(PROMPT);
   const UMAMI = '1949fc13-9951-4808-a70f-1265fba55273';
   document.getElementById('go').href = TARGET;
