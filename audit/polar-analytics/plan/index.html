@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Polar Claude Listing Plan · Tool Monsters</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/fav.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:light;--paper:#F1F0EE;--paper-2:#E4E2DB;--card:#FBFAF8;--ink:#1D1D1C;--ink-2:#5F5E59;--ink-3:#9A9891;--line:rgba(29,29,28,.13);--line-strong:rgba(29,29,28,.26);
+--orange:#F2551D;--orange-soft:#FCDCCD;--green:#2E7D4F;--green-soft:#DCEFE2;--night:#1E1E1D;--on-night:#EEEDE9;--on-night-2:#9D9B95;
+--f:"Geist","Helvetica Neue",Arial,sans-serif;--fm:"Geist Mono",ui-monospace,Menlo,monospace;--g:clamp(16px,2.2vw,32px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--paper)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.mono{font-family:var(--fm);text-transform:uppercase;letter-spacing:.045em;font-size:12px;line-height:1.5}
+.dim{color:var(--ink-3)}
+.wrap{max-width:1120px;margin-inline:auto;padding-left:max(var(--g),env(safe-area-inset-left,0px));padding-right:max(var(--g),env(safe-area-inset-right,0px))}
+.rules{position:fixed;inset:0;pointer-events:none;z-index:0}
+.rules .wrap{height:100%;display:grid;grid-template-columns:repeat(6,1fr)}
+.rules i{background:linear-gradient(var(--line) 55%,transparent 0) left top/1px 7px repeat-y}
+.rules i:first-child{background:linear-gradient(var(--line),var(--line)) left top/1px 100% no-repeat}
+.rules i:nth-child(3){background:linear-gradient(var(--orange) 55%,transparent 0) left top/1px 7px repeat-y;opacity:.5}
+.rules i:last-child{background:linear-gradient(var(--line) 55%,transparent 0) left top/1px 7px repeat-y,linear-gradient(var(--line),var(--line)) right top/1px 100% no-repeat}
+main,header,footer{position:relative;z-index:1}
+.head{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.head .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-weight:600;font-size:21px;letter-spacing:-.035em}
+.brand i{font-style:normal;color:var(--orange)}
+.sprite{display:inline-block;width:34px;height:30px;line-height:0}
+.tag{border:1px solid var(--line-strong);padding:8px 14px;white-space:nowrap}
+section{padding-block:clamp(48px,7vw,96px);border-bottom:1px solid var(--line)}
+.eyebrow{display:flex;gap:14px;align-items:center;margin-bottom:22px}
+.eyebrow b{color:var(--orange);font-weight:500}
+h1,h2{margin:0;font-weight:500;letter-spacing:-.045em;text-wrap:balance}
+h1{font-size:clamp(38px,5.6vw,80px);line-height:.95;max-width:16ch}
+h2{font-size:clamp(28px,3.6vw,48px);line-height:1}
+h1 .o,h2 .o{color:var(--orange)}
+.lede{margin:26px 0 0;max-width:56ch;color:var(--ink-2)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:28px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line-strong);background:var(--card);margin-top:44px}
+.stat{padding:22px;display:grid;gap:10px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat b{font-size:clamp(34px,4vw,52px);font-weight:500;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.stat b.o{color:var(--orange)}
+.stat span{font-size:13px;color:var(--ink-2)}
+.reqs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:36px}
+.req{background:var(--card);border:1px solid var(--line-strong);padding:18px;display:grid;gap:12px;align-content:start;box-shadow:0 30px 70px -46px rgba(29,29,28,.45);min-width:0}
+.req-h{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line-strong);padding-bottom:10px}
+.q{margin:0;font-size:17px;font-weight:500;letter-spacing:-.01em}
+.cap{margin:4px 0 0;font-size:11px}
+.faces{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.faces li{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-strong);background:var(--paper);padding:4px 12px 4px 4px;font-weight:500;font-size:14px}
+.faces li.miss{border:1px dashed var(--orange);background:transparent;color:var(--orange);text-decoration:line-through}
+.lg{background:#fff;display:block}
+.lg.g{opacity:.45;filter:grayscale(1)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line-strong);margin-top:36px;background:var(--card)}
+.step{padding:22px;display:grid;gap:8px;border-right:1px solid var(--line);align-content:start}
+.step:last-child{border-right:0}
+.step .mono{color:var(--orange)}
+.step b{font-size:21px;font-weight:500;letter-spacing:-.03em}
+.step p{margin:0;color:var(--ink-2);font-size:14px}
+.tbl{overflow-x:auto;margin-top:36px;border:1px solid var(--line-strong);background:var(--card)}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+th{font-family:var(--fm);font-weight:500;text-transform:uppercase;letter-spacing:.045em;font-size:11.5px;color:var(--ink-3)}
+td.n{display:flex;align-items:center;gap:10px;font-weight:600;white-space:nowrap}
+td.r{font-family:var(--fm);font-size:13px;white-space:nowrap}
+tr.me td{background:var(--orange-soft)}
+.note{margin:16px 0 0;font-size:13px;color:var(--ink-2);max-width:72ch}
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:28px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:12px;height:12px;display:inline-block}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-top:16px}
+.chip{padding:10px 12px;display:grid;gap:3px;border:1px solid var(--line-strong);background:var(--card);min-width:0}
+.chip b{font-weight:500;font-size:14px}
+.chip span{font-size:11px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip.win{background:var(--green-soft);border-color:transparent}.chip.win span{color:var(--green)}
+.chip.open{border:1px dashed var(--orange);background:transparent}.chip.open span{color:var(--orange)}
+.fix{margin-top:36px;border:1px solid var(--line-strong);background:var(--card)}
+.fx{display:grid;grid-template-columns:180px minmax(0,1fr);gap:20px;padding:18px 20px;border-bottom:1px solid var(--line)}
+.fx:last-child{border-bottom:0}
+.fx>.mono{color:var(--ink-3);padding-top:3px}
+.old{margin:0 0 6px;color:var(--ink-3);text-decoration:line-through}
+.nw{margin:0;font-size:17px;font-weight:500;letter-spacing:-.01em}
+.nw.code{font-family:var(--fm);font-size:13px}
+.ba{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.ba div{padding:22px;display:grid;gap:8px;border:1px solid var(--line-strong);background:var(--card)}
+.ba div:last-child{background:var(--green-soft);border-color:transparent}
+.ba b{font-size:52px;font-weight:500;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.ba div:last-child b{color:var(--green)}
+.offer{background:var(--night);color:var(--on-night);border-bottom:0}
+.offer .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:end}
+.offer h2{max-width:14ch}
+.price{font-size:clamp(56px,7vw,96px);font-weight:500;letter-spacing:-.06em;line-height:.9}
+.price small{display:block;margin-top:12px;color:var(--on-night-2)}
+.offer ul{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0;border-top:1px solid rgba(238,237,233,.13)}
+.offer li{padding:14px 0;border-bottom:1px solid rgba(238,237,233,.13);display:flex;gap:14px}
+.offer li .mono{color:var(--orange);padding-top:2px}
+.cta{display:inline-flex;align-items:center;gap:10px;height:56px;padding:0 26px;background:var(--orange);color:var(--ink);text-decoration:none;margin-top:30px}
+.cta:hover{background:var(--on-night)}
+footer{padding-block:28px;background:var(--night);color:var(--on-night-2)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+.reqs,.steps,.ba,.offer .grid{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid var(--line)}.fx{grid-template-columns:1fr;gap:6px}.tag{display:none}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+.blur{filter:blur(5px);user-select:none;pointer-events:none}
+.lock{display:inline-flex;align-items:center;gap:8px;margin-top:10px;color:var(--orange)}
+.bars{margin-top:36px;border:1px solid var(--line-strong);background:var(--card);padding:10px 20px}
+.bar{display:grid;grid-template-columns:170px minmax(0,1fr) 56px;gap:14px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line)}
+.bar:last-child{border-bottom:0}
+.bar .n{display:flex;align-items:center;gap:10px;font-weight:500;white-space:nowrap;overflow:hidden}
+.bar .t{height:14px;background:var(--paper-2)}
+.bar .t i{display:block;height:100%;background:var(--ink-3)}
+.bar.me .t i{background:var(--orange)}
+.bar.me .n{color:var(--orange);font-weight:600}
+.bar .v{font-family:var(--fm);font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+.hidden-tools{margin-top:16px;border:1px dashed var(--orange);padding:16px 18px;display:grid;gap:8px}
+.hidden-tools code{font-family:var(--fm);font-size:12.5px}
+@media (max-width:760px){.bar{grid-template-columns:120px minmax(0,1fr) 44px}}
+</style>
+<style>
+.kw{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.kw span{font-family:var(--fm);font-size:12.5px;padding:7px 11px;border:1px solid var(--line-strong);background:var(--card)}
+.kw span.hit{background:var(--green-soft);border-color:transparent;color:var(--green)}
+.kw span.miss{border:1px dashed var(--orange);color:var(--orange);background:transparent}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:36px}
+.box{border:1px solid var(--line-strong);background:var(--card);padding:20px;display:grid;gap:12px;align-content:start;min-width:0}
+.box h3{margin:0;font-size:19px;font-weight:500;letter-spacing:-.02em}
+.res{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:14px}
+.res li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding:5px 0}
+.res li.no{color:var(--orange);text-decoration:line-through}
+.weights{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line-strong);background:var(--card);margin-top:36px}
+.w{padding:20px;border-right:1px solid var(--line);display:grid;gap:10px;align-content:start}
+.w:last-child{border-right:0}
+.w .meter{height:8px;background:var(--paper-2)}.w .meter i{display:block;height:100%;background:var(--orange)}
+.w b{font-size:19px;font-weight:500;letter-spacing:-.02em}
+.w p{margin:0;font-size:13.5px;color:var(--ink-2)}
+.w .mono{color:var(--ink-3)}
+.chg td:nth-child(3){font-weight:500}
+.steps4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line-strong);background:var(--card);margin-top:36px}
+.steps4 .step{border-right:1px solid var(--line)}.steps4 .step:last-child{border-right:0}
+.who{display:inline-block;font-family:var(--fm);font-size:11px;text-transform:uppercase;letter-spacing:.045em;padding:3px 7px;background:var(--orange-soft);color:var(--ink)}
+.who.us{background:var(--ink);color:var(--paper)}
+.tl{margin-top:36px;border-left:1px solid var(--line-strong);display:grid;gap:0}
+.tl>div{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;padding:14px 0 14px 20px;position:relative}
+.tl>div::before{content:"";position:absolute;left:-5px;top:20px;width:9px;height:9px;background:var(--orange)}
+.tl .mono{color:var(--ink-3);padding-top:2px}
+.tl b{font-weight:500}
+.tl p{margin:2px 0 0;color:var(--ink-2);font-size:14px}
+.promise{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:36px}
+.promise div{padding:20px;border:1px solid var(--line-strong);background:var(--card);display:grid;gap:8px;align-content:start}
+.promise div:first-child{background:var(--green-soft);border-color:transparent}
+.promise b{font-size:18px;font-weight:500}
+.promise p{margin:0;font-size:14px;color:var(--ink-2)}
+@media (max-width:760px){.two,.weights,.steps4,.promise{grid-template-columns:1fr}.w,.steps4 .step{border-right:0;border-bottom:1px solid var(--line)}.tl>div{grid-template-columns:1fr;gap:4px}}
+</style>
+</head>
+<body>
+<div class="rules" aria-hidden="true"><div class="wrap"><i></i><i></i><i></i><i></i><i></i><i></i></div></div><header class="head"><div class="wrap">
+<a class="brand" href="https://www.toolmonsters.com/"><span class="sprite" data-sprite="brand"></span><span>Tool Monsters<i>.</i></span></a>
+<span class="tag mono">listing plan · polar analytics</span>
+</div></header>
+<main>
+<section><div class="wrap">
+<div class="eyebrow mono"><b>01</b><span>prepared for david dokes · oct 2026</span></div>
+<h1>Put Polar in the words <span class="o">Claude actually searches</span>.</h1>
+<p class="lede">The full audit is <a href="../">here</a>. This page is the plan: what Claude types when a buyer needs Polar, why Polar gets cut, what we change, and the 10 minutes your team spends on it.</p>
+<div class="stats">
+<div class="stat"><b class="o">2/8</b><span>of Claude's real search keywords Polar matches today, both in its weakest field</span></div>
+<div class="stat"><b>7/8</b><span>with the new listing</span></div>
+<div class="stat"><b>10 min</b><span>of work for your team: paste into the connector settings</span></div>
+<div class="stat"><b>0</b><span>lines of code required</span></div>
+</div>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>02</b><span>what claude searched · 2 real requests</span></div>
+<h2>Two buyers, two searches. <span class="o">Polar cut both times.</span></h2>
+<div class="two">
+<div class="box"><span class="mono dim">agency request</span><h3>“For my client in skincare, what was blended ROAS and new-customer CAC last month across all paid channels?”</h3>
+<span class="mono dim">keywords claude sent · green = Polar's listing already says it</span><div class="kw"><span class="miss">meta ads</span><span class="miss">google ads</span><span class="miss">tiktok ads</span><span class="hit">shopify</span><span class="miss">ad spend</span><span class="hit">ROAS</span><span class="miss">marketing analytics</span></div>
+<span class="mono dim">top 10 returned</span><ul class="res"><li><span><img class="lg " src="supermetrics.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Supermetrics</span><span class="mono">#48</span></li><li><span><img class="lg " src="shopify.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Shopify</span><span class="mono">#19</span></li><li><span><img class="lg " src="shop.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Shop</span><span class="mono">#536</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Social Ads</span><span class="mono">#504</span></li><li><span><img class="lg " src="windsor.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Windsor.ai</span><span class="mono">#37</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Ads Agent</span><span class="mono">#227</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Search Ads</span><span class="mono">#481</span></li><li><span><img class="lg " src="funnel.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Funnel</span><span class="mono">#349</span></li><li><span>AdWhispr Ads</span><span class="mono">#266</span></li><li><span><img class="lg " src="abency.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Abency</span><span class="mono">#593</span></li><li class="no"><span><img class="lg g" src="polar.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Polar</span><span class="mono">#474</span></li></ul></div>
+<div class="box"><span class="mono dim">growth marketer request</span><h3>“Which ad creatives brought in customers with the highest 60-day LTV, not just the cheapest first purchase?”</h3>
+<span class="mono dim">keywords claude sent</span><div class="kw"><span class="miss">meta ads</span><span class="miss">google ads</span><span class="hit">shopify</span><span class="miss">ad creatives</span><span class="miss">customer lifetime value</span><span class="hit">ecommerce analytics</span><span class="miss">tiktok ads</span><span class="miss">stripe</span></div>
+<span class="mono dim">top 10 returned</span><ul class="res"><li><span><img class="lg " src="shopify.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Shopify</span><span class="mono">#19</span></li><li><span><img class="lg " src="stripe.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Stripe</span><span class="mono">#40</span></li><li><span><img class="lg " src="shop.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Shop</span><span class="mono">#536</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Social Ads</span><span class="mono">#504</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Ads Agent</span><span class="mono">#227</span></li><li><span><img class="lg " src="windsor.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Windsor.ai</span><span class="mono">#37</span></li><li><span>Pushwoosh ManyMoney</span><span class="mono"></span></li><li><span><img class="lg " src="supermetrics.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Supermetrics</span><span class="mono">#48</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Search Ads</span><span class="mono">#481</span></li><li><span>AdWhispr Ads</span><span class="mono">#266</span></li><li class="no"><span><img class="lg g" src="polar.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Polar</span><span class="mono">#474</span></li></ul></div>
+</div>
+<p class="note">Even the green words only sit in Polar's long description, the weakest field. Connectors ranked far below Polar (Shop #536, Abency #593) got in because those words are in their name or one-liner.</p>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>03</b><span>why polar gets cut</span></div>
+<h2>10 slots. The connectors matching <span class="o">the most keywords, in the strongest fields</span>, take them.</h2>
+<div class="weights">
+<div class="w"><span class="mono">field 1</span><b>Name</b><div class="meter"><i style="width:100%"></i></div><p>Weighs the most in the search.</p></div>
+<div class="w"><span class="mono">field 2</span><b>One-liner</b><div class="meter"><i style="width:75%"></i></div><p>Weighs a lot, and it is what Claude reads when it picks the card.</p></div>
+<div class="w"><span class="mono">field 3</span><b>Tool names</b><div class="meter"><i style="width:50%"></i></div><p>Claude sees the first 8 only.</p></div>
+<div class="w"><span class="mono">field 4</span><b>Description</b><div class="meter"><i style="width:25%"></i></div><p>Weakest. Where Polar's buyer words live today.</p></div>
+</div>
+<p class="note">Measured on 25 real directory searches: our placement rule reproduces 20 of them. Among equally matching connectors, the more popular one comes first.</p>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>04</b><span>what we change, and why</span></div>
+<h2>Same product. Buyer words <span class="o">moved into the fields that count</span>.</h2>
+<div class="tbl"><table class="chg">
+<tr><th>Field</th><th>Today</th><th>What changes</th><th>Why</th></tr>
+<tr><td class="n">Name</td><td>Polar Analytics</td><td>Add “Shopify” and “Ads”</td><td>“shopify” is in both searches; the name weighs the most</td></tr>
+<tr><td class="n">One-liner</td><td>Bring all your data in one place &amp; connect it to Claude</td><td>Meta Ads, Google Ads, TikTok Ads, ROAS, customer lifetime value, marketing &amp; ecommerce analytics, agencies</td><td>Matches 6 of Claude's keywords, and it is what Claude reads to choose</td></tr>
+<tr><td class="n">Description</td><td>One paragraph, “e-commerce” spelled with a hyphen</td><td>Organized around buyer questions: ROAS &amp; MER, CAC, LTV &amp; cohorts, profit, attribution, agencies</td><td>Covers ~18 of 25 buyer terms instead of 1; “e-commerce” does not match a search for “ecommerce”</td></tr>
+<tr><td class="n">Categories</td><td>Data analytics</td><td>+ Sales &amp; marketing, Commerce &amp; shopping</td><td>Where agencies and Shopify brands browse</td></tr>
+<tr><td class="n">Tools <span class="who">optional · dev</span></td><td>get_context first</td><td>Reports and metrics tools first</td><td>Claude only sees the first 8; tool names come from your server</td></tr>
+</table></div>
+<div class="fix" style="margin-top:16px"><div class="fx"><span class="mono">new one-liner</span><div><p class="nw blur" aria-hidden="true">Fookrgrsf ssh aamuocehh boopbltrd mae Cdapftl nrefbr hcg gucdtrtn: gletokm SPMT, PKA, CFT, arctshul tdffmlmk hdfcf omf bshofu amrsnh Hftc Sor, Bkbikb Rhf, PclEer Bie, Tagmemo rur Letuiea.</p><span class="lock mono">■ full listing text delivered at kickoff</span></div></div></div>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>05</b><span>who does what</span></div>
+<h2>We do the work. <span class="o">Your team pastes it.</span></h2>
+<div class="steps4">
+<div class="step"><span class="who us">tool monsters</span><b>Listing pack</b><p>Name, one-liner, description, categories, ready to paste, with the reason for each change.</p></div>
+<div class="step"><span class="who">polar · 5 min</span><b>Confirm 3 facts</b><p>TikTok Ads, LTV &amp; cohorts and multi-brand access work through the MCP. We never publish a claim you can't back.</p></div>
+<div class="step"><span class="who">polar · 10 min</span><b>Paste &amp; save</b><p>claude.ai/directory/manage → Polar → Listing. Anthropic reviews the edit. Tell us the day it goes live.</p></div>
+<div class="step"><span class="who us">tool monsters</span><b>Prove it</b><p>Same 25 searches and the same 120 tests, plus your connector dashboard before and after.</p></div>
+</div>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>06</b><span>timeline</span></div>
+<h2>From kickoff to proof in about 3 weeks.</h2>
+<div class="tl">
+<div><span class="mono">day 0</span><div><b>Kickoff</b><p>Invoice, 3 facts confirmed, screenshot of your connector dashboard (rank, accounts using a tool).</p></div></div>
+<div><span class="mono">day 2</span><div><b>Listing pack delivered</b><p>Copy-paste ready, plus optional notes for your dev on tool order.</p></div></div>
+<div><span class="mono">day 3</span><div><b>Your team publishes</b><p>Anthropic reviews listing edits. We log the live date.</p></div></div>
+<div><span class="mono">live + 3 days</span><div><b>Search check</b><p>The 25 buyer terms and Claude's real keyword sets, re-run. Instant and exact: is Polar in the results now?</p></div></div>
+<div><span class="mono">live + 3 weeks</span><div><b>Results report</b><p>The same 120 tests on the same 2 clean accounts, and your dashboard after. Agencies 4/30 → ?</p></div></div>
+</div>
+</div></section>
+
+<section><div class="wrap">
+<div class="eyebrow mono"><b>07</b><span>what we promise</span></div>
+<h2>What the listing can do, <span class="o">and what it can't</span>.</h2>
+<div class="promise">
+<div><span class="mono">we control</span><b>Getting found</b><p>Polar enters the search results for the words buyers and Claude use. Checked within days.</p></div>
+<div><span class="mono">likely</span><b>More cards</b><p>Once in the results, Claude picks from the name, one-liner and tools. Measured on the 120 tests.</p></div>
+<div><span class="mono">not from the listing alone</span><b>Beating Supermetrics on popularity</b><p>Among equally matching connectors the more popular wins. That's what a campaign moves.</p></div>
+</div>
+</div></section>
+
+<section class="offer"><div class="wrap">
+<div class="eyebrow mono"><b>08</b><span style="color:var(--on-night-2)">listing optimization</span></div>
+<div class="grid">
+<div><h2>We write it. You publish it. <span class="o">We prove it.</span></h2>
+<ul>
+<li><span class="mono">01</span><span>Listing pack in 48h, no code needed</span></li>
+<li><span class="mono">02</span><span>Search check after publish, then the same 120 tests and your dashboard</span></li>
+<li><span class="mono">03</span><span>No gain on the re-test: we rework it for free</span></li>
+</ul></div>
+<div><div class="price">$5,000<small class="mono">flat · founding client price</small></div>
+<a class="cta mono" href="https://www.linkedin.com/in/yonathan-cohen/" data-track="polar_plan_cta">let's start <span>→</span></a></div>
+</div>
+</div></section>
+</main>
+<footer><div class="wrap mono"><span>tool monsters · claude connector audits</span><span>based on 120 tests and 2 traced searches, oct 2026</span></div></footer>
+<script>
+  const HEAD = [
+    'XX.......XX',
+    'XXX.....XXX',
+    'XXXXXXXXXXX',
+    'XXXXXXXXXXX',
+    'XXOOXXXOOXX',
+    'XXOOXXXOOXX',
+    'XXXXXXXXXXX',
+    'XXXXXXXXXXX',
+    '.XXXXXXXXX.'
+  ];
+  function voxel(rows, depth) {
+    const MAT = { X: ['#F2551D', '#FF8B4E', '#B9390B'], O: ['#1D1D1C', '#4E4C48', '#0A0A09'] };
+    const H = rows.length, cubes = new Set(), list = [];
+    rows.forEach((row, r) => [...row].forEach((v, x) => {
+      if (v === '.') return;
+      for (let z = 1 - depth; z < 1; z++) { cubes.add(`${x},${H - 1 - r},${z}`); list.push({ x, y: H - 1 - r, z, v }); }
+    }));
+    const has = (x, y, z) => cubes.has(`${x},${y},${z}`);
+    const P = (x, y, z) => [x * .94 + z * .46, x * .16 - z * .34 - y];
+    list.sort((a, b) => b.z - a.z || a.x - b.x || a.y - b.y);
+    let out = '', x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+    const poly = (pts, fill) => {
+      const p = pts.map(q => P(...q));
+      p.forEach(([a, b]) => { x0 = Math.min(x0, a); x1 = Math.max(x1, a); y0 = Math.min(y0, b); y1 = Math.max(y1, b); });
+      out += `<polygon points="${p.map(q => q[0].toFixed(3) + ',' + q[1].toFixed(3)).join(' ')}" fill="${fill}" stroke="${fill}" stroke-width=".02"/>`;
+    };
+    list.forEach(({ x, y, z, v }) => {
+      const [front, top, side] = MAT[v];
+      if (!has(x, y + 1, z)) poly([[x, y + 1, z], [x + 1, y + 1, z], [x + 1, y + 1, z + 1], [x, y + 1, z + 1]], top);
+      if (!has(x + 1, y, z)) poly([[x + 1, y, z], [x + 1, y, z + 1], [x + 1, y + 1, z + 1], [x + 1, y + 1, z]], side);
+      if (!has(x, y, z - 1)) poly([[x, y, z], [x + 1, y, z], [x + 1, y + 1, z], [x, y + 1, z]], front);
+    });
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${(x0 - .2).toFixed(2)} ${(y0 - .2).toFixed(2)} ${(x1 - x0 + .4).toFixed(2)} ${(y1 - y0 + .4).toFixed(2)}" width="100%" height="100%" aria-hidden="true">${out}</svg>`;
+  }
+  const LOGO = voxel(HEAD, 3);
+  
+  document.querySelectorAll('[data-sprite]').forEach(el => { el.innerHTML = LOGO; });
+  const s = document.createElement('script'); s.defer = true; s.src = 'https://cloud.umami.is/script.js'; s.dataset.websiteId = '1949fc13-9951-4808-a70f-1265fba55273'; document.head.appendChild(s);
+  document.querySelectorAll('[data-track]').forEach(a => a.addEventListener('click', () => { try { window.umami && umami.track(a.dataset.track); } catch (e) {} }));
+</script>
+</body>
+</html>
