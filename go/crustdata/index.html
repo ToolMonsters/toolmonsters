@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Opening Claude</title>
+<style>
+  :root { --bg: #fff; --fg: #111; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #111; --fg: #eee; } }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--fg); font: 16px system-ui, sans-serif; padding: 0 16px; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<p>Opening Claude… <a id="go" href="#">Click here if nothing happens</a></p>
+<script>
+  // ---------- one campaign link: counts the click in Umami, then opens Claude with the prompt prefilled ----------
+  const CAMPAIGN = 'crustdata';
+  const PROMPT = 'Use Crustdata to find 20 US B2B SaaS companies hiring SDRs right now, with the head of sales at each one.';
+  const TARGET = 'https://claude.ai/new?q=' + encodeURIComponent(PROMPT);
+  const UMAMI = '1949fc13-9951-4808-a70f-1265fba55273';
+  document.getElementById('go').href = TARGET;
+
+  let gone = false;
+  const go = () => { if (!gone) { gone = true; location.replace(TARGET); } };
+  setTimeout(go, 1500); // never hold the visitor if analytics is slow or blocked
+
+  if (/(^|\.)toolmonsters\.com$/.test(location.hostname)) {
+    const s = document.createElement('script');
+    s.src = 'https://cloud.umami.is/script.js';
+    s.dataset.websiteId = UMAMI;
+    s.dataset.autoTrack = 'false';
+    s.onload = () => { try { Promise.resolve(umami.track('go-' + CAMPAIGN, { ref: document.referrer || 'direct' })).finally(go); } catch (e) { go(); } };
+    s.onerror = go;
+    document.head.appendChild(s);
+  } else {
+    go();
+  }
+</script>
+</body>
+</html>
