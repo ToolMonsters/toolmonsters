@@ -160,6 +160,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .promise b{font-size:18px;font-weight:500}
 .promise p{margin:0;font-size:14px;color:var(--ink-2)}
 @media (max-width:760px){.two,.weights,.steps4,.promise{grid-template-columns:1fr}.w,.steps4 .step{border-right:0;border-bottom:1px solid var(--line)}.tl>div{grid-template-columns:1fr;gap:4px}}
+.card{border:1px solid var(--line-strong);background:var(--card);padding:22px;display:grid;gap:14px;align-content:start;min-width:0}
+.card .top{display:flex;align-items:center;gap:12px}
+.card .top img{width:40px;height:40px;background:#fff}
+.card .nm{font-size:20px;font-weight:500;letter-spacing:-.02em}
+.card .ol{font-size:15px;color:var(--ink-2)}
+.card.after{background:var(--green-soft);border-color:transparent}
+.score{font-size:44px;font-weight:500;letter-spacing:-.05em;line-height:1}
+.card.after .score{color:var(--green)}
+.card.before .score{color:var(--orange)}
+.big3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:36px}
+.big3 div{border:1px solid var(--line-strong);background:var(--card);padding:24px;display:grid;gap:10px;align-content:start}
+.big3 .n{font-size:56px;font-weight:500;letter-spacing:-.05em;line-height:1;color:var(--orange)}
+.big3 b{font-size:21px;font-weight:500;letter-spacing:-.02em}
+.big3 p{margin:0;color:var(--ink-2);font-size:14.5px}
+@media (max-width:760px){.big3{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -169,105 +184,44 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 </div></header>
 <main>
 <section><div class="wrap">
-<div class="eyebrow mono"><b>01</b><span>prepared for david dokes · oct 2026</span></div>
-<h1>Put Polar in the words <span class="o">Claude actually searches</span>.</h1>
-<p class="lede">The full audit is <a href="../">here</a>. This page is the plan: what Claude types when a buyer needs Polar, why Polar gets cut, what we change, and the 10 minutes your team spends on it.</p>
-<div class="stats">
-<div class="stat"><b class="o">2/8</b><span>of Claude's real search keywords Polar matches today, both in its weakest field</span></div>
-<div class="stat"><b>7/8</b><span>with the new listing</span></div>
-<div class="stat"><b>10 min</b><span>of work for your team: paste into the connector settings</span></div>
-<div class="stat"><b>0</b><span>lines of code required</span></div>
-</div>
+<div class="eyebrow mono"><b>01</b><span>prepared for david dokes</span></div>
+<h1>Claude searches for <span class="o">“meta ads, google ads, tiktok ads”</span>. Polar's listing doesn't say it.</h1>
+<p class="lede">So when an agency or a growth marketer asks Claude about ad performance, Polar never makes the list. <a href="../">See the full audit →</a></p>
 </div></section>
 
 <section><div class="wrap">
-<div class="eyebrow mono"><b>02</b><span>what claude searched · 2 real requests</span></div>
-<h2>Two buyers, two searches. <span class="o">Polar cut both times.</span></h2>
+<div class="eyebrow mono"><b>02</b><span>the words claude actually typed</span></div>
+<h2>Today Polar matches 3, all buried in its description. <span class="o">After: all 8, up front.</span></h2>
 <div class="two">
-<div class="box"><span class="mono dim">agency request</span><h3>“For my client in skincare, what was blended ROAS and new-customer CAC last month across all paid channels?”</h3>
-<span class="mono dim">keywords claude sent · green = Polar's listing already says it</span><div class="kw"><span class="miss">meta ads</span><span class="miss">google ads</span><span class="miss">tiktok ads</span><span class="hit">shopify</span><span class="miss">ad spend</span><span class="hit">ROAS</span><span class="miss">marketing analytics</span></div>
-<span class="mono dim">top 10 returned</span><ul class="res"><li><span><img class="lg " src="supermetrics.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Supermetrics</span><span class="mono">#48</span></li><li><span><img class="lg " src="shopify.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Shopify</span><span class="mono">#19</span></li><li><span><img class="lg " src="shop.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Shop</span><span class="mono">#536</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Social Ads</span><span class="mono">#504</span></li><li><span><img class="lg " src="windsor.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Windsor.ai</span><span class="mono">#37</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Ads Agent</span><span class="mono">#227</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Search Ads</span><span class="mono">#481</span></li><li><span><img class="lg " src="funnel.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Funnel</span><span class="mono">#349</span></li><li><span>AdWhispr Ads</span><span class="mono">#266</span></li><li><span><img class="lg " src="abency.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Abency</span><span class="mono">#593</span></li><li class="no"><span><img class="lg g" src="polar.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Polar</span><span class="mono">#474</span></li></ul></div>
-<div class="box"><span class="mono dim">growth marketer request</span><h3>“Which ad creatives brought in customers with the highest 60-day LTV, not just the cheapest first purchase?”</h3>
-<span class="mono dim">keywords claude sent</span><div class="kw"><span class="miss">meta ads</span><span class="miss">google ads</span><span class="hit">shopify</span><span class="miss">ad creatives</span><span class="miss">customer lifetime value</span><span class="hit">ecommerce analytics</span><span class="miss">tiktok ads</span><span class="miss">stripe</span></div>
-<span class="mono dim">top 10 returned</span><ul class="res"><li><span><img class="lg " src="shopify.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Shopify</span><span class="mono">#19</span></li><li><span><img class="lg " src="stripe.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Stripe</span><span class="mono">#40</span></li><li><span><img class="lg " src="shop.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Shop</span><span class="mono">#536</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Social Ads</span><span class="mono">#504</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Ads Agent</span><span class="mono">#227</span></li><li><span><img class="lg " src="windsor.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Windsor.ai</span><span class="mono">#37</span></li><li><span>Pushwoosh ManyMoney</span><span class="mono"></span></li><li><span><img class="lg " src="supermetrics.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Supermetrics</span><span class="mono">#48</span></li><li><span><img class="lg " src="adspirer.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Adspirer Search Ads</span><span class="mono">#481</span></li><li><span>AdWhispr Ads</span><span class="mono">#266</span></li><li class="no"><span><img class="lg g" src="polar.png" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;margin-right:8px">Polar</span><span class="mono">#474</span></li></ul></div>
-</div>
-<p class="note">Even the green words only sit in Polar's long description, the weakest field. Connectors ranked far below Polar (Shop #536, Abency #593) got in because those words are in their name or one-liner.</p>
-</div></section>
-
-<section><div class="wrap">
-<div class="eyebrow mono"><b>03</b><span>why polar gets cut</span></div>
-<h2>10 slots. The connectors matching <span class="o">the most keywords, in the strongest fields</span>, take them.</h2>
-<div class="weights">
-<div class="w"><span class="mono">field 1</span><b>Name</b><div class="meter"><i style="width:100%"></i></div><p>Weighs the most in the search.</p></div>
-<div class="w"><span class="mono">field 2</span><b>One-liner</b><div class="meter"><i style="width:75%"></i></div><p>Weighs a lot, and it is what Claude reads when it picks the card.</p></div>
-<div class="w"><span class="mono">field 3</span><b>Tool names</b><div class="meter"><i style="width:50%"></i></div><p>Claude sees the first 8 only.</p></div>
-<div class="w"><span class="mono">field 4</span><b>Description</b><div class="meter"><i style="width:25%"></i></div><p>Weakest. Where Polar's buyer words live today.</p></div>
-</div>
-<p class="note">Measured on 25 real directory searches: our placement rule reproduces 20 of them. Among equally matching connectors, the more popular one comes first.</p>
-</div></section>
-
-<section><div class="wrap">
-<div class="eyebrow mono"><b>04</b><span>what we change, and why</span></div>
-<h2>Same product. Buyer words <span class="o">moved into the fields that count</span>.</h2>
-<div class="tbl"><table class="chg">
-<tr><th>Field</th><th>Today</th><th>What changes</th><th>Why</th></tr>
-<tr><td class="n">Name</td><td>Polar Analytics</td><td>Add “Shopify” and “Ads”</td><td>“shopify” is in both searches; the name weighs the most</td></tr>
-<tr><td class="n">One-liner</td><td>Bring all your data in one place &amp; connect it to Claude</td><td>Meta Ads, Google Ads, TikTok Ads, ROAS, customer lifetime value, marketing &amp; ecommerce analytics, agencies</td><td>Matches 6 of Claude's keywords, and it is what Claude reads to choose</td></tr>
-<tr><td class="n">Description</td><td>One paragraph, “e-commerce” spelled with a hyphen</td><td>Organized around buyer questions: ROAS &amp; MER, CAC, LTV &amp; cohorts, profit, attribution, agencies</td><td>Covers ~18 of 25 buyer terms instead of 1; “e-commerce” does not match a search for “ecommerce”</td></tr>
-<tr><td class="n">Categories</td><td>Data analytics</td><td>+ Sales &amp; marketing, Commerce &amp; shopping</td><td>Where agencies and Shopify brands browse</td></tr>
-<tr><td class="n">Tools <span class="who">optional · dev</span></td><td>get_context first</td><td>Reports and metrics tools first</td><td>Claude only sees the first 8; tool names come from your server</td></tr>
-</table></div>
-<div class="fix" style="margin-top:16px"><div class="fx"><span class="mono">new one-liner</span><div><p class="nw blur" aria-hidden="true">Fookrgrsf ssh aamuocehh boopbltrd mae Cdapftl nrefbr hcg gucdtrtn: gletokm SPMT, PKA, CFT, arctshul tdffmlmk hdfcf omf bshofu amrsnh Hftc Sor, Bkbikb Rhf, PclEer Bie, Tagmemo rur Letuiea.</p><span class="lock mono">■ full listing text delivered at kickoff</span></div></div></div>
-</div></section>
-
-<section><div class="wrap">
-<div class="eyebrow mono"><b>05</b><span>who does what</span></div>
-<h2>We do the work. <span class="o">Your team pastes it.</span></h2>
-<div class="steps4">
-<div class="step"><span class="who us">tool monsters</span><b>Listing pack</b><p>Name, one-liner, description, categories, ready to paste, with the reason for each change.</p></div>
-<div class="step"><span class="who">polar · 5 min</span><b>Confirm 3 facts</b><p>TikTok Ads, LTV &amp; cohorts and multi-brand access work through the MCP. We never publish a claim you can't back.</p></div>
-<div class="step"><span class="who">polar · 10 min</span><b>Paste &amp; save</b><p>claude.ai/directory/manage → Polar → Listing. Anthropic reviews the edit. Tell us the day it goes live.</p></div>
-<div class="step"><span class="who us">tool monsters</span><b>Prove it</b><p>Same 25 searches and the same 120 tests, plus your connector dashboard before and after.</p></div>
+<div class="card before"><span class="mono dim">today</span>
+<div class="top"><img src="polar.png" alt=""><div><div class="nm">Polar Analytics</div><div class="ol">Bring all your data in one place &amp; connect it to Claude</div></div></div>
+<div class="kw"><span class="miss">meta ads</span><span class="miss">google ads</span><span class="miss">tiktok ads</span><span class="hit">shopify</span><span class="hit">ROAS</span><span class="miss">customer lifetime value</span><span class="hit">ecommerce analytics</span><span class="miss">marketing analytics</span></div><div class="score">3/8</div></div>
+<div class="card after"><span class="mono">after</span>
+<div class="top"><img src="polar.png" alt=""><div><div class="nm blur" aria-hidden="true">Kmsap Hbfdmrhnt: Duhagoi & Fnf Cepeeaagg</div><div class="ol blur" aria-hidden="true">Ffklgtgfg nka mofeiclku alckmkrlf rrf Biamnat omnuap bfg dhpmsmsi: pdumkbo CGMN, EMK, CLM, kfce…</div></div></div>
+<div class="kw"><span class="hit">meta ads</span><span class="hit">google ads</span><span class="hit">tiktok ads</span><span class="hit">shopify</span><span class="hit">ROAS</span><span class="hit">customer lifetime value</span><span class="hit">ecommerce analytics</span><span class="hit">marketing analytics</span></div><div class="score">8/8</div></div>
 </div>
 </div></section>
 
 <section><div class="wrap">
-<div class="eyebrow mono"><b>06</b><span>timeline</span></div>
-<h2>From kickoff to proof in about 3 weeks.</h2>
-<div class="tl">
-<div><span class="mono">day 0</span><div><b>Kickoff</b><p>Invoice, 3 facts confirmed, screenshot of your connector dashboard (rank, accounts using a tool).</p></div></div>
-<div><span class="mono">day 2</span><div><b>Listing pack delivered</b><p>Copy-paste ready, plus optional notes for your dev on tool order.</p></div></div>
-<div><span class="mono">day 3</span><div><b>Your team publishes</b><p>Anthropic reviews listing edits. We log the live date.</p></div></div>
-<div><span class="mono">live + 3 days</span><div><b>Search check</b><p>The 25 buyer terms and Claude's real keyword sets, re-run. Instant and exact: is Polar in the results now?</p></div></div>
-<div><span class="mono">live + 3 weeks</span><div><b>Results report</b><p>The same 120 tests on the same 2 clean accounts, and your dashboard after. Agencies 4/30 → ?</p></div></div>
-</div>
-</div></section>
-
-<section><div class="wrap">
-<div class="eyebrow mono"><b>07</b><span>what we promise</span></div>
-<h2>What the listing can do, <span class="o">and what it can't</span>.</h2>
-<div class="promise">
-<div><span class="mono">we control</span><b>Getting found</b><p>Polar enters the search results for the words buyers and Claude use. Checked within days.</p></div>
-<div><span class="mono">likely</span><b>More cards</b><p>Once in the results, Claude picks from the name, one-liner and tools. Measured on the 120 tests.</p></div>
-<div><span class="mono">not from the listing alone</span><b>Beating Supermetrics on popularity</b><p>Among equally matching connectors the more popular wins. That's what a campaign moves.</p></div>
+<div class="eyebrow mono"><b>03</b><span>how it works</span></div>
+<h2>We write it. You paste it. <span class="o">We prove it.</span></h2>
+<div class="big3">
+<div><span class="n">48h</span><b>We write the new listing</b><p>Name, one-liner, description, categories. Ready to paste.</p></div>
+<div><span class="n">10 min</span><b>Your team pastes it</b><p>In your Claude connector settings. No code.</p></div>
+<div><span class="n">120</span><b>We re-run the same tests</b><p>Before vs after, plus your own connector dashboard. No gain: we redo it free.</p></div>
 </div>
 </div></section>
 
 <section class="offer"><div class="wrap">
-<div class="eyebrow mono"><b>08</b><span style="color:var(--on-night-2)">listing optimization</span></div>
+<div class="eyebrow mono"><b>04</b><span style="color:var(--on-night-2)">listing optimization</span></div>
 <div class="grid">
-<div><h2>We write it. You publish it. <span class="o">We prove it.</span></h2>
-<ul>
-<li><span class="mono">01</span><span>Listing pack in 48h, no code needed</span></li>
-<li><span class="mono">02</span><span>Search check after publish, then the same 120 tests and your dashboard</span></li>
-<li><span class="mono">03</span><span>No gain on the re-test: we rework it for free</span></li>
-</ul></div>
+<div><h2>Ready to start <span class="o">this week</span>.</h2></div>
 <div><div class="price">$5,000<small class="mono">flat · founding client price</small></div>
 <a class="cta mono" href="https://www.linkedin.com/in/yonathan-cohen/" data-track="polar_plan_cta">let's start <span>→</span></a></div>
 </div>
 </div></section>
 </main>
-<footer><div class="wrap mono"><span>tool monsters · claude connector audits</span><span>based on 120 tests and 2 traced searches, oct 2026</span></div></footer>
+<footer><div class="wrap mono"><span>tool monsters · claude connector audits</span><span>based on 120 tests and claude's own searches, oct 2026</span></div></footer>
 <script>
   const HEAD = [
     'XX.......XX',
