@@ -126,7 +126,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @keyframes packet { from { left: 0; opacity: 0; } 6% { opacity: 1; } 90% { opacity: 1; } to { left: calc(100% - 5px); opacity: 0; } }
 .hero-copy { grid-column: 1 / 4; grid-row: 1; position: relative; z-index: 1; }
 h1 { margin: 0; font-size: clamp(46px, 6vw, 96px); line-height: .9; letter-spacing: -.05em; font-weight: 500; text-wrap: balance; }
-h1 .o { color: var(--orange); }
+h1 .o, h2 .o { color: var(--orange); }
 .hero-sub { max-width: 52ch; margin: 34px 0 0; }
 .eyebrow { margin: 0 0 26px; display: inline-flex; align-items: center; gap: 10px; font-size: 11px; color: var(--ink-2); letter-spacing: .06em; }
 .eyebrow::before { content: ""; width: 7px; height: 7px; background: var(--orange); }
@@ -798,7 +798,7 @@ details p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; font-size: 1
   <div class="z">
     <div class="wrap grid6 sec-head">
       <div class="sec-num mono"><b>02</b><span>what we do</span></div>
-      <h2>We know what makes Claude recommend a tool.</h2>
+      <h2>We know what makes <span class="o">Claude recommend a tool.</span></h2>
       <p class="lede">We track all 1,045 connectors in Claude every day and test hundreds of buyer requests. Here is how we move yours to the top.</p>
     </div>
     <div class="wrap grid6">
@@ -843,7 +843,7 @@ details p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; font-size: 1
   <div class="z">
     <div class="wrap grid6 sec-head">
       <div class="sec-num mono"><b>03</b><span>free audit</span></div>
-      <h2>See who Claude suggests instead of you.</h2>
+      <h2>See who Claude suggests <span class="o">instead of you.</span></h2>
     </div>
     <div class="wrap grid6 aud">
       <div class="aud-side">
@@ -891,7 +891,7 @@ details p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; font-size: 1
   <div class="z">
     <div class="wrap grid6 sec-head">
       <div class="sec-num mono"><b>04</b><span>why us</span></div>
-      <h2>We have the reach.</h2>
+      <h2>We have <span class="o">the reach.</span></h2>
     </div>
     <div class="wrap grid6">
       <div class="powers">
@@ -1012,7 +1012,7 @@ details p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; font-size: 1
     <div class="wrap grid6 foot-grid">
       <div class="sec-num mono"><b>07</b><span>start</span></div>
       <div class="mascot foot-m" aria-hidden="true"><div class="mascot-body" id="mascot"></div></div>
-      <div class="foot-title"><h2>Get your free audit. In 48h.</h2></div>
+      <div class="foot-title"><h2>Get your <span class="o">free audit</span>. In 48h.</h2></div>
       <div class="contact" id="start">
         <form class="req-form" id="start-form" data-src="footer" novalidate>
           <label class="sr" for="start-form-tool">Your tool</label>
