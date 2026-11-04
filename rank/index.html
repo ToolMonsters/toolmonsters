@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Claude Connector Rank · Tool Monsters</title><meta name="description" content="MCP server: where any connector ranks in Claude's connector directory."><link rel="icon" type="image/png" href="/fav.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:light;--paper:#F1F0EE;--paper-2:#E4E2DB;--card:#FBFAF8;--ink:#1D1D1C;--ink-2:#5F5E59;--ink-3:#9A9891;--line:rgba(29,29,28,.13);--line-strong:rgba(29,29,28,.26);
+--orange:#F2551D;--orange-soft:#FCDCCD;--green:#2E7D4F;--green-soft:#DCEFE2;--night:#1E1E1D;--on-night:#EEEDE9;--on-night-2:#9D9B95;
+--f:"Geist","Helvetica Neue",Arial,sans-serif;--fm:"Geist Mono",ui-monospace,Menlo,monospace;--g:clamp(16px,2.2vw,32px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--paper)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.mono{font-family:var(--fm);text-transform:uppercase;letter-spacing:.045em;font-size:12px;line-height:1.5}
+.dim{color:var(--ink-3)}
+.wrap{max-width:1120px;margin-inline:auto;padding-left:max(var(--g),env(safe-area-inset-left,0px));padding-right:max(var(--g),env(safe-area-inset-right,0px))}
+.rules{position:fixed;inset:0;pointer-events:none;z-index:0}
+.rules .wrap{height:100%;display:grid;grid-template-columns:repeat(6,1fr)}
+.rules i{background:linear-gradient(var(--line) 55%,transparent 0) left top/1px 7px repeat-y}
+.rules i:first-child{background:linear-gradient(var(--line),var(--line)) left top/1px 100% no-repeat}
+.rules i:nth-child(3){background:linear-gradient(var(--orange) 55%,transparent 0) left top/1px 7px repeat-y;opacity:.5}
+.rules i:last-child{background:linear-gradient(var(--line) 55%,transparent 0) left top/1px 7px repeat-y,linear-gradient(var(--line),var(--line)) right top/1px 100% no-repeat}
+main,header,footer{position:relative;z-index:1}
+.head{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.head .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-weight:600;font-size:21px;letter-spacing:-.035em}
+.brand i{font-style:normal;color:var(--orange)}
+.sprite{display:inline-block;width:34px;height:30px;line-height:0}
+.tag{border:1px solid var(--line-strong);padding:8px 14px;white-space:nowrap}
+section{padding-block:clamp(48px,7vw,96px);border-bottom:1px solid var(--line)}
+.eyebrow{display:flex;gap:14px;align-items:center;margin-bottom:22px}
+.eyebrow b{color:var(--orange);font-weight:500}
+h1,h2{margin:0;font-weight:500;letter-spacing:-.045em;text-wrap:balance}
+h1{font-size:clamp(38px,5.6vw,80px);line-height:.95;max-width:16ch}
+h2{font-size:clamp(28px,3.6vw,48px);line-height:1}
+h1 .o,h2 .o{color:var(--orange)}
+.lede{margin:26px 0 0;max-width:56ch;color:var(--ink-2)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:28px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line-strong);background:var(--card);margin-top:44px}
+.stat{padding:22px;display:grid;gap:10px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat b{font-size:clamp(34px,4vw,52px);font-weight:500;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.stat b.o{color:var(--orange)}
+.stat span{font-size:13px;color:var(--ink-2)}
+.reqs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:36px}
+.req{background:var(--card);border:1px solid var(--line-strong);padding:18px;display:grid;gap:12px;align-content:start;box-shadow:0 30px 70px -46px rgba(29,29,28,.45);min-width:0}
+.req-h{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line-strong);padding-bottom:10px}
+.q{margin:0;font-size:17px;font-weight:500;letter-spacing:-.01em}
+.cap{margin:4px 0 0;font-size:11px}
+.faces{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.faces li{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-strong);background:var(--paper);padding:4px 12px 4px 4px;font-weight:500;font-size:14px}
+.faces li.miss{border:1px dashed var(--orange);background:transparent;color:var(--orange);text-decoration:line-through}
+.lg{background:#fff;display:block}
+.lg.g{opacity:.45;filter:grayscale(1)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line-strong);margin-top:36px;background:var(--card)}
+.step{padding:22px;display:grid;gap:8px;border-right:1px solid var(--line);align-content:start}
+.step:last-child{border-right:0}
+.step .mono{color:var(--orange)}
+.step b{font-size:21px;font-weight:500;letter-spacing:-.03em}
+.step p{margin:0;color:var(--ink-2);font-size:14px}
+.tbl{overflow-x:auto;margin-top:36px;border:1px solid var(--line-strong);background:var(--card)}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+th{font-family:var(--fm);font-weight:500;text-transform:uppercase;letter-spacing:.045em;font-size:11.5px;color:var(--ink-3)}
+td.n{display:flex;align-items:center;gap:10px;font-weight:600;white-space:nowrap}
+td.r{font-family:var(--fm);font-size:13px;white-space:nowrap}
+tr.me td{background:var(--orange-soft)}
+.note{margin:16px 0 0;font-size:13px;color:var(--ink-2);max-width:72ch}
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:28px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:12px;height:12px;display:inline-block}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-top:16px}
+.chip{padding:10px 12px;display:grid;gap:3px;border:1px solid var(--line-strong);background:var(--card);min-width:0}
+.chip b{font-weight:500;font-size:14px}
+.chip span{font-size:11px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip.win{background:var(--green-soft);border-color:transparent}.chip.win span{color:var(--green)}
+.chip.open{border:1px dashed var(--orange);background:transparent}.chip.open span{color:var(--orange)}
+.fix{margin-top:36px;border:1px solid var(--line-strong);background:var(--card)}
+.fx{display:grid;grid-template-columns:180px minmax(0,1fr);gap:20px;padding:18px 20px;border-bottom:1px solid var(--line)}
+.fx:last-child{border-bottom:0}
+.fx>.mono{color:var(--ink-3);padding-top:3px}
+.old{margin:0 0 6px;color:var(--ink-3);text-decoration:line-through}
+.nw{margin:0;font-size:17px;font-weight:500;letter-spacing:-.01em}
+.nw.code{font-family:var(--fm);font-size:13px}
+.ba{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.ba div{padding:22px;display:grid;gap:8px;border:1px solid var(--line-strong);background:var(--card)}
+.ba div:last-child{background:var(--green-soft);border-color:transparent}
+.ba b{font-size:52px;font-weight:500;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.ba div:last-child b{color:var(--green)}
+.offer{background:var(--night);color:var(--on-night);border-bottom:0}
+.offer .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:end}
+.offer h2{max-width:14ch}
+.price{font-size:clamp(56px,7vw,96px);font-weight:500;letter-spacing:-.06em;line-height:.9}
+.price small{display:block;margin-top:12px;color:var(--on-night-2)}
+.offer ul{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0;border-top:1px solid rgba(238,237,233,.13)}
+.offer li{padding:14px 0;border-bottom:1px solid rgba(238,237,233,.13);display:flex;gap:14px}
+.offer li .mono{color:var(--orange);padding-top:2px}
+.cta{display:inline-flex;align-items:center;gap:10px;height:56px;padding:0 26px;background:var(--orange);color:var(--ink);text-decoration:none;margin-top:30px}
+.cta:hover{background:var(--on-night)}
+footer{padding-block:28px;background:var(--night);color:var(--on-night-2)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+.reqs,.steps,.ba,.offer .grid{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid var(--line)}.fx{grid-template-columns:1fr;gap:6px}.tag{display:none}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+.blur{filter:blur(5px);user-select:none;pointer-events:none}
+.lock{display:inline-flex;align-items:center;gap:8px;margin-top:10px;color:var(--orange)}
+.bars{margin-top:36px;border:1px solid var(--line-strong);background:var(--card);padding:10px 20px}
+.bar{display:grid;grid-template-columns:170px minmax(0,1fr) 56px;gap:14px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line)}
+.bar:last-child{border-bottom:0}
+.bar .n{display:flex;align-items:center;gap:10px;font-weight:500;white-space:nowrap;overflow:hidden}
+.bar .t{height:14px;background:var(--paper-2)}
+.bar .t i{display:block;height:100%;background:var(--ink-3)}
+.bar.me .t i{background:var(--orange)}
+.bar.me .n{color:var(--orange);font-weight:600}
+.bar .v{font-family:var(--fm);font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+.hidden-tools{margin-top:16px;border:1px dashed var(--orange);padding:16px 18px;display:grid;gap:8px}
+.hidden-tools code{font-family:var(--fm);font-size:12.5px}
+@media (max-width:760px){.bar{grid-template-columns:120px minmax(0,1fr) 44px}}
+</style><style>.doc{max-width:760px}.doc h2{font-size:28px;margin-top:8px}.doc p,.doc li{color:var(--ink-2);font-size:16px}.doc code{font-family:var(--fm);font-size:13.5px;background:var(--card);border:1px solid var(--line-strong);padding:2px 6px}.box{background:var(--card);border:1px solid var(--line-strong);padding:18px;margin:16px 0}.doc table{min-width:0}</style></head><body>
+<header class="head"><div class="wrap"><a class="brand" href="https://www.toolmonsters.com/"><span class="sprite" data-sprite="brand"></span><span>Tool Monsters<i>.</i></span></a><span class="tag mono">claude connector rank</span></div></header>
+<main><section><div class="wrap doc"><div class="eyebrow mono"><b>mcp</b><span>documentation</span></div>
+<h1>Claude Connector Rank</h1>
+<p class="lede">See where any connector ranks in Claude's connector directory, how it moved, and who leads each category. Ask Claude in plain language.</p>
+<div class="box"><p class="mono">server url</p><p><code>https://claude-connector-rank.onrender.com/mcp</code></p><p>Streamable HTTP. No sign-in, no API key. Read-only.</p></div>
+<h2>Tools</h2>
+<div class="tbl"><table>
+<tr><th>Tool</th><th>What it returns</th></tr>
+<tr><td class="r">get_connector_rank</td><td>A connector's popularity rank and trending rank in Claude's directory, and how its rank changed since tracking began.</td></tr>
+<tr><td class="r">compare_connectors</td><td>Up to 10 connectors side by side, best rank first.</td></tr>
+<tr><td class="r">top_connectors</td><td>The most popular connectors overall or in one category (sales-and-marketing, data-analytics, developer-tools, productivity, financial-services...).</td></tr>
+</table></div>
+<h2>Try it</h2>
+<ul><li>"Where does Notion rank in Claude's connector directory?"</li><li>"Compare Apollo, ZoomInfo and Lusha in Claude's directory."</li><li>"Who are the top 10 data analytics connectors in Claude right now?"</li></ul>
+<h2>Data</h2>
+<p>Ranks come from the public listing at claude.com/marketplace, refreshed every 3 hours, with daily history since October 22, 2026. Popularity rank orders connectors by Claude's published popularity score; trending rank orders them by its trending score. Tool Monsters is not affiliated with Anthropic.</p>
+<h2>Support</h2>
+<p>Email <a href="mailto:hello@toolmonsters.com">hello@toolmonsters.com</a> (hello@toolmonsters.com). We reply within 2 business days. Privacy: <a href="/rank/privacy/">toolmonsters.com/rank/privacy</a>.</p></div></section></main>
+<footer><div class="wrap mono"><span>tool monsters</span><span>hello@toolmonsters.com</span></div></footer>
+<script>
+  const HEAD = [
+    'XX.......XX',
+    'XXX.....XXX',
+    'XXXXXXXXXXX',
+    'XXXXXXXXXXX',
+    'XXOOXXXOOXX',
+    'XXOOXXXOOXX',
+    'XXXXXXXXXXX',
+    'XXXXXXXXXXX',
+    '.XXXXXXXXX.'
+  ];
+  function voxel(rows, depth) {
+    const MAT = { X: ['#F2551D', '#FF8B4E', '#B9390B'], O: ['#1D1D1C', '#4E4C48', '#0A0A09'] };
+    const H = rows.length, cubes = new Set(), list = [];
+    rows.forEach((row, r) => [...row].forEach((v, x) => {
+      if (v === '.') return;
+      for (let z = 1 - depth; z < 1; z++) { cubes.add(`${x},${H - 1 - r},${z}`); list.push({ x, y: H - 1 - r, z, v }); }
+    }));
+    const has = (x, y, z) => cubes.has(`${x},${y},${z}`);
+    const P = (x, y, z) => [x * .94 + z * .46, x * .16 - z * .34 - y];
+    list.sort((a, b) => b.z - a.z || a.x - b.x || a.y - b.y);
+    let out = '', x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+    const poly = (pts, fill) => {
+      const p = pts.map(q => P(...q));
+      p.forEach(([a, b]) => { x0 = Math.min(x0, a); x1 = Math.max(x1, a); y0 = Math.min(y0, b); y1 = Math.max(y1, b); });
+      out += `<polygon points="${p.map(q => q[0].toFixed(3) + ',' + q[1].toFixed(3)).join(' ')}" fill="${fill}" stroke="${fill}" stroke-width=".02"/>`;
+    };
+    list.forEach(({ x, y, z, v }) => {
+      const [front, top, side] = MAT[v];
+      if (!has(x, y + 1, z)) poly([[x, y + 1, z], [x + 1, y + 1, z], [x + 1, y + 1, z + 1], [x, y + 1, z + 1]], top);
+      if (!has(x + 1, y, z)) poly([[x + 1, y, z], [x + 1, y, z + 1], [x + 1, y + 1, z + 1], [x + 1, y + 1, z]], side);
+      if (!has(x, y, z - 1)) poly([[x, y, z], [x + 1, y, z], [x + 1, y + 1, z], [x, y + 1, z]], front);
+    });
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${(x0 - .2).toFixed(2)} ${(y0 - .2).toFixed(2)} ${(x1 - x0 + .4).toFixed(2)} ${(y1 - y0 + .4).toFixed(2)}" width="100%" height="100%" aria-hidden="true">${out}</svg>`;
+  }
+  const LOGO = voxel(HEAD, 3);
+  
+  document.querySelectorAll('[data-sprite]').forEach(el => { el.innerHTML = LOGO; });
+  const s = document.createElement('script'); s.defer = true; s.src = 'https://cloud.umami.is/script.js'; s.dataset.websiteId = '1949fc13-9951-4808-a70f-1265fba55273'; document.head.appendChild(s);
+  document.querySelectorAll('[data-track]').forEach(a => a.addEventListener('click', () => { try { window.umami && umami.track(a.dataset.track); } catch (e) {} }));
+</script></body></html>
