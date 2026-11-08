@@ -1459,10 +1459,11 @@ details p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; font-size: 1
   }
 
   // ---------- analytics: loads only on toolmonsters.com, once the IDs are filled ----------
-  const ANALYTICS = { umami: '1949fc13-9951-4808-a70f-1265fba55273', clarity: 'z4on9kaf2c' };
+  const ANALYTICS = { umami: '1949fc13-9951-4808-a70f-1265fba55273', clarity: 'z4on9kaf2c', warmly: '1264090ee72dbb754952423b07bed648' };
   if (/(^|\.)toolmonsters\.com$/.test(location.hostname)) {
     if (ANALYTICS.umami) { const s = document.createElement('script'); s.defer = true; s.src = 'https://cloud.umami.is/script.js'; s.dataset.websiteId = ANALYTICS.umami; document.head.appendChild(s); }
     if (ANALYTICS.clarity) { (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); }; t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, 'clarity', 'script', ANALYTICS.clarity); }
+    if (ANALYTICS.warmly) { const w = document.createElement('script'); w.id = 'warmly-script-loader'; w.defer = true; w.src = 'https://opps-widget.getwarmly.com/warmly.js?clientId=' + ANALYTICS.warmly; document.head.appendChild(w); }
   }
   const track = (name, data) => { try { if (window.umami) umami.track(name, data); if (window.clarity) clarity('event', name); } catch (e) { /* analytics must never break the page */ } };
   document.addEventListener('click', e => { const t = e.target.closest('[data-track]'); if (t) track(t.dataset.track); });
