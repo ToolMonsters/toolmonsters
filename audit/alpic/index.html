@@ -1,0 +1,124 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alpic Claude Audit</title><meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:light;--paper:#F1F0EE;--paper-2:#E4E2DB;--card:#FBFAF8;--ink:#1D1D1C;--ink-2:#5F5E59;--ink-3:#9A9891;--line:rgba(29,29,28,.13);--line-strong:rgba(29,29,28,.26);--orange:#F2551D;--orange-2:#F7884F;--orange-soft:#FCDCCD;--night:#1E1E1D;--night-2:#282826;--on-night:#EEEDE9;--on-night-2:#9D9B95;--green:#2E8B57;--amber:#B97F0A;--f:"Geist","Helvetica Neue",Arial,sans-serif;--fm:"Geist Mono",ui-monospace,Menlo,monospace;--g:clamp(16px,2.2vw,32px)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.mono{font-family:var(--fm);text-transform:uppercase;letter-spacing:.045em;font-size:11.5px;line-height:1.5}.dim{color:var(--ink-3)}.o{color:var(--orange)}
+.wrap{max-width:1400px;margin:0 auto;padding:0 var(--g)}.grid6{display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+[data-gl]{position:relative}.gl{position:absolute;inset:0;pointer-events:none;z-index:0;max-width:1400px;margin:0 auto;padding:0 var(--g);display:grid;grid-template-columns:repeat(6,1fr)}
+.gl i{display:block;height:100%;background:linear-gradient(var(--line) 55%,transparent 0) left top/1px 7px repeat-y}
+.gl i:first-child{background:linear-gradient(var(--line),var(--line)) left top/1px 100% no-repeat}
+.gl i:last-child{background:linear-gradient(var(--line) 55%,transparent 0) left top/1px 7px repeat-y,linear-gradient(var(--line),var(--line)) right top/1px 100% no-repeat}
+.gl i:nth-child(3){background:linear-gradient(var(--orange) 55%,transparent 0) left top/1px 7px repeat-y;opacity:.6}
+.night .gl i{--line:rgba(238,237,233,.13)}
+.z{position:relative;z-index:1}
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:80px}
+.brand{display:inline-flex;align-items:center;gap:12px;font-weight:600;font-size:21px;letter-spacing:-.035em}.brand img{width:34px;height:30px;object-fit:contain;image-rendering:pixelated}.brand i{font-style:normal;color:var(--orange)}
+.hbox{display:flex;align-items:center;border:1px solid var(--line-strong);height:46px}.hbox span{padding:0 22px}.hbox b{background:var(--ink);color:var(--paper);height:100%;display:grid;place-items:center;padding:0 16px;font-weight:500}
+h1{margin:0;font-size:clamp(46px,5.6vw,88px);line-height:.92;letter-spacing:-.05em;font-weight:500;text-wrap:balance}
+h2{margin:0;font-size:clamp(34px,4vw,60px);line-height:.95;letter-spacing:-.05em;font-weight:500;text-wrap:balance}
+.eyebrow{color:var(--orange);margin:0 0 22px}
+.hero{padding:72px 0 64px}.hero .grid6{gap:0;align-items:start}.hcopy{grid-column:1/4;padding-right:40px}.hcard{grid-column:4/7}
+.sub{margin:26px 0 0;color:var(--ink-2);max-width:44ch;font-size:16px}
+.card{background:var(--card);border:1px solid var(--line-strong);box-shadow:0 18px 40px -28px rgba(29,29,28,.35)}
+.ah{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}.ah span{display:flex;gap:10px;align-items:center}.ah img{width:20px;height:18px;object-fit:contain;image-rendering:pixelated}
+.ab{padding:16px 18px 20px}.ab .mono.o{display:block;margin-bottom:12px}
+.br{display:grid;grid-template-columns:150px 1fr 56px;gap:14px;align-items:center;padding:6px 0}.bn{display:flex;gap:8px;align-items:center;font-size:14px}
+.bt{height:18px;background:repeating-linear-gradient(90deg,var(--paper-2) 0 2px,transparent 2px 4px)}.bt i{display:block;height:100%;background:var(--ink)}
+.br b{font-size:22px;font-weight:500;letter-spacing:-.04em;text-align:right}.br.me .bt i{background:var(--orange)}.br.me b,.br.me .bn{color:var(--orange);font-weight:600}
+.af{padding:10px 18px;border-top:1px solid var(--line)}
+img.sm{width:16px;height:16px;border-radius:3px;object-fit:contain}img.lg{width:28px;height:28px;border-radius:6px;object-fit:contain;background:#fff;border:1px solid var(--line);padding:2px}
+img.sq{width:22px;height:22px;object-fit:contain;background:#fff;border:1px solid var(--line-strong);padding:2px}
+.dots{height:64px;background:radial-gradient(circle,var(--line-strong) 1px,transparent 1.4px) 0 0/6px 6px;opacity:.7;border-block:1px solid var(--line)}
+.strip{border-bottom:1px solid var(--line)}.strip .grid6>div{padding:26px 0}.strip .lab{grid-column:1/3;align-self:center}
+.cell{display:flex;gap:14px;align-items:baseline}.cell b{font-size:clamp(34px,3.4vw,52px);font-weight:500;letter-spacing:-.055em;line-height:.9}.cell span{color:var(--ink-2);font-size:14px;max-width:18ch}
+section.sec{padding:96px 0;border-bottom:1px solid var(--line)}.sh{grid-column:1/3}.sh b{color:var(--orange);font-weight:500;display:block;margin-bottom:4px}
+.sc6{grid-column:3/7}.sc6 h2{margin-bottom:34px}.lede{color:var(--ink-2);font-size:16px;max-width:56ch;margin:-14px 0 30px}
+.cw{background:var(--card);border:1px solid var(--line-strong);box-shadow:0 18px 40px -28px rgba(29,29,28,.35);padding:16px 18px;max-width:760px;display:grid;gap:12px}
+.ch{display:flex;gap:8px;align-items:center;font-size:14px}.cl-logo{width:18px;height:18px}
+.ub{justify-self:end;background:var(--paper-2);padding:9px 14px;font-size:14px;max-width:80%}.ca{margin:0;font-family:Georgia,serif;font-size:15px}
+.cl{border:1px solid var(--line-strong);background:#fff}.ct{padding:10px 14px;font-size:13px;font-weight:500;border-bottom:1px solid var(--line)}
+.cr{display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:center;padding:9px 14px;border-bottom:1px solid var(--line)}.cr:last-child{border:0}
+.cx{min-width:0}.cx b{display:block;font-size:13.5px;font-weight:600}.cx span{display:block;font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cr em{font-style:normal;font-size:12px;border:1px solid var(--line-strong);padding:3px 10px}
+.miss{display:flex;gap:10px;align-items:center;color:var(--ink);text-transform:none;letter-spacing:0;font-size:13px;font-family:var(--f);background:var(--orange-soft);padding:10px 12px}
+.tg{font-family:var(--fm);text-transform:uppercase;letter-spacing:.045em;font-size:10px;background:var(--orange);color:var(--night);padding:4px 8px;white-space:nowrap}.tg.am{background:#F2C14E}.tg.ok{background:#7BCB98}
+.cf{color:var(--ink-3);font-size:10px;text-align:right}
+.tbl{background:var(--card);border:1px solid var(--line-strong)}.th,.rq{display:grid;grid-template-columns:1.6fr 1fr 70px 100px;gap:16px;align-items:center;padding:13px 18px;border-bottom:1px solid var(--line)}.rq:last-child{border:0}
+.th{color:var(--ink-3)}.rq>span:first-child{font-size:15px}.sq{display:flex;gap:4px}.sc{font-size:15px!important;text-align:right}.sc.x{color:var(--orange)}.sc.m{color:var(--amber)}.sc.w{color:var(--green)}
+i.you{font-style:normal;font-family:var(--fm);font-size:10px;text-transform:uppercase;background:var(--orange);color:var(--night);padding:4px 8px}
+.vs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line-strong);background:var(--card)}.vs>div{padding:24px 24px 10px}.vs>div+div{border-left:1px solid var(--line)}
+.vh{display:flex;gap:10px;align-items:center;font-size:20px;font-weight:500;letter-spacing:-.03em;margin-bottom:12px}.vs.me{}
+.kv{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding:12px 0}.kv b{font-size:40px;font-weight:500;letter-spacing:-.055em;line-height:.9}.kv b.dn{color:var(--orange)}
+.vs .a .vh{color:var(--orange)}
+.callout{margin-top:18px;border-left:3px solid var(--orange);padding:6px 0 6px 18px;font-size:19px;letter-spacing:-.02em;max-width:52ch}
+.night{background:var(--night);color:var(--on-night)}.night section{padding:110px 0}.night .mono{color:var(--on-night-2)}
+.night h2{font-size:clamp(46px,5.4vw,84px);line-height:.92}.night p{color:var(--on-night-2);font-size:17px;max-width:52ch;margin:26px 0 0}
+.pills{display:flex;gap:10px;margin-top:30px}.pills span{border:1px solid rgba(238,237,233,.26);padding:10px 16px}.pills span:first-child{background:var(--orange);border-color:var(--orange);color:var(--night)}
+footer{padding:26px 0 40px}footer .wrap{display:flex;justify-content:space-between;gap:20px}
+@page{size:1400px 1980px;margin:0}@media print{section.sec{padding:64px 0}.sec,.cw,.tbl,.vs{break-inside:avoid}.night{break-inside:avoid}}
+</style></head><body>
+<header data-gl><div class="gl"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="wrap z"><span class="brand"><img src="/fav.png" alt=""><span>Tool Monsters<i>.</i></span></span><span class="hbox mono"><span>claude audit · alpic</span><b>nov 12</b></span></div></header>
+<main>
+<div class="hero" data-gl><div class="gl"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="wrap grid6 z">
+<div class="hcopy"><p class="eyebrow mono">Claude audit, for Alpic</p>
+<h1>Developers ask Claude about MCP. <span class="o">Claude sends them elsewhere.</span></h1>
+<p class="sub">We asked Claude what developers ask every day, on 3 clean accounts. On logs, usage and projects, Alpic came up in <b>1 answer out of 27</b>.</p></div>
+<div class="hcard"><div class="card">
+<div class="ah"><span class="mono"><img src="/fav.png" alt="">claude audit · mcp hosting</span><span class="mono dim">45 answers · 3 clean accounts</span></div>
+<div class="ab"><span class="mono o">01 · how often claude suggests each tool</span><div class="br "><span class="bn"><img class="sm" src="https://assets.claude.com/f8c4f0634cd056e248c7ea396b1839b922470ac6.jpg?w=128&fit=max&auto=format" alt="">Vercel</span><span class="bt"><i style="width:56%"></i></span><b>56%</b></div><div class="br "><span class="bn"><img class="sm" src="https://www.google.com/s2/favicons?domain=cloudflare.com&sz=128" alt="">Cloudflare</span><span class="bt"><i style="width:56%"></i></span><b>56%</b></div><div class="br "><span class="bn"><img class="sm" src="https://www.google.com/s2/favicons?domain=railway.com&sz=128" alt="">Railway</span><span class="bt"><i style="width:31%"></i></span><b>31%</b></div><div class="br "><span class="bn"><img class="sm" src="https://assets.claude.com/79f04b766714ed201029e194202db93555ff8640.png?w=128&fit=max&auto=format" alt="">Datadog</span><span class="bt"><i style="width:29%"></i></span><b>29%</b></div><div class="br "><span class="bn"><img class="sm" src="https://assets.claude.com/f24f6113c38d2230059154c964071a6a1bb440f2.jpg?w=128&fit=max&auto=format" alt="">Sentry</span><span class="bt"><i style="width:27%"></i></span><b>27%</b></div><div class="br "><span class="bn"><img class="sm" src="https://www.google.com/s2/favicons?domain=mcp-use.com&sz=128" alt="">Manufact</span><span class="bt"><i style="width:20%"></i></span><b>20%</b></div><div class="br me"><span class="bn"><img class="sm" src="https://assets.alpic.ai/logo-black-fill.png" alt="">Alpic</span><span class="bt"><i style="width:18%"></i></span><b>18%</b></div></div>
+<div class="af mono dim">15 developer requests that don't name alpic · nov 11–12</div></div></div>
+</div></div>
+<div class="dots"></div>
+<div class="strip" data-gl><div class="gl"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="wrap grid6 z">
+<div class="lab mono dim">alpic in claude today</div>
+<div class="cell"><b class="o">1/27</b><span>logs, usage and projects answers</span></div>
+<div class="cell"><b>9/9</b><span>when the request names Alpic</span></div>
+<div class="cell" style="grid-column:5/7"><b>#811</b><span>rank in Claude's directory · Manufact #703</span></div>
+</div></div>
+
+<section class="sec" data-gl><div class="gl"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="wrap grid6 z">
+<div class="sh mono"><b>01</b>what a developer sees</div>
+<div class="sc6"><h2>A real answer from Claude. <span class="o">Alpic isn't in it.</span></h2>
+<div class="cw"><div class="ch"><img class="cl-logo" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt=""><b>Claude</b></div>
+<div class="ub">My MCP server deployment is failing and I need to check the logs. What can I connect for that?</div><p class="ca">I found 6 connectors that could help:</p>
+<div class="cl"><div class="ct">Connectors that could help</div><div class="cr"><img class="lg" src="https://assets.claude.com/f8c4f0634cd056e248c7ea396b1839b922470ac6.jpg?w=128&fit=max&auto=format" alt=""><div class="cx"><b>Vercel</b><span>Vercel MCP is Vercel’s official MCP server, allowing you to search and navigate documentation, manage projects and deployments…</span></div><em>Connect</em></div><div class="cr"><img class="lg" src="https://www.google.com/s2/favicons?domain=cloudflare.com&sz=128" alt=""><div class="cx"><b>Cloudflare Developer Platform</b><span>Enables users to build applications on Cloudflare Workers using built-in storage, AI, and compute primitives…</span></div><em>Connect</em></div><div class="cr"><img class="lg" src="https://assets.claude.com/79f04b766714ed201029e194202db93555ff8640.png?w=128&fit=max&auto=format" alt=""><div class="cx"><b>Datadog</b><span>Analyze, investigate, and act on your Datadog telemetry directly from Claude using natural language…</span></div><em>Connect</em></div><div class="cr"><img class="lg" src="https://www.google.com/s2/favicons?domain=grafana.com&sz=128" alt=""><div class="cx"><b>Grafana Cloud</b><span>Connect Claude directly to your Grafana Cloud stack to query metrics, logs, traces, and profiles…</span></div><em>Connect</em></div><div class="cr"><img class="lg" src="https://www.google.com/s2/favicons?domain=betterstack.com&sz=128" alt=""><div class="cx"><b>mcp.betterstack.com</b><span>Connect Claude to your Better Stack Uptime and Telemetry data…</span></div><em>Connect</em></div><div class="cr"><img class="lg" src="https://www.google.com/s2/favicons?domain=newrelic.com&sz=128" alt=""><div class="cx"><b>New Relic</b><span>Connect Claude to New Relic and investigate your production systems in plain English…</span></div><em>Connect</em></div></div>
+<div class="miss mono"><span class="tg">missing</span>Alpic isn’t in the list, though your connector has a deployment-logs tool for every MCP server hosted on Alpic.</div><div class="cf mono">real answer · clean claude account · opus 5.5 · nov 11, 2026</div></div>
+</div></div></section>
+
+<section class="sec" data-gl><div class="gl"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="wrap grid6 z">
+<div class="sh mono"><b>02</b>your report card</div>
+<div class="sc6"><h2>The requests you lose, <span class="o">and the ones you win.</span></h2>
+<div class="tbl"><div class="th mono"><span>developer request</span><span>claude suggested instead</span><span style="text-align:right">alpic</span><span></span></div><div class="rq"><span>Check my MCP deployment logs</span><span class="sq"><img class="sq" src="https://assets.claude.com/f8c4f0634cd056e248c7ea396b1839b922470ac6.jpg?w=128&fit=max&auto=format" alt=""><img class="sq" src="https://www.google.com/s2/favicons?domain=cloudflare.com&sz=128" alt=""><img class="sq" src="https://assets.claude.com/f24f6113c38d2230059154c964071a6a1bb440f2.jpg?w=128&fit=max&auto=format" alt=""></span><span class="mono sc x">0/9</span><span><span class="tg">missed</span></span></div><div class="rq"><span>Usage analytics for my MCP server or ChatGPT app</span><span class="sq"><img class="sq" src="https://assets.claude.com/f91e21cd00fa879f08a3b4aaffc527d726b83f6d.svg?w=128&fit=max&auto=format" alt=""><img class="sq" src="https://assets.claude.com/5fb0a516312ee2ff16b91847fa95a370469ef94c.svg?w=128&fit=max&auto=format" alt=""><img class="sq" src="https://assets.claude.com/79f04b766714ed201029e194202db93555ff8640.png?w=128&fit=max&auto=format" alt=""></span><span class="mono sc x">1/12</span><span><span class="tg">missed</span></span></div><div class="rq"><span>See all my MCP projects and teams</span><span class="sq"><img class="sq" src="https://assets.claude.com/f8c4f0634cd056e248c7ea396b1839b922470ac6.jpg?w=128&fit=max&auto=format" alt=""><img class="sq" src="https://www.google.com/s2/favicons?domain=railway.com&sz=128" alt=""><img class="sq" src="https://www.google.com/s2/favicons?domain=linear.app&sz=128" alt=""></span><span class="mono sc x">0/6</span><span><span class="tg">missed</span></span></div><div class="rq"><span>Deploy, redeploy or cancel a deployment</span><span class="sq"><img class="sq" src="https://www.google.com/s2/favicons?domain=cloudflare.com&sz=128" alt=""><img class="sq" src="https://assets.claude.com/f8c4f0634cd056e248c7ea396b1839b922470ac6.jpg?w=128&fit=max&auto=format" alt=""><img class="sq" src="https://www.google.com/s2/favicons?domain=railway.com&sz=128" alt=""></span><span class="mono sc m">5/12</span><span><span class="tg am">sometimes</span></span></div><div class="rq"><span>“A cloud built specifically for MCP servers”</span><span class="sq"><i class=you>alpic</i></span><span class="mono sc w">2/3</span><span><span class="tg ok">wins</span></span></div><div class="rq"><span>Requests that name Alpic or Skybridge</span><span class="sq"><i class=you>alpic</i></span><span class="mono sc w">9/9</span><span><span class="tg ok">wins</span></span></div></div>
+<p class="mono dim" style="margin-top:12px">score = answers that suggested alpic · 3 clean accounts</p>
+</div></div></section>
+
+<section class="sec" data-gl><div class="gl"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="wrap grid6 z">
+<div class="sh mono"><b>03</b>alpic vs manufact</div>
+<div class="sc6"><h2>Same promise, <span class="o">"the cloud built for MCP".</span></h2>
+<div class="vs"><div class="a"><div class="vh"><img class="lg" src="https://assets.alpic.ai/logo-black-fill.png" alt="">Alpic</div><div class="kv"><span>Rank in Claude</span><b>#811</b></div><div class="kv"><span>Since Oct 22</span><b class="dn">−76</b></div><div class="kv"><span>Suggested, 45 answers</span><b>8</b></div></div>
+<div><div class="vh"><img class="lg" src="https://www.google.com/s2/favicons?domain=mcp-use.com&sz=128" alt="">Manufact</div><div class="kv"><span>Rank in Claude</span><b>#703</b></div><div class="kv"><span>Since Oct 22</span><b class="dn">−86</b></div><div class="kv"><span>Suggested, 45 answers</span><b>9</b></div></div></div>
+<p class="callout">Manufact sits 108 places ahead, yet Claude suggests you both about as often. <b>Rank isn't what holds Alpic back. Vercel and Cloudflare are.</b></p>
+</div></div></section>
+
+<section class="sec" data-gl><div class="gl"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="wrap grid6 z">
+<div class="sh mono"><b>04</b>bonus · the apps you built</div>
+<div class="sc6"><h2>Same story <span class="o">for Novasol.</span></h2>
+<div class="cw"><div class="ch"><img class="cl-logo" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt=""><b>Claude</b></div>
+<div class="ub">I want to rent a holiday home in Denmark for 6 people next July. What can I connect for that?</div><p class="ca">I found 2 connectors that could help:</p>
+<div class="cl"><div class="ct">Connectors that could help</div><div class="cr"><img class="lg" src="https://assets.claude.com/8ebae40f57c0a2e9e2d236e42a75b760e051741b.jpg?w=128&fit=max&auto=format" alt=""><div class="cx"><b>Booking.com</b><span>Get your trip started with Booking.com directly on Claude…</span></div><em>Connect</em></div><div class="cr"><img class="lg" src="https://tineo.ai/favicon/favicon-96x96.png" alt=""><div class="cx"><b>Tineo</b><span>Plan trips with friends and your AI assistant, and keep everything in one place…</span></div><em>Connect</em></div></div>
+<div class="miss mono"><span class="tg">missing</span>Novasol: 0 of 9 answers, on its home market. Booking.com came first in all 9.</div><div class="cf mono">real answer · clean claude account · opus 5.5 · nov 11, 2026</div></div>
+<p class="mono dim" style="margin-top:12px">holiday homes in denmark, croatia and sweden · 3 accounts · novasol #764 and cottages #844, both down since oct 22</p>
+</div></div></section>
+
+<div class="night" data-gl><div class="gl"><i></i><i></i><i></i><i></i><i></i><i></i></div><section><div class="wrap grid6 z">
+<div class="sh mono"><b class="o">05</b>what's next</div>
+<div class="sc6"><h2>Good news: <span class="o">this is fixable.</span></h2>
+<p>Claude already knows Alpic when people name it. The work is getting Claude to think of Alpic when they don't.</p>
+<div class="pills mono"><span>for alpic's connector</span><span>for every app you ship</span></div>
+</div></div></section></div>
+</main>
+<footer><div class="wrap mono dim"><span>18 developer + 3 travel requests · 3 clean claude accounts · opus 5.5 · nov 11–12, 2026 · ranks nov 12</span><span>toolmonsters.com · not affiliated with anthropic</span></div></footer>
+</body></html>
