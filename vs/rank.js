@@ -8,11 +8,13 @@ const TMRace = (root, o) => {
   const H = o.hist, N = H.days.length, last = N - 1, DAY = o.dayMs || 250;
   const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const uid = 'rc' + Math.random().toString(36).slice(2, 7);
-  const first = t => H.r[t.s].findIndex(v => v > 0);
-  const tools = o.tools.filter(t => H.r[t.s] && first(t) >= 0 && first(t) < last && (t.s === o.me || last - first(t) >= 7));
+  // A brand-new listing debuts far down the ranking for one snapshot, then lands where its score puts it
+  // (FullEnrich: #1179 on day one, #397 the next day). That first point is skipped so the jump is not drawn.
+  const first = t => { const r = H.r[t.s], i = r.findIndex(v => v > 0); return i >= 0 && r[i + 1] > 0 && Math.abs(r[i] - r[i + 1]) > 150 ? i + 1 : i; };
+  const tools = o.tools.filter(t => H.r[t.s] && first(t) >= 0 && first(t) < last);
   const me = tools.find(t => t.s === o.me);
   const gain = (t, d) => H.r[t.s][first(t)] - H.r[t.s][d];
-  const order = d => tools.filter(t => H.p[t.s][d] > 0).sort((a, b) => H.p[b.s][d] - H.p[a.s][d]);
+  const order = d => tools.filter(t => d >= first(t) && H.p[t.s][d] > 0).sort((a, b) => H.p[b.s][d] - H.p[a.s][d]);
 
   // o.big: the homepage hero (larger heads and type). o.controls === false: no buttons, the page drives it.
   const W = Math.max(320, Math.round(root.clientWidth || 620)), narrow = W < 520, HT = narrow ? 380 : o.big ? 460 : 440;
