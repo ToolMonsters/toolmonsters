@@ -36,8 +36,20 @@
     const tries = ['apollo', 'exa', 'granola', 'vanta', 'hubspot'].map(s => bySlug[s] || d.ranks.tools.find(t => t.s.startsWith(s))).filter(Boolean).slice(0, 4);
     $('try').insertAdjacentHTML('beforeend', tries.map(t => `<button type="button" data-s="${esc(t.s)}">${logo(t, '')}${esc(t.n)}</button>`).join(''));
     const s0 = new URLSearchParams(location.search).get('t') || document.documentElement.dataset.slug;
-    if (s0 && bySlug[s0]) { $('q').value = bySlug[s0].n; show(bySlug[s0], null, true); }
+    if (s0 && bySlug[s0]) { $('q').value = bySlug[s0].n; show(bySlug[s0], null, true); return; }
+    const up = d.ranks.tools.filter(t => t.w && t.r <= 200 && t.w > t.r).sort((a, b) => (b.w - b.r) - (a.w - a.r)).slice(0, 8);
+    $('mvList').innerHTML = up.map(t => `<button type="button" class="mv-row" data-s="${esc(t.s)}"><span class="up">▲${t.w - t.r}</span>${logo(t)}<span class="nm">${esc(t.n)}</span><small>#${t.w} → <b data-from="${t.w}" data-to="${t.r}">#${reduce ? t.r : t.w}</b></small></button>`).join('');
+    $('mvUpd').textContent = `top 200 · updated ${d.ranks.updated}`;
+    $('movers').hidden = !up.length;
+    // each rank ticks from last week's to today's: the board shows the move, not only its result
+    if (!reduce) [...$('mvList').querySelectorAll('b[data-to]')].forEach((b, i) => {
+      const from = +b.dataset.from, to = +b.dataset.to, t0 = performance.now() + 350 + i * 90, ms = 900;
+      const tick = now => { const p = Math.min(1, Math.max(0, (now - t0) / ms)), e = 1 - Math.pow(1 - p, 3); b.textContent = '#' + Math.round(from + (to - from) * e); if (p < 1) requestAnimationFrame(tick); else b.dataset.done = 1; };
+      requestAnimationFrame(tick);
+      setTimeout(() => b.textContent = '#' + to, 350 + i * 90 + ms + 400);   // same guarantee when the tab is throttled
+    });
   });
+  $('mvList').addEventListener('click', e => { const b = e.target.closest('button[data-s]'); if (b && bySlug[b.dataset.s]) { $('q').value = bySlug[b.dataset.s].n; pick(bySlug[b.dataset.s]); } });
   $('try').addEventListener('click', e => { const b = e.target.closest('button[data-s]'); if (b && bySlug[b.dataset.s]) { $('q').value = bySlug[b.dataset.s].n; pick(bySlug[b.dataset.s]); } });
 
   // Direct competitors: the hand-picked list, plus tools in the same space that list this one as theirs, max 8
@@ -87,7 +99,7 @@
   let timer = null;
   const pick = (t, typed) => {
     hits = []; drawSug(); q.blur();
-    res.hidden = false;
+    res.hidden = false; $('movers').hidden = true;
     res.innerHTML = `<div class="checking mono">checking <b>${fmt(D.ranks.total)}</b> connectors · finding your competitors…</div>`;
     res.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
     clearTimeout(timer); timer = setTimeout(() => show(t, typed), reduce ? 0 : 750);
@@ -113,7 +125,7 @@
   };
 
   const show = (t, typed, quiet) => {
-    res.hidden = false;
+    res.hidden = false; $('movers').hidden = true;
     if (!t) {
       track('rank_page_search', { tool: typed, found: false });
       res.innerHTML = `<div class="nf"><div><span class="mono" style="font-size:11px;color:var(--orange)">not found</span><h2><b style="font-weight:500">${esc(typed)}</b> isn't in Claude's connector directory.</h2>
