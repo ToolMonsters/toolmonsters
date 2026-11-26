@@ -733,6 +733,7 @@ details p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; font-size: 1
       <a class="btn-line mono" href="#start">free audit</a>
       <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
       <nav class="menu mono" id="menu" hidden>
+        <a href="/vs/">your rank vs competitors <span>→</span></a>
         <a href="#what">what we do <span>02</span></a>
         <a href="#free-audit">free audit <span>03</span></a>
         <a href="#why">why us <span>04</span></a>
@@ -799,7 +800,7 @@ details p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; font-size: 1
     <div class="wrap grid6 sec-head">
       <div class="sec-num mono"><b>02</b><span>what we do</span></div>
       <h2>We know what makes <span class="o">Claude recommend a tool.</span></h2>
-      <p class="lede">We track all 1,045 connectors in Claude every day and test hundreds of buyer requests. Here is how we move yours to the top.</p>
+      <p class="lede">We track all <span data-total>1,226</span> connectors in Claude every day and test hundreds of buyer requests. Here is how we move yours to the top.</p>
     </div>
     <div class="wrap grid6">
       <div class="rd" id="rd">
@@ -896,7 +897,7 @@ details p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; font-size: 1
     <div class="wrap grid6">
       <div class="powers">
         <div class="power"><span class="big">300+</span><p>buyer requests tested in Claude</p></div>
-        <div class="power"><span class="big">1,000+</span><p>tools tracked every 3h</p></div>
+        <div class="power"><span class="big" data-total>1,226</span><p>tools tracked every 3h</p></div>
         <div class="power"><span class="big o">~2M</span><p>followers in our network</p></div>
         <p class="alt">Your team can edit the listing. <b>It can't see what Claude searches for, or send 2M followers.</b></p>
       </div>
@@ -1030,7 +1031,7 @@ details p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; font-size: 1
         <a href="#free-audit">free audit <span>03</span></a>
         <a href="#pricing">pricing <span>05</span></a>
         <a href="https://www.linkedin.com/in/yonathan-cohen" target="_blank" rel="noopener">linkedin <span>↗</span></a>
-        <a href="https://www.toolmonsters.com" target="_blank" rel="noopener">toolmonsters.com <span>↗</span></a>
+        <a href="/vs/">your rank vs competitors <span>→</span></a>
       </div>
       <div class="foot-bottom mono dim"><span>Tool Monsters</span><span>claude launch · 2026</span></div>
     </div>
@@ -1301,6 +1302,10 @@ details p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; font-size: 1
   }
 
   const getRanks = (() => { let p = null; return () => p || (p = fetch('ranks.json').then(r => r.json()).catch(() => null)); })();
+  // The connector count on the page is the live one, not a number typed in the copy
+  addEventListener('load', () => (window.requestIdleCallback || setTimeout)(() => getRanks().then(d => {
+    if (d) document.querySelectorAll('[data-total]').forEach(el => el.textContent = d.total.toLocaleString('en-US'));
+  })));
 
   // ---------- hero card: a live connector ranking, your tool climbs (until a visitor looks up their own) ----------
   const lrk = document.getElementById('lrk');
@@ -1399,6 +1404,8 @@ details p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; font-size: 1
         say(`<b>${esc(typed)}</b> isn't in Claude's connector directory yet.`, 'get listed &amp; verified', typed); return;
       }
       rfIn.value = t.n;
+      // On the live site the search lands on the connector's own page: its rank against its competitors
+      if (/(^|\.)toolmonsters\.com$/.test(location.hostname)) { location.href = '/vs/' + encodeURIComponent(t.s) + '/'; return; }
       showTool(t);
       if (note) note.textContent = `rank = claude's own popularity score · more users, higher rank · updated ${data.updated}`;
       const moved = t.w ? t.w - t.r : 0;
